@@ -4,6 +4,7 @@ import { generateSchema, generateLocalizedKeys } from './seo';
 import { fetchVisualAssets } from './visual';
 import { fetchLiveEvents } from './live';
 import { pushToSanity } from './cms';
+import { supabase } from '../lib/supabase';
 
 // Deterministic Array Fallback for true Autonomy
 const AUTONOMOUS_FALLBACK_NODES = [
@@ -69,8 +70,18 @@ async function runAutonomousEngine() {
       // 5. Push to Headless CMS
       await pushToSanity(node.type, payload);
       
-      // 6. DB Update timestamp bridging (simulated)
-      console.log(`[Database] Updated timestamp for ${node.name} to avoid immediate regeneration.`);
+      // 6. DB Update timestamp bridging
+      if (node.type && node.name) {
+          const { error } = await supabase
+            .from('generationLogs')
+            .insert([{ target_node: node.name, type: node.type, generated_at: new Date().toISOString() }]);
+          
+          if (error) {
+             console.log(`[Supabase] Note: Supabase 'generationLogs' table might not exist yet or RLS blocked it. Continuing autonomy...`);
+          } else {
+             console.log(`[Supabase] Recorded autonomous generation for ${node.name}.`);
+          }
+      }
       
       // Pacing logic to prevent rate limiting (15 seconds between nodes)
       console.log("\n=> Node cycle complete. Preparing next target...");
