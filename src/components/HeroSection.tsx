@@ -1,47 +1,38 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const AegeanFluid = dynamic(() => import('./AegeanFluid'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-[#001122]"></div>
+});
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     // Cinematic entrance
     const tl = gsap.timeline();
     
-    // Slow scale background for dramatic effect
-    gsap.fromTo(imageRef.current, 
-      { scale: 1.1 }, 
-      { scale: 1, duration: 15, ease: "power1.out" }
-    );
-
     // Text fade up
     tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" })
       .fromTo(textRef.current?.children || [], 
         { y: 30, opacity: 0 }, 
         { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power3.out" }, 
-        "-=1"
+        "-=0.5"
       );
   }, []);
 
   return (
     <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
       
-      {/* High-Res Cinematic Background */}
-      <div className="absolute inset-0 z-0 bg-[#003366]">
-        <Image 
-          ref={imageRef as any}
-          src="https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2574&auto=format&fit=crop"
-          alt="Santorini Sunset Cinematic"
-          fill
-          priority
-          className="object-cover opacity-80"
-        />
+      {/* 3D WebGL Background */}
+      <div className="absolute inset-0 z-0">
+        <AegeanFluid />
         {/* Soft elegant gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,51,102,0.3)] via-transparent to-[rgba(0,51,102,0.8)]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,51,102,0.1)] via-transparent to-[rgba(0,51,102,0.95)] pointer-events-none"></div>
       </div>
 
       {/* Content Container */}
