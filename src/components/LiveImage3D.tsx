@@ -56,8 +56,8 @@ const fragmentShader = `
 function WaveScene() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   
-  // High quality idyllic greek beach (Navagio)
-  const texture = useTexture('https://images.unsplash.com/photo-1522513476839-4d693f1fa68c?q=80&w=2000&auto=format&fit=crop');
+  // High quality idyllic greek beach - Downloaded locally to avoid CORS errors
+  const texture = useTexture('/bg-hero.png');
 
   const uniforms = useMemo(
     () => ({
