@@ -34,7 +34,7 @@ export default async function LocaleLayout({
  
   return (
     <html lang={locale}>
-      <body className={`${inter.variable} ${playfair.variable} antialiased selection:bg-[#003366] selection:text-white bg-[#FCFDFF] text-[#1E293B] overflow-x-hidden`}>
+      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased selection:bg-[#003366] selection:text-white bg-[#FCFDFF] text-[#1E293B] overflow-x-hidden`}>
         <NextIntlClientProvider messages={messages}>
           <SmoothScroller>
             {children}

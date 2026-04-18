@@ -1,6 +1,4 @@
 import HeroSection from "@/components/HeroSection";
-import HolidayGuide from "@/components/HolidayGuide";
-import InteractiveMap from "@/components/InteractiveMap";
 import { sanityClient } from "@/lib/sanity";
 import ScrollNodes from "@/components/ScrollNodes";
 
@@ -22,9 +20,9 @@ export default async function Home() {
     img: node.heroImage || "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2000&auto=format&fit=crop"
   })) : [
     { 
-      title: "System Booting", 
+      title: "Swarm Booting", 
       tag: "ORACLE ONLINE",
-      desc: "The Autonomous Engine has been ignited. Content generation for the Hellenic archipelago is currently underway. Refresh shortly.",
+      desc: "The Autonomous Agent Swarm is generating rich geospatial data for the Hellenic architecture. Please refresh in a moment.",
       img: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5f1?q=80&w=2000&auto=format&fit=crop"
     }
   ];
@@ -32,16 +30,11 @@ export default async function Home() {
   return (
     <main className="min-h-screen flex flex-col relative w-full bg-[#000814] text-white">
       
-      {/* 3D WebGL Shader Hero */}
+      {/* 3D WebGL Bounding Wave Shader Hero */}
       <HeroSection />
-      
-      {/* AI Concierge Layer - Dark Mode Override */}
-      <div className="relative z-20 bg-[#001122]">
-        <HolidayGuide />
-      </div>
-      
-      {/* Map Exploration Subsystem */}
-      <InteractiveMap />
+
+      {/* Transitional Spacer for ultimate clean luxury feel */}
+      <div className="h-24 w-full bg-[#000814]"></div>
       
       {/* Massive Awwwards Level Editorial Hub */}
       <section className="w-full relative bg-[#000814] overflow-hidden py-32">
@@ -51,7 +44,7 @@ export default async function Home() {
               <span className="text-[#D4AF37] uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Autonomous Architecture</span>
               <h2 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">Curated<br/>Nodes_</h2>
               <p className="text-gray-400 font-light text-xl leading-relaxed">
-                The Hellenic archipelago decoded. Scroll through the AI-verified destinations below, generated in real-time by the Autonomous Engine.
+                The Hellenic archipelago decoded. Scroll through the AI-verified destinations below, generated in real-time by the Autonomous Swarm.
               </p>
             </div>
           </div>
