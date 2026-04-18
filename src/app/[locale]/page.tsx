@@ -16,8 +16,27 @@ export default async function Home() {
   const spotlightIndex = sanityNodes.length > 0 ? (currentHour % sanityNodes.length) : 0;
   const spotlightNode = sanityNodes.length > 0 ? sanityNodes[spotlightIndex] : null;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "CYouInGreece",
+    "image": "https://cyouingreece.com/bg-hero.png",
+    "description": "Ultra-Luxury Concierge and Private VIP Access to the Aegean's highest-tier topological nodes, private yachts, and secluded villas.",
+    "url": "https://cyouingreece.com",
+    "priceRange": "$$$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Athens",
+      "addressCountry": "GR"
+    }
+  };
+
   return (
     <main className="min-h-screen flex flex-col relative w-full bg-[#0A0A0A] text-white selection:bg-[#E5D3B3] selection:text-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* Sovereign Hero Sector */}
       <HeroSection />
@@ -47,7 +66,7 @@ export default async function Home() {
           
           {spotlightNode ? (
             <div className="relative w-full h-[70vh] group overflow-hidden cursor-pointer">
-               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] group-hover:scale-105" style={{ backgroundImage: `url(${spotlightNode.heroImage || '/bg-hero.png'})` }}></div>
+               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] group-hover:scale-105" style={{ backgroundImage: `url('${spotlightNode.heroImage || '/bg-hero.png'}')` }}></div>
                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                <div className="absolute bottom-12 left-12 z-10 max-w-2xl">
                  <span className="text-[#E5D3B3] tracking-[0.2em] font-semibold text-xs border border-[#E5D3B3]/40 px-3 py-1 mb-6 inline-block uppercase">
@@ -91,7 +110,7 @@ export default async function Home() {
                {name: "Dodecanese", img: "https://images.unsplash.com/photo-1606915159051-2fd5e35bd7f0?q=80&w=1000"}
              ].map((r, i) => (
                 <div key={i} className="relative group overflow-hidden bg-[#111] cursor-pointer">
-                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" style={{ backgroundImage: `url(${r.img})` }}></div>
+                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" style={{ backgroundImage: `url('${r.img}')` }}></div>
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                    <div className="absolute bottom-8 left-8 z-10 flex items-center space-x-3">
                      <div className="w-8 h-[1px] bg-[#E5D3B3] transform origin-left transition-all duration-300 group-hover:w-16"></div>

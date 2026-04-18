@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Exclude private engine endpoints if any
+Disallow: /api/engine
+
+Sitemap: https://cyouingreece.com/sitemap.xml

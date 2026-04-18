@@ -13,8 +13,42 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-serif' });
 
 export const metadata: Metadata = {
-  title: "CYouInGreece - The Ultimate Hellenic Voyage",
-  description: "Curated experiences and intelligence across the Aegean",
+  title: "CYouInGreece | Exclusive Hellenic Sanctuaries",
+  description: "Bypass the noise. The most guarded private yachts, villas, and isolated nodes in the Aegean, curated by AI intelligence.",
+  keywords: ["Luxury Greece", "Private Yachts Aegean", "Hellenic Architecture", "Luxury Villas Mykonos", "High Net Worth Travel", "Concierge Greece"],
+  openGraph: {
+    title: "CYouInGreece | Exclusive Sanctuaries",
+    description: "The most guarded private yachts and isolated topological nodes in the Aegean.",
+    url: "https://cyouingreece.com",
+    siteName: "CYouInGreece",
+    images: [
+      {
+        url: "/bg-hero.png", // Will use our 4K background image
+        width: 2000,
+        height: 1000,
+        alt: "CYouInGreece Luxury Platform",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CYouInGreece | Exclusive Hellenic Sanctuaries",
+    description: "The most guarded private yachts and isolated topological nodes in the Aegean.",
+    images: ["/bg-hero.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 import Header from '@/components/Header';
