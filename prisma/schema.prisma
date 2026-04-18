@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Region {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  slug        String   @unique
+  islands     Island[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Island {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  slug        String   @unique
+  regionId    String
+  region      Region   @relation(fields: [regionId], references: [id])
+  pois        POI[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model POI {
+  id          String   @id @default(uuid())
+  name        String
+  type        String   // "attraction", "hotel", "restaurant"
+  description String?
+  islandId    String
+  island      Island   @relation(fields: [islandId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Itinerary {
+  id          String   @id @default(uuid())
+  title       String
+  content     Json     // Stores the generated AI output
+  createdAt   DateTime @default(now())
+}

@@ -6,10 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "engine:start": "npx tsx src/engine/core.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@prisma/client": "^7.7.0",
+    "@sanity/client": "^7.21.0",
+    "framer-motion": "^12.38.0",
+    "gsap": "^3.15.0",
     "next": "16.2.4",
+    "next-intl": "^4.9.1",
+    "openai": "^6.34.0",
+    "prisma": "^7.7.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

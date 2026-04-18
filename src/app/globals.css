@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #0ea5e9;
+  --color-primary-dark: #0369a1;
+  --color-surface: #ffffff;
+  --color-surface-dark: #0f172a;
+  
+  --font-inter: 'Inter', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
+  }
+  
+  /* Preferred Dark default for premium feel */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #020617;
+      --text-color: #f8fafc;
+    }
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, #38bdf8, #818cf8);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
