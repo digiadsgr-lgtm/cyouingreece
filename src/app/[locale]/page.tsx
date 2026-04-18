@@ -1,52 +1,57 @@
 import HeroSection from "@/components/HeroSection";
 import HolidayGuide from "@/components/HolidayGuide";
+import InteractiveMap from "@/components/InteractiveMap";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 flex flex-col">
+    <main className="min-h-screen flex flex-col relative w-full overflow-hidden">
+      
       <HeroSection />
       
-      {/* Decorative Seam */}
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
+      {/* Decorative Energy Seam */}
+      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#0ff] to-transparent opacity-50 relative z-20"></div>
       
-      {/* Holiday Guide Application Layer */}
+      {/* Map Radar Subsystem */}
+      <InteractiveMap />
+
+      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#b026ff] to-transparent opacity-50 relative z-20"></div>
+      
+      {/* Oracle Console Layer */}
       <HolidayGuide />
       
-      {/* Features Outline Matrix Section */}
-      <section className="w-full py-24 bg-slate-900 border-t border-slate-800">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col items-center text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Uncompromising Luxury</h2>
-            <p className="text-slate-400 max-w-2xl">Access our highly guarded network of secluded villas, private charters, and native experiences.</p>
-          </div>
+      {/* Matrix Node Hub */}
+      <section className="w-full py-24 relative z-10 glass-panel border-t border-[rgba(0,255,255,0.2)] mt-12 text-center">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl md:text-5xl font-space font-bold uppercase neon-text mb-6">Database Nodes</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto font-light mb-16 text-lg">Secure your topological parameters. Engaging our deep-water encrypted array.</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: "Curated Villas",
-                desc: "Verified high-end properties spanning Cycladic minimalism to Ionian mansions.",
-                slug: "Villas"
+                title: "Architectural Arrays",
+                desc: "Quantified extraction of high-value minimalist geometries and neoclassical ruins.",
+                slug: "AX-1"
               },
               {
-                title: "Private Navigations",
-                desc: "Catamarans and yachts deployed from major Hellenic marinas.",
-                slug: "Charters"
+                title: "Navigational Subsystems",
+                desc: "Encrypted routing via autonomous catamaran and advanced nautical vessels.",
+                slug: "NAV-2"
               },
               {
-                title: "Cultural Autonomy",
-                desc: "Expertly sourced gastronomic and archaeological immersions without the crowds.",
-                slug: "Experiences"
+                title: "Cultural Decryption",
+                desc: "Real-time decoding of indigenous gastronomy and isolated local frequencies.",
+                slug: "CUL-3"
               }
             ].map((feature) => (
-              <div key={feature.title} className="glass p-8 rounded-2xl flex flex-col hover:border-slate-500 transition-colors cursor-pointer group">
-                <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mb-6 text-white group-hover:bg-blue-600 transition-colors">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m12 16 4-4-4-4"/><path d="M8 12h8"/></svg>
+              <div key={feature.title} className="glass-extreme p-8 md:p-10 flex flex-col group cursor-crosshair border border-[rgba(0,255,255,0.1)] hover:border-[#0ff] hover:shadow-[0_0_25px_rgba(0,255,255,0.3)] transition-all duration-500">
+                <div className="w-full flex justify-between items-center mb-6 border-b border-[rgba(255,255,255,0.1)] pb-4">
+                  <span className="text-[#0ff] font-space tracking-[0.3em] text-xs">MODULE // {feature.slug}</span>
+                  <div className="w-2 h-2 bg-[#b026ff] group-hover:bg-[#0ff] shadow-[0_0_10px_#b026ff] rounded-full transition-colors"></div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-slate-400 flex-grow font-light text-sm leading-relaxed mb-6">{feature.desc}</p>
-                <div className="mt-auto flex items-center text-blue-400 text-sm font-semibold uppercase tracking-wider group-hover:text-blue-300">
-                  <span className="mr-2">Explore {feature.slug}</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <h3 className="text-xl font-space uppercase text-white mb-4 group-hover:text-[#0ff] transition-colors">{feature.title}</h3>
+                <p className="text-gray-400 flex-grow font-light text-sm leading-relaxed mb-8">{feature.desc}</p>
+                <div className="mt-auto inline-block border border-[#0ff] text-[#0ff] font-space text-xs tracking-[0.2em] uppercase py-2 px-4 shadow-[0_0_10px_rgba(0,255,255,0.2)] hover:bg-[#0ff] hover:text-black transition-colors">
+                  [ INITIATE LINK ]
                 </div>
               </div>
             ))}
@@ -54,13 +59,14 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Footer */}
-      <footer className="w-full bg-slate-950 py-12 border-t border-slate-900 border-opacity-50">
-        <div className="container mx-auto px-6 flex flex-col justify-between items-center opacity-60">
-           <span className="text-2xl font-bold text-white tracking-tighter mb-4">CYOUINGREECE</span>
-           <p className="text-xs text-slate-500 uppercase tracking-widest text-center">
-             © 2026 CYOUINGREECE ENTERPRISE. ALL RIGHTS RESERVED. AI RECOMMENDER SYSTEM V1.0.
+      {/* Footer System */}
+      <footer className="w-full py-16 bg-[#02040a] border-t border-[rgba(0,255,255,0.2)] relative z-10 text-center">
+        <div className="container mx-auto px-6 opacity-50 flex flex-col justify-center items-center">
+           <span className="text-xl font-space text-white tracking-[0.5em] mb-4 neon-text">CYOUINGREECE // TERMINAL</span>
+           <p className="text-[10px] text-gray-500 font-space tracking-widest uppercase">
+             SECURE CHANNEL. QUANTUM NETWORK OPERATION. ALL BYTES RESERVED 2026.
            </p>
+           <div className="w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#b026ff] to-transparent mt-8"></div>
         </div>
       </footer>
     </main>

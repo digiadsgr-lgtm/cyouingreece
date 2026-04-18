@@ -1,72 +1,91 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0ea5e9;
-  --color-primary-dark: #0369a1;
-  --color-surface: #ffffff;
-  --color-surface-dark: #0f172a;
-  
-  --font-inter: 'Inter', sans-serif;
-  --font-outfit: 'Outfit', sans-serif;
+  --color-neon-cyan: #0ff;
+  --color-neon-purple: #b026ff;
+  --color-deep-space: #050510;
 }
 
 @layer base {
   :root {
-    --bg-color: #f8fafc;
-    --text-color: #0f172a;
+    --bg-space: #02040a;
+    --text-space: #e2e8f0;
   }
   
-  /* Preferred Dark default for premium feel */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg-color: #020617;
-      --text-color: #f8fafc;
-    }
-  }
-
   body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-inter);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    background-color: var(--bg-space);
+    color: var(--text-space);
+    font-family: var(--font-inter), sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-space {
+    font-family: var(--font-space), monospace;
   }
 }
 
 @layer utilities {
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .noise-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .glass-extreme {
+    background: linear-gradient(135deg, rgba(10, 15, 30, 0.4), rgba(5, 5, 20, 0.6));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    box-shadow: 0 10px 40px 0 rgba(0, 255, 255, 0.05);
   }
   
-  .glass-dark {
-    background: rgba(15, 23, 42, 0.4);
+  .glass-panel {
+    background: rgba(2, 4, 10, 0.85);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(176, 38, 255, 0.2);
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.02);
   }
 
-  .text-gradient {
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(to right, #38bdf8, #818cf8);
+  .neon-text {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(0,255,255,0.6), 0 0 20px rgba(0,255,255,0.3);
+  }
+
+  .neon-border {
+    border-color: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 10px rgba(0, 255, 255, 0.1);
+  }
+
+  .stars-layer {
+    background: radial-gradient(circle at center, transparent 0%, #02040a 90%), 
+                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%23ffffff' opacity='0.5'/%3E%3Ccircle cx='150' cy='250' r='2' fill='%2300ffff' opacity='0.7'/%3E%3Ccircle cx='300' cy='100' r='1.5' fill='%23b026ff' opacity='0.4'/%3E%3Ccircle cx='250' cy='350' r='1' fill='%23ffffff' opacity='0.6'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    animation: slowDrift 160s linear infinite;
+  }
+
+  .scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 15px;
+    background: linear-gradient(to bottom, transparent, rgba(0,255,255,0.15), transparent);
+    animation: scanning 6s linear infinite;
+    pointer-events: none;
+    z-index: 50;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+@keyframes slowDrift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.05) translate(15px, -15px); }
+  100% { transform: scale(1) translate(0, 0); }
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-color);
+
+@keyframes scanning {
+  0% { top: -10%; }
+  100% { top: 110%; }
 }
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
-}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-space); }
+::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 2px; }
