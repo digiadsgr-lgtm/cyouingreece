@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -93,7 +93,9 @@ export default function LiveImage3D() {
         // Ensure the canvas doesn't kill SSR heavily
         dpr={[1, 2]} 
       >
-        <DisplacementScene />
+        <Suspense fallback={null}>
+          <DisplacementScene />
+        </Suspense>
       </Canvas>
     </div>
   );

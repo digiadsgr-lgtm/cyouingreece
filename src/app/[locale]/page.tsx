@@ -1,8 +1,33 @@
 import HeroSection from "@/components/HeroSection";
 import HolidayGuide from "@/components/HolidayGuide";
 import InteractiveMap from "@/components/InteractiveMap";
+import { sanityClient } from "@/lib/sanity";
 
-export default function Home() {
+export const revalidate = 15; // Revalidate every 15 seconds to catch new AI articles
+
+export default async function Home() {
+  
+  let sanityNodes = [];
+  try {
+    sanityNodes = await sanityClient.fetch('*[_type in ["region", "island", "poi"]] | order(updatedAt desc) [0...20]');
+  } catch(e) {
+    console.error("Failed to fetch from Sanity", e);
+  }
+  
+  const displayNodes = sanityNodes.length > 0 ? sanityNodes.map((node: any) => ({
+    title: node.name || node.title || "Unknown Destination",
+    tag: String(node._type).toUpperCase(),
+    desc: node.description || "Detailed narrative continuously constructed by the Hellenic AI Engine.",
+    img: node.heroImage || "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2000&auto=format&fit=crop"
+  })) : [
+    { 
+      title: "System Booting", 
+      tag: "ORACLE ONLINE",
+      desc: "The Autonomous Engine has been ignited. Content generation for the Hellenic archipelago is currently underway. Refresh shortly.",
+      img: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5f1?q=80&w=2000&auto=format&fit=crop"
+    }
+  ];
+
   return (
     <main className="min-h-screen flex flex-col relative w-full bg-[#000814] text-white">
       
@@ -31,26 +56,7 @@ export default function Home() {
           </div>
           
           <div className="flex flex-col space-y-32">
-            {[
-              { 
-                title: "Oia, Santorini", 
-                tag: "Volcanic Architecture",
-                desc: "Iconic blue domes suspended over a submerged caldera. Perfect for ultra-luxury aesthetic escape.",
-                img: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5f1?q=80&w=2000&auto=format&fit=crop"
-              },
-              { 
-                title: "Navagio, Zakynthos", 
-                tag: "Nautical Isolation",
-                desc: "An exposed cove, sometimes referred to as 'Smugglers Cove', on the coast of Zakynthos.",
-                img: "https://images.unsplash.com/photo-1522513476839-4d693f1fa68c?q=80&w=2000&auto=format&fit=crop"
-              },
-              { 
-                title: "Mykonos Town", 
-                tag: "Cosmopolitan Node",
-                desc: "World-class dining wrapped in labyrinthine Cycladic alleys.",
-                img: "https://images.unsplash.com/photo-1601581874834-3f60f86ea259?q=80&w=2000&auto=format&fit=crop"
-              }
-            ].map((node, i) => (
+            {displayNodes.map((node, i) => (
               <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-12 group`}>
                 {/* Massive Image Container */}
                 <div className="w-full md:w-3/5 h-[600px] relative overflow-hidden rounded-sm">
