@@ -60,7 +60,7 @@ async function runAutonomousEngine() {
       const payload = {
         name: node.name,
         ...localized.en,
-        seoSchema: schema,
+        seoSchema: JSON.stringify(schema),
         heroImage: factualImage,
         liveEvents: events,
         translations: localized,
