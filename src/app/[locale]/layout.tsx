@@ -7,6 +7,8 @@ import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 
+import SmoothScroller from '@/components/SmoothScroller';
+
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-serif' });
 
@@ -34,7 +36,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${inter.variable} ${playfair.variable} antialiased selection:bg-[#003366] selection:text-white bg-[#FCFDFF] text-[#1E293B] overflow-x-hidden`}>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <SmoothScroller>
+            {children}
+          </SmoothScroller>
         </NextIntlClientProvider>
       </body>
     </html>

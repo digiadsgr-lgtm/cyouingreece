@@ -1,101 +1,77 @@
 'use client';
-import { useRef, useMemo, Suspense } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import { useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Sky, Clouds, Cloud } from '@react-three/drei';
 import * as THREE from 'three';
 
-const vertexShader = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
+function VolumetricFlight() {
+  const groupRef = useRef<THREE.Group>(null);
 
-const fragmentShader = `
-  uniform sampler2D uTexture;
-  uniform vec2 uMouse;
-  uniform float uTime;
-  varying vec2 vUv;
-
-  void main() {
-    // Calculate distance from current pixel to mouse
-    float dist = distance(vUv, uMouse);
-    
-    // Create a smooth ripple effect
-    float ripple = sin(dist * 20.0 - uTime * 2.0) * 0.02;
-    
-    // Falloff so the ripple only happens near the mouse
-    float falloff = smoothstep(0.5, 0.0, dist);
-    
-    // Distort the UV coordinates
-    vec2 distortedUv = vUv + (vUv - uMouse) * ripple * falloff;
-    
-    // Sample texture with distorted UVs
-    vec4 color = texture2D(uTexture, distortedUv);
-    
-    gl_FragColor = color;
-  }
-`;
-
-function DisplacementScene() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { viewport } = useThree();
-  
-  // Using the photorealistic image we generated
-  const texture = useTexture('/bg-hero.png');
-
-  // Uniforms for the shader
-  const uniforms = useMemo(
-    () => ({
-      uTexture: { value: texture },
-      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-      uTime: { value: 0 }
-    }),
-    [texture]
-  );
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      // Update time for the sine wave
-      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      // Simulate flying forward through the clouds
+      groupRef.current.position.z += delta * 15;
       
-      // Update mouse position (normalize mapped from -1..1 to 0..1 for standard UV mapping)
-      // Lerp for smooth trailing effect
-      const targetX = (state.pointer.x * 0.5) + 0.5;
-      const targetY = (state.pointer.y * 0.5) + 0.5;
-      
-      materialRef.current.uniforms.uMouse.value.x += (targetX - materialRef.current.uniforms.uMouse.value.x) * 0.05;
-      materialRef.current.uniforms.uMouse.value.y += (targetY - materialRef.current.uniforms.uMouse.value.y) * 0.05;
+      // If we've flown far enough, reset position for infinite loop effect
+      if (groupRef.current.position.z > 100) {
+        groupRef.current.position.z = -100;
+      }
+
+      // Gentle camera sway (like an airplane turning)
+      state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.2) * 5;
+      state.camera.position.y = Math.cos(state.clock.elapsedTime * 0.2) * 2;
+      state.camera.lookAt(0, 0, -50);
     }
   });
 
   return (
-    <mesh ref={meshRef}>
-      {/* Create a plane that covers exactly the whole viewport */}
-      <planeGeometry args={[viewport.width, viewport.height, 64, 64]} />
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
+    <>
+      {/* Sunset / Golden Hour Sky reflecting the Aegean sunset */}
+      <Sky 
+        sunPosition={[100, 20, -100]} 
+        turbidity={0.5} 
+        rayleigh={0.8}
+        mieCoefficient={0.005} 
+        mieDirectionalG={0.8} 
       />
-    </mesh>
+      
+      <ambientLight intensity={1.5} color="#ffd8a8" />
+      <directionalLight position={[100, 20, -100]} intensity={3} color="#ffe8cc" />
+
+      {/* Volumetric Clouds using Drei */}
+      <group ref={groupRef}>
+        <Clouds material={THREE.MeshLambertMaterial} limit={400} range={200}>
+           {/* Generate a tunnel of clouds to fly through */}
+           {Array.from({ length: 40 }).map((_, i) => (
+             <Cloud
+               key={i}
+               seed={i}
+               position={[
+                 (Math.random() - 0.5) * 150, 
+                 (Math.random() - 0.5) * 60, 
+                 (Math.random() - 0.5) * 400 - 200 // Spread deeply along the Z axis
+               ]} // Spread around
+               opacity={0.8}
+               speed={0.2} // internal cloud morphing speed
+               segments={20} // detail
+               bounds={[10, 10, 10]}
+               color={i % 3 === 0 ? "#ffcc99" : "#ffffff"} // Golden hour tint on some clouds
+             />
+           ))}
+        </Clouds>
+      </group>
+    </>
   );
 }
 
 export default function LiveImage3D() {
   return (
-    <div className="absolute inset-0 w-full h-full pointer-events-auto">
+    <div className="absolute inset-0 w-full h-full pointer-events-none">
       <Canvas 
-        camera={{ position: [0, 0, 5], fov: 75 }} 
-        // Ensure the canvas doesn't kill SSR heavily
+        camera={{ position: [0, 0, 0], fov: 60 }} 
         dpr={[1, 2]} 
       >
-        <Suspense fallback={null}>
-          <DisplacementScene />
-        </Suspense>
+        <VolumetricFlight />
       </Canvas>
     </div>
   );

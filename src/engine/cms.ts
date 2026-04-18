@@ -5,8 +5,9 @@ export async function pushToSanity(schemaType: string, documentPayload: any) {
   
   try {
      // Production API Call block
-     // Assuming documentPayload has an id or we create one
-     const docId = `cyouingreece-${documentPayload.name.toLowerCase().replace(/\\s+/g, '-')}`;
+     // Stripping out all non-alphanumeric characters for a safe Sanity ID
+     const safeName = documentPayload.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+     const docId = `cyouingreece-${safeName}`;
      const doc = {
        _id: docId,
        _type: schemaType.toLowerCase(),
