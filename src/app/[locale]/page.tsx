@@ -52,7 +52,7 @@ export default async function Home() {
       </section>
       
       {/* Featured Daily Sanctuary */}
-      <section className="w-full relative bg-[#0F0F0F] overflow-hidden py-32 border-t border-white/5">
+      <section id="sanctuaries" className="w-full relative bg-[#0F0F0F] overflow-hidden py-32 border-t border-white/5">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-12">
             <div className="max-w-2xl">
@@ -90,7 +90,7 @@ export default async function Home() {
       </section>
 
       {/* The Hellenic Regions Grid */}
-      <section className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
+      <section id="regions" className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
         <div className="container mx-auto px-6 max-w-7xl">
            <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-12 border-b border-white/10">
              <div className="max-w-2xl">
@@ -123,42 +123,42 @@ export default async function Home() {
       </section>
       
       {/* Elevated Experiences Bento (New Architectural Layer) */}
-      <section className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
+      <section id="experiences" className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
         <div className="container mx-auto px-6 max-w-7xl">
            <div className="text-center mb-24">
              <span className="text-[#E5D3B3] uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Specialized Services</span>
              <h2 className="text-4xl md:text-5xl font-serif text-white font-light">Elevated Experiences</h2>
            </div>
            
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
-             {/* Large Column */}
-             <div className="md:col-span-2 relative group overflow-hidden bg-[#111]">
-               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1605342880053-157457d15655?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60"></div>
-               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-               <div className="absolute bottom-10 left-10 z-10">
-                 <span className="text-xs tracking-[0.2em] text-[#E5D3B3] uppercase font-semibold mb-2 block">Marine Asset</span>
-                 <h3 className="text-3xl font-serif text-white">Private Yacht Charters</h3>
-               </div>
-             </div>
-             
-             {/* Small Columns */}
-             <div className="flex flex-col gap-6">
-               <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
-                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60"></div>
-                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                 <div className="absolute bottom-6 left-6 z-10">
-                   <h3 className="text-xl font-serif text-white">Culinary Seclusion</h3>
-                 </div>
-               </div>
-               <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
-                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-70"></div>
-                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                 <div className="absolute bottom-6 left-6 z-10">
-                   <h3 className="text-xl font-serif text-white">Aviation Access</h3>
-                 </div>
-               </div>
-             </div>
-           </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
+              {/* Large Column */}
+              <div className="md:col-span-2 relative group overflow-hidden bg-[#111]">
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1605342880053-157457d15655?q=80&w=2000&auto=format&fit=crop')` }}></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                <div className="absolute bottom-10 left-10 z-10">
+                  <span className="text-xs tracking-[0.2em] text-[#E5D3B3] uppercase font-semibold mb-2 block">Marine Asset</span>
+                  <h3 className="text-3xl font-serif text-white">Private Yacht Charters</h3>
+                </div>
+              </div>
+              
+              {/* Small Columns */}
+              <div className="flex flex-col gap-6">
+                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
+                  <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1000&auto=format&fit=crop')` }}></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6 z-10">
+                    <h3 className="text-xl font-serif text-white">Culinary Seclusion</h3>
+                  </div>
+                </div>
+                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
+                  <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-70" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?q=80&w=1000&auto=format&fit=crop')` }}></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6 z-10">
+                    <h3 className="text-xl font-serif text-white">Aviation Access</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </section>
       

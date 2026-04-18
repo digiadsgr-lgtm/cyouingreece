@@ -34,10 +34,10 @@ export default function Header() {
 
         {/* Navigation */}
         <nav className="hidden md:flex space-x-12">
-          {['Sanctuaries', 'Regions', 'Experiences', 'The Engine'].map((item) => (
+          {['Sanctuaries', 'Regions', 'Experiences'].map((item) => (
             <a 
               key={item} 
-              href="#" 
+              href={`#${item.toLowerCase()}`}
               className="text-xs uppercase tracking-[0.2em] font-semibold text-white/80 hover:text-white transition-colors relative group"
             >
               {item}
