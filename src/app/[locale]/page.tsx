@@ -4,54 +4,53 @@ import InteractiveMap from "@/components/InteractiveMap";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col relative w-full overflow-hidden">
+    <main className="min-h-screen flex flex-col relative w-full bg-[#FCFDFF]">
       
       <HeroSection />
       
-      {/* Decorative Energy Seam */}
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#0ff] to-transparent opacity-50 relative z-20"></div>
-      
-      {/* Map Radar Subsystem */}
-      <InteractiveMap />
-
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#b026ff] to-transparent opacity-50 relative z-20"></div>
-      
-      {/* Oracle Console Layer */}
+      {/* AI Concierge Layer */}
       <HolidayGuide />
       
-      {/* Matrix Node Hub */}
-      <section className="w-full py-24 relative z-10 glass-panel border-t border-[rgba(0,255,255,0.2)] mt-12 text-center">
+      {/* Map Exploration Subsystem */}
+      <InteractiveMap />
+      
+      {/* Editorial Content Hub */}
+      <section className="w-full py-24 relative bg-slate-50 border-t border-gray-200 text-center">
         <div className="container mx-auto px-6 max-w-6xl">
-          <h2 className="text-3xl md:text-5xl font-space font-bold uppercase neon-text mb-6">Database Nodes</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto font-light mb-16 text-lg">Secure your topological parameters. Engaging our deep-water encrypted array.</p>
+          <div className="mb-16">
+            <span className="text-[#D4AF37] uppercase tracking-widest text-sm font-semibold">The Core Philosophy</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#003366] mt-4 mb-6">Autonomous Insight</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto font-light text-lg">
+              Our continuous AI engine curates, verifies, and publishes exclusive travel paradigms. Sourcing local culture directly into your itinerary.
+            </p>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
               {
-                title: "Architectural Arrays",
-                desc: "Quantified extraction of high-value minimalist geometries and neoclassical ruins.",
-                slug: "AX-1"
+                title: "Architectural Vistas",
+                desc: "Discover centuries of heritage fused directly into exclusive properties and local estates.",
+                slug: "Estates"
               },
               {
-                title: "Navigational Subsystems",
-                desc: "Encrypted routing via autonomous catamaran and advanced nautical vessels.",
-                slug: "NAV-2"
+                title: "Nautical Exclusivity",
+                desc: "Private routes spanning the Aegean and Ionian seas, avoiding the congested mainframes.",
+                slug: "Charters"
               },
               {
-                title: "Cultural Decryption",
-                desc: "Real-time decoding of indigenous gastronomy and isolated local frequencies.",
-                slug: "CUL-3"
+                title: "Gastronomic Depth",
+                desc: "Real-time insights into Michelin-tier and ultra-local hidden dining experiences.",
+                slug: "Culture"
               }
             ].map((feature) => (
-              <div key={feature.title} className="glass-extreme p-8 md:p-10 flex flex-col group cursor-crosshair border border-[rgba(0,255,255,0.1)] hover:border-[#0ff] hover:shadow-[0_0_25px_rgba(0,255,255,0.3)] transition-all duration-500">
-                <div className="w-full flex justify-between items-center mb-6 border-b border-[rgba(255,255,255,0.1)] pb-4">
-                  <span className="text-[#0ff] font-space tracking-[0.3em] text-xs">MODULE // {feature.slug}</span>
-                  <div className="w-2 h-2 bg-[#b026ff] group-hover:bg-[#0ff] shadow-[0_0_10px_#b026ff] rounded-full transition-colors"></div>
+              <div key={feature.title} className="bg-white p-10 flex flex-col group cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-500 rounded-2xl">
+                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-8 mx-auto group-hover:bg-[#003366] transition-colors duration-300">
+                  <div className="w-6 h-6 border-2 border-[#003366] rounded-full group-hover:border-[#D4AF37]"></div>
                 </div>
-                <h3 className="text-xl font-space uppercase text-white mb-4 group-hover:text-[#0ff] transition-colors">{feature.title}</h3>
-                <p className="text-gray-400 flex-grow font-light text-sm leading-relaxed mb-8">{feature.desc}</p>
-                <div className="mt-auto inline-block border border-[#0ff] text-[#0ff] font-space text-xs tracking-[0.2em] uppercase py-2 px-4 shadow-[0_0_10px_rgba(0,255,255,0.2)] hover:bg-[#0ff] hover:text-black transition-colors">
-                  [ INITIATE LINK ]
+                <h3 className="text-2xl font-serif text-[#003366] mb-4 group-hover:text-[#D4AF37] transition-colors">{feature.title}</h3>
+                <p className="text-gray-500 flex-grow font-light text-base leading-relaxed mb-8">{feature.desc}</p>
+                <div className="mt-auto mx-auto border-b-2 border-transparent group-hover:border-[#D4AF37] pb-1 text-[#003366] font-semibold text-sm tracking-wider uppercase transition-all duration-300">
+                  Explore {feature.slug}
                 </div>
               </div>
             ))}
@@ -59,14 +58,14 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Footer System */}
-      <footer className="w-full py-16 bg-[#02040a] border-t border-[rgba(0,255,255,0.2)] relative z-10 text-center">
-        <div className="container mx-auto px-6 opacity-50 flex flex-col justify-center items-center">
-           <span className="text-xl font-space text-white tracking-[0.5em] mb-4 neon-text">CYOUINGREECE // TERMINAL</span>
-           <p className="text-[10px] text-gray-500 font-space tracking-widest uppercase">
-             SECURE CHANNEL. QUANTUM NETWORK OPERATION. ALL BYTES RESERVED 2026.
+      {/* Elegant Footer */}
+      <footer className="w-full py-16 bg-[#003366] text-center">
+        <div className="container mx-auto px-6 flex flex-col justify-center items-center">
+           <span className="text-3xl font-serif text-white mb-6">CYouInGreece</span>
+           <div className="w-16 h-[1px] bg-[#D4AF37] mx-auto mb-8"></div>
+           <p className="text-xs text-blue-200 font-light tracking-widest uppercase">
+             © 2026 The Ultimate Hellenic Voyage. All Rights Reserved.
            </p>
-           <div className="w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#b026ff] to-transparent mt-8"></div>
         </div>
       </footer>
     </main>

@@ -1,50 +1,56 @@
 'use client';
+import Image from 'next/image';
 
 export default function InteractiveMap() {
   return (
-    <section className="py-24 relative w-full flex flex-col items-center">
-      <div className="w-full max-w-5xl mb-8 text-center">
-        <h2 className="text-3xl font-space tracking-[0.3em] neon-text uppercase">Topological Radar Grid</h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#0ff] to-transparent mx-auto mt-4"></div>
+    <section className="py-24 relative w-full flex flex-col items-center bg-[#FCFDFF]">
+      <div className="w-full max-w-6xl mb-12 text-center px-6">
+        <h2 className="text-4xl font-serif text-[#003366] mb-4">Curated Territories</h2>
+        <div className="w-16 h-[2px] bg-[#D4AF37] mx-auto mb-6"></div>
+        <p className="text-slate-500 font-light max-w-2xl mx-auto">
+          Navigate our meticulously verified portfolio of Hellenic regions. From the wind-swept Cyclades to the aristocratic Ionian.
+        </p>
       </div>
       
-      <div className="w-full max-w-5xl h-[500px] glass-panel rounded-3xl relative overflow-hidden flex items-center justify-center p-8">
+      <div className="w-full max-w-6xl h-[600px] relative overflow-hidden rounded-2xl shadow-2xl mx-6">
         
-        {/* Holographic Grid Background */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none"
-             style={{ 
-               backgroundImage: 'linear-gradient(rgba(0,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.5) 1px, transparent 1px)', 
-               backgroundSize: '40px 40px',
-               backgroundPosition: 'center center'
-             }}
+        {/* Placeholder High-Res Map/Aerial Background */}
+        <Image 
+          src="https://images.unsplash.com/photo-1605153864431-a2795a1b2f95?q=80&w=2574&auto=format&fit=crop"
+          alt="Aerial View of Greek Islands"
+          fill
+          className="object-cover"
         />
+        
+        {/* Elegant overlay to make markers pop */}
+        <div className="absolute inset-0 bg-[#003366] bg-opacity-20"></div>
 
-        {/* Central Radar Sweep */}
-        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -mt-[400px] -ml-[400px] rounded-full border border-[rgba(0,255,255,0.1)] opacity-30 pointer-events-none">
-           <div className="w-1/2 h-1/2 bg-gradient-to-tr from-transparent via-[#0ff] to-transparent origin-bottom-right animate-[spin_4s_linear_infinite] opacity-40"></div>
-        </div>
-
-        {/* Geographic Node Markers (Simulated Islands) */}
-        <div className="absolute top-[30%] left-[40%] text-center group cursor-pointer">
-          <div className="w-3 h-3 bg-[#b026ff] rounded-full shadow-[0_0_15px_#b026ff] animate-ping mx-auto"></div>
-          <div className="mt-2 text-[10px] font-space text-[#b026ff] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity bg-[rgba(0,0,0,0.8)] px-2 py-1 rounded border border-[#b026ff]">NODE_MYC</div>
+        {/* Geographic Markers */}
+        <div className="absolute top-[35%] left-[45%] text-center group cursor-pointer transition-transform hover:-translate-y-2">
+          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center mx-auto shadow-lg border-2 border-transparent group-hover:border-[#D4AF37] transition-all">
+            <div className="w-3 h-3 bg-[#003366] rounded-full"></div>
+          </div>
+          <div className="mt-4 bg-white px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+            <p className="font-serif text-[#003366] font-bold">Mykonos</p>
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Cosmopolitan Node</p>
+          </div>
         </div>
         
-        <div className="absolute top-[60%] left-[60%] text-center group cursor-pointer">
-          <div className="w-4 h-4 bg-[#0ff] rounded-full shadow-[0_0_20px_#0ff] mx-auto z-10 relative"></div>
-          <div className="absolute -inset-2 rounded-full border border-[#0ff] animate-ping opacity-50"></div>
-          <div className="mt-2 text-[10px] font-space text-[#0ff] uppercase tracking-widest bg-[rgba(0,0,0,0.8)] px-2 py-1 rounded border border-[#0ff]">NODE_JTR</div>
+        <div className="absolute top-[65%] left-[55%] text-center group cursor-pointer transition-transform hover:-translate-y-2">
+          <div className="w-12 h-12 bg-[#003366] rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(0,51,102,0.4)] border-2 border-[#D4AF37] relative z-10">
+            <div className="w-4 h-4 bg-white rounded-full"></div>
+          </div>
+          <div className="mt-4 bg-[#003366] px-5 py-3 rounded shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 min-w-[150px]">
+            <p className="font-serif text-white font-bold text-lg">Santorini</p>
+            <p className="text-[10px] text-[#D4AF37] uppercase tracking-widest mt-1 mb-2">Prime Region</p>
+            <button className="text-xs text-white border-b border-[#D4AF37] pb-1 hover:text-[#D4AF37] transition-colors">Explore</button>
+          </div>
         </div>
 
-        <div className="absolute top-[75%] left-[30%] text-center group cursor-pointer">
-          <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_10px_white] mx-auto opacity-50"></div>
-          <div className="mt-2 text-[10px] font-space text-gray-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity bg-[rgba(0,0,0,0.8)] px-2 py-1 rounded">NODE_CHQ</div>
-        </div>
-
-        {/* UI Overlay */}
-        <div className="z-10 bg-[rgba(0,0,0,0.7)] backdrop-blur-md px-8 py-6 rounded-lg text-center border border-[rgba(0,255,255,0.2)]">
-          <p className="text-[#0ff] font-space mb-2 tracking-widest text-sm">[ MAP SUBSYSTEM OFFLINE ]</p>
-          <p className="text-gray-400 font-light text-xs max-w-xs mx-auto">Awaiting integration with Mapbox/Google API for live geospatial rendering.</p>
+        {/* Floating UI overlay */}
+        <div className="absolute bottom-8 left-8 glass-light p-6 rounded-lg max-w-xs shadow-xl">
+          <h3 className="font-serif text-[#003366] text-xl mb-2">Geospatial Engine</h3>
+          <p className="text-sm text-gray-600 font-light">Interactive node exploration currently routing via prototype data.</p>
         </div>
       </div>
     </section>

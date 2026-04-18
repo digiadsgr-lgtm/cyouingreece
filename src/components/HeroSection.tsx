@@ -1,66 +1,68 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import Image from 'next/image';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const textRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    // Holographic entrance
+    // Cinematic entrance
     const tl = gsap.timeline();
+    
+    // Slow scale background for dramatic effect
+    gsap.fromTo(imageRef.current, 
+      { scale: 1.1 }, 
+      { scale: 1, duration: 15, ease: "power1.out" }
+    );
+
+    // Text fade up
     tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" })
-      .fromTo(textRef.current, { y: 50, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "expo.out" }, "-=1");
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+      .fromTo(textRef.current?.children || [], 
+        { y: 30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power3.out" }, 
+        "-=1"
+      );
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden stars-layer">
-      <div className="scanline"></div>
+    <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
       
-      {/* Orb that follows cursor to simulate an AI scanner */}
-      <div 
-        ref={glowRef}
-        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none transition-transform duration-700 ease-out z-0"
-        style={{ 
-          background: 'radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(176,38,255,0.05) 50%, transparent 80%)',
-          transform: `translate(${mousePos.x - 250}px, ${mousePos.y - 250}px)` 
-        }}
-      />
+      {/* High-Res Cinematic Background */}
+      <div className="absolute inset-0 z-0 bg-[#003366]">
+        <Image 
+          ref={imageRef as any}
+          src="https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2574&auto=format&fit=crop"
+          alt="Santorini Sunset Cinematic"
+          fill
+          priority
+          className="object-cover opacity-80"
+        />
+        {/* Soft elegant gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,51,102,0.3)] via-transparent to-[rgba(0,51,102,0.8)]"></div>
+      </div>
 
-      <div className="z-10 text-center flex flex-col items-center glass-extreme p-10 md:p-16 rounded-[2rem] max-w-5xl border-t border-t-[rgba(0,255,255,0.3)] border-b border-b-[rgba(176,38,255,0.3)] relative">
-        {/* Terminal decorative corners */}
-        <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#0ff] rounded-tl-[2rem] opacity-50"></div>
-        <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#b026ff] rounded-tr-[2rem] opacity-50"></div>
-        <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#b026ff] rounded-bl-[2rem] opacity-50"></div>
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#0ff] rounded-br-[2rem] opacity-50"></div>
-
-        <div className="text-[10px] md:text-sm tracking-[0.6em] text-[#0ff] uppercase mb-8 font-space bg-[rgba(0,255,255,0.1)] px-4 py-1 rounded inline-block border border-[rgba(0,255,255,0.2)]">System Online &gt;_ Nodes Initialized</div>
+      {/* Content Container */}
+      <div ref={textRef} className="z-10 text-center flex flex-col items-center px-6 max-w-4xl mt-32">
+        <div className="text-[10px] md:text-sm tracking-[0.3em] text-[#D4AF37] uppercase mb-6 font-semibold">The Ultimate Travel Entity</div>
         
-        <h1 ref={textRef} className="text-6xl md:text-[8rem] font-space font-bold tracking-tighter uppercase mb-6 leading-[0.9] drop-shadow-2xl">
-          <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">Hellenic</span><br/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0ff] via-white to-[#b026ff] drop-shadow-[0_0_20px_rgba(0,255,255,0.6)]">Futurism</span>
+        <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-serif font-medium text-white mb-6 leading-tight text-shadow-elegant">
+          Your Escapist<br/>
+          <span className="italic text-[#FCFDFF] font-light">Sanctuary</span>
         </h1>
         
-        <p className="text-lg md:text-2xl text-gray-300 max-w-3xl font-light leading-relaxed mt-6">
-          Initiate sequence into the Aegean archipelago. Accessing cross-referenced spatial nodes, architectural heritage arrays, and live topological variants.
+        <p className="text-lg md:text-xl text-slate-200 max-w-2xl font-light leading-relaxed mt-4 text-shadow-elegant">
+          Immerse yourself in deeply curated Greek experiences. Let our AI Concierge craft the perfect voyage blending ancient heritage with absolute luxury.
         </p>
 
-        <div className="mt-12 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
-          <button className="px-10 py-4 bg-[rgba(0,255,255,0.05)] border border-[#0ff] text-[#0ff] font-space tracking-[0.2em] uppercase text-sm hover:bg-[#0ff] hover:text-black hover:shadow-[0_0_30px_rgba(0,255,255,0.8)] transition-all duration-300">
-            [ Explore Matrix ]
+        <div className="mt-12 flex space-x-6">
+          <button className="px-8 py-4 bg-white text-[#003366] font-semibold tracking-wide uppercase text-sm hover:bg-[#D4AF37] hover:text-white transition-colors duration-300 shadow-xl">
+            Start Journey
           </button>
-          <button className="px-10 py-4 bg-transparent border border-gray-600 text-gray-400 font-space tracking-[0.2em] uppercase text-sm hover:border-[#b026ff] hover:text-[#b026ff] hover:shadow-[0_0_30px_rgba(176,38,255,0.4)] transition-all duration-300">
-            [ Access Logs ]
+          <button className="px-8 py-4 bg-transparent border border-white text-white font-semibold tracking-wide uppercase text-sm hover:bg-[rgba(255,255,255,0.1)] transition-colors duration-300">
+            Explore Destinations
           </button>
         </div>
       </div>
