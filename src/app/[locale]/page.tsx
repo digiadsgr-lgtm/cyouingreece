@@ -1,13 +1,23 @@
 import HeroSection from "@/components/HeroSection";
 import { sanityClient } from "@/lib/sanity";
+import { Link } from '@/i18n/routing';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   
-  let sanityNodes = [];
+  let sanityNodes: any[] = [];
   try {
-    sanityNodes = await sanityClient.fetch('*[_type in ["region", "island", "poi"]] | order(updatedAt desc) [0...20]');
+    sanityNodes = await sanityClient.fetch(`*[_type == "destination"] | order(_updatedAt desc) [0...20] {
+      _id,
+      name_en,
+      name_local,
+      "slug": slug.current,
+      type,
+      tagline,
+      description,
+      "heroImage": hero_image.asset->url
+    }`);
   } catch(e) {
     console.error("Failed to fetch from Sanity", e);
   }
@@ -72,12 +82,14 @@ export default async function Home() {
                  <span className="text-[#E5D3B3] tracking-[0.2em] font-semibold text-xs border border-[#E5D3B3]/40 px-3 py-1 mb-6 inline-block uppercase">
                    {spotlightNode._type}
                  </span>
-                 <h3 className="text-5xl md:text-7xl font-serif text-white mb-4">{spotlightNode.name || spotlightNode.title}</h3>
-                 <p className="text-gray-200 text-lg md:text-xl font-light leading-relaxed">{spotlightNode.description}</p>
+                 <h3 className="text-5xl md:text-7xl font-serif text-white mb-4">{spotlightNode.name_en || spotlightNode.title}</h3>
+                 <p className="text-gray-200 text-lg md:text-xl font-light leading-relaxed">{spotlightNode.tagline || spotlightNode.description}</p>
                  <div className="mt-8">
-                   <button className="text-xs uppercase tracking-[0.2em] font-medium text-white border-b border-white pb-1 hover:text-[#E5D3B3] hover:border-[#E5D3B3] transition-colors">
-                     Unlock Destination
-                   </button>
+                   <Link href={`/destinations/${spotlightNode.slug}`}>
+                     <button className="text-xs uppercase tracking-[0.2em] font-medium text-white border-b border-white pb-1 hover:text-[#E5D3B3] hover:border-[#E5D3B3] transition-colors">
+                       Unlock Destination
+                     </button>
+                   </Link>
                  </div>
                </div>
             </div>
@@ -103,20 +115,20 @@ export default async function Home() {
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-[500px]">
-             {[
-               {name: "Cyclades", img: "https://images.unsplash.com/photo-1613395877344-13d4a3215840?q=80&w=1000"},
-               {name: "Ionian", img: "https://images.unsplash.com/photo-1522513476839-4d693f1fa68c?q=80&w=1000"},
-               {name: "Peloponnese", img: "https://images.unsplash.com/photo-1596706013627-7cfd82bb776e?q=80&w=1000"},
-               {name: "Dodecanese", img: "https://images.unsplash.com/photo-1606915159051-2fd5e35bd7f0?q=80&w=1000"}
-             ].map((r, i) => (
-                <div key={i} className="relative group overflow-hidden bg-[#050C16] cursor-pointer">
-                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" style={{ backgroundImage: `url('${r.img}')` }}></div>
+             {sanityNodes.slice(0, 8).map((node, i) => (
+                <Link href={`/destinations/${node.slug}`} key={i} className="relative group overflow-hidden bg-[#050C16] cursor-pointer block h-full">
+                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" style={{ backgroundImage: `url('${node.heroImage || "https://images.unsplash.com/photo-1613395877344-13d4a3215840?q=80&w=1000"}')` }}></div>
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                   <div className="absolute bottom-8 left-8 z-10 flex items-center space-x-3">
-                     <div className="w-8 h-[1px] bg-brand-golden transform origin-left transition-all duration-300 group-hover:w-16"></div>
-                     <span className="text-xl font-serif text-brand-white tracking-wider drop-shadow-md">{r.name}</span>
+                   <div className="absolute bottom-8 left-8 z-10 flex flex-col items-start">
+                     <div className="flex items-center space-x-3 mb-2">
+                       <div className="w-8 h-[1px] bg-brand-golden transform origin-left transition-all duration-300 group-hover:w-16"></div>
+                       <span className="text-xl font-serif text-brand-white tracking-wider drop-shadow-md">{node.name_en}</span>
+                     </div>
+                     <span className="text-[10px] text-brand-white/80 uppercase tracking-widest bg-black/40 px-2 py-1 backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                       {node.type}
+                     </span>
                    </div>
-                </div>
+                </Link>
              ))}
            </div>
         </div>

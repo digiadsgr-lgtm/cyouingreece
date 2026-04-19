@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { Link } from '@/i18n/routing';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,36 +29,37 @@ export default function Header() {
         
         {/* Branding */}
         <div className="flex flex-col">
-          <span className="text-xl font-serif text-white tracking-widest uppercase">CYouInGreece</span>
-          <span className="text-[9px] text-[#E5D3B3] tracking-[0.3em] font-medium uppercase mt-1">Private Architecture</span>
+          <Link href="/">
+            <span className="text-xl font-serif text-white tracking-widest uppercase">CYouInGreece</span>
+            <span className="text-[9px] text-[#E5D3B3] tracking-[0.3em] font-medium uppercase mt-1 block">Private Architecture</span>
+          </Link>
         </div>
 
         {/* Navigation */}
         <nav className="hidden lg:flex space-x-8">
           {[
-            { name: 'Destinations', link: '#destinations' },
+            { name: 'Destinations', link: '#regions' },
             { name: 'Experiences', link: '#experiences' },
-            { name: 'Travel Planner', link: '#planner' },
-            { name: 'Seasons', link: '#seasons' },
-            { name: 'Local Voices', link: '#voices' },
-            { name: 'Practical Info', link: '#info' }
+            { name: 'Sanctuary of the Hour', link: '#sanctuaries' },
           ].map((item) => (
-            <a 
+            <Link 
               key={item.name} 
               href={item.link}
               className="text-[10px] uppercase tracking-[0.25em] font-semibold text-white/80 hover:text-brand-golden transition-colors relative group"
             >
               {item.name}
               <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-golden transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </Link>
           ))}
         </nav>
 
         {/* CTA */}
         <div className="hidden md:block">
-          <button className="text-xs uppercase tracking-[0.2em] font-medium text-[#0A0A0A] bg-white px-6 py-3 hover:bg-[#E5D3B3] hover:text-black transition-all duration-500">
-            Vault Access
-          </button>
+          <Link href="#regions">
+            <button className="text-xs uppercase tracking-[0.2em] font-medium text-[#0A0A0A] bg-white px-6 py-3 hover:bg-[#E5D3B3] hover:text-black transition-all duration-500">
+              Vault Access
+            </button>
+          </Link>
         </div>
 
         {/* Mobile Hamburger (Styler only) */}
