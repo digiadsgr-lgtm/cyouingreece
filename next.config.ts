@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'unpkg.com' }, // Leaflet default marker icons
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
