@@ -1,63 +1,82 @@
 'use client';
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { useEffect, useState } from 'react';
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const tl = gsap.timeline();
-    
-    // Slow Ken Burns effect on the image
-    gsap.to(imageRef.current, {
-      scale: 1.05,
-      duration: 20,
-      ease: "none",
-      repeat: -1,
-      yoyo: true
-    });
-
-    tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" })
-      .fromTo(textRef.current?.children || [], 
-        { y: 30, opacity: 0 }, 
-        { y: 0, opacity: 1, duration: 1.5, stagger: 0.3, ease: "power3.out" }, 
-        "-=0.5"
-      );
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0A0A0A]">
+    <section className="relative w-full h-screen overflow-hidden bg-[#03060B]">
       
-      {/* Pristine Static Image Background with Ken Burns */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Background Image with Parallax & Slow Zoom */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=3000&auto=format&fit=crop')",
+          backgroundPosition: '50% 65%',
+          transform: `translateY(${scrollY * 0.4}px) scale(${1 + scrollY * 0.0002})`,
+        }}
+      />
+
+      {/* Luxury Cinematic Gradient Overlays */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#03060B]/40 via-transparent to-[#03060B]" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#03060B]/70 via-transparent to-[#03060B]/20" />
+      
+      {/* Film Grain Texture overlay for mood */}
+      <div 
+        className="absolute inset-0 z-20 opacity-[0.03] pointer-events-none mix-blend-overlay"
+        style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')" }}
+      />
+
+      {/* Content wrapper */}
+      <div className="relative z-30 h-full w-full flex flex-col justify-center px-6 md:px-16 max-w-[1400px] mx-auto">
         <div 
-          ref={imageRef}
-          className="w-full h-full bg-cover bg-center origin-center"
-          style={{ backgroundImage: `url('/bg-hero.png')` }}
-        />
-        {/* Shadow gradient overlay for luxury contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-[#0A0A0A] pointer-events-none"></div>
+          className="max-w-4xl"
+          style={{
+            transform: `translateY(${scrollY * -0.15}px)`,
+            opacity: 1 - (scrollY / 800)
+          }}
+        >
+          {/* Eyebrow */}
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="h-[1px] w-12 bg-brand-golden"></span>
+            <span className="text-brand-golden tracking-[0.4em] uppercase text-xs md:text-sm font-semibold font-inter">
+              Project Olympus
+            </span>
+          </div>
+          
+          {/* Main Headline */}
+          <h1 className="text-5xl md:text-8xl font-serif text-brand-white font-light leading-[1.1] mb-8 drop-shadow-2xl">
+            Reserved for the<br/>
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-brand-white to-brand-white/60">Unimaginable.</span>
+          </h1>
+          
+          {/* Subtext */}
+          <p className="text-gray-300 font-light text-lg md:text-2xl max-w-2xl leading-relaxed mb-12 font-inter">
+            Access the Aegean's highest-tier topological nodes. Private yachts, secluded villas, and the profound corners of Greece.
+          </p>
+          
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <button className="px-8 py-4 bg-brand-golden text-[#03060B] text-sm tracking-[0.2em] font-semibold uppercase hover:bg-white transition-colors duration-300 w-full sm:w-auto">
+              Initiate Access
+            </button>
+            <button className="text-sm tracking-[0.2em] uppercase font-medium border-b border-brand-white/40 pb-1 text-brand-white hover:border-brand-golden hover:text-brand-golden transition-colors w-full sm:w-auto text-center">
+              Explore The Nodes
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div ref={textRef} className="z-10 text-center flex flex-col items-center px-6 max-w-5xl mt-32 pointer-events-none">
-        <div className="text-xs md:text-sm tracking-[0.4em] text-[#E5D3B3] uppercase mb-8 font-semibold">CYouInGreece • Private Access</div>
-        
-        <h1 className="text-6xl md:text-8xl lg:text-[8rem] font-serif font-light text-white mb-6 leading-[1.1] text-shadow-elegant drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
-          Find Your<br/>
-          <span className="italic text-white">Sanctuary</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-gray-300 max-w-2xl font-light leading-relaxed mt-6 drop-shadow-md">
-          We do not curate tourism. We arrange private, deeply psychological escapes across the Hellenic archipelago.
-        </p>
-
-        <div className="mt-16 flex space-x-6 pointer-events-auto">
-          <button className="px-12 py-5 border border-white/30 text-white font-medium tracking-[0.2em] uppercase text-xs hover:bg-white hover:text-black transition-all duration-500 backdrop-blur-sm">
-            Enter The Vault
-          </button>
-        </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center">
+        <span className="text-[9px] uppercase tracking-[0.3em] text-gray-500 mb-4 font-inter">Descend</span>
+        <div className="w-[1px] h-16 bg-gradient-to-b from-brand-golden to-transparent"></div>
       </div>
     </section>
   );

@@ -32,27 +32,27 @@ export default async function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col relative w-full bg-[#0A0A0A] text-white selection:bg-[#E5D3B3] selection:text-black">
+    <main className="min-h-screen flex flex-col relative w-full bg-brand-navy text-brand-white selection:bg-brand-golden selection:text-brand-navy">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      {/* Sovereign Hero Sector */}
+      {/* 3D Immersive Hero */}
       <HeroSection />
 
-      {/* Philosophy Statement */}
-      <section className="w-full py-40 bg-[#0A0A0A] border-t border-white/5 relative z-10">
+      {/* Philosophy Statement - Magazine Editorial Style */}
+      <section className="w-full py-40 bg-brand-navy border-t border-brand-white/5 relative z-10">
         <div className="container mx-auto px-6 text-center max-w-4xl">
-          <span className="text-[#E5D3B3] tracking-[0.3em] uppercase text-xs font-semibold mb-8 block">Our Manifesto</span>
-          <h2 className="text-4xl md:text-6xl font-serif text-white font-light leading-snug">
+          <span className="text-brand-golden tracking-[0.3em] uppercase text-xs font-semibold mb-8 block font-inter">CYouInGreece Manifesto</span>
+          <h2 className="text-4xl md:text-6xl font-serif text-brand-white font-light leading-snug drop-shadow-md">
             "We bypass the noise. We secure the untamed, the private, and the historically profound corners of Greece."
           </h2>
         </div>
       </section>
       
       {/* Featured Daily Sanctuary */}
-      <section id="sanctuaries" className="w-full relative bg-[#0F0F0F] overflow-hidden py-32 border-t border-white/5">
+      <section id="sanctuaries" className="w-full relative bg-[#070D18] overflow-hidden py-32 border-t border-brand-white/5 shadow-inner">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-12">
             <div className="max-w-2xl">
@@ -90,14 +90,14 @@ export default async function Home() {
       </section>
 
       {/* The Hellenic Regions Grid */}
-      <section id="regions" className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
+      <section id="regions" className="w-full py-32 bg-brand-navy border-t border-brand-white/5">
         <div className="container mx-auto px-6 max-w-7xl">
-           <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-12 border-b border-white/10">
+           <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-12 border-b border-brand-white/10">
              <div className="max-w-2xl">
-               <span className="text-[#E5D3B3] uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Topological Taxonomy</span>
-               <h2 className="text-4xl md:text-6xl font-serif text-white font-light">The Hellenic<br/>Regions</h2>
+               <span className="text-brand-golden uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Topological Taxonomy</span>
+               <h2 className="text-4xl md:text-6xl font-serif text-brand-white font-light">The Hellenic<br/>Regions</h2>
              </div>
-             <button className="text-xs uppercase tracking-[0.2em] font-medium text-gray-400 hover:text-white transition-colors mb-2 md:mb-0">
+             <button className="text-xs uppercase tracking-[0.2em] font-medium text-gray-400 hover:text-brand-white transition-colors mb-2 md:mb-0">
                View Complete Map
              </button>
            </div>
@@ -109,12 +109,12 @@ export default async function Home() {
                {name: "Peloponnese", img: "https://images.unsplash.com/photo-1596706013627-7cfd82bb776e?q=80&w=1000"},
                {name: "Dodecanese", img: "https://images.unsplash.com/photo-1606915159051-2fd5e35bd7f0?q=80&w=1000"}
              ].map((r, i) => (
-                <div key={i} className="relative group overflow-hidden bg-[#111] cursor-pointer">
+                <div key={i} className="relative group overflow-hidden bg-[#050C16] cursor-pointer">
                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" style={{ backgroundImage: `url('${r.img}')` }}></div>
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                    <div className="absolute bottom-8 left-8 z-10 flex items-center space-x-3">
-                     <div className="w-8 h-[1px] bg-[#E5D3B3] transform origin-left transition-all duration-300 group-hover:w-16"></div>
-                     <span className="text-xl font-serif text-white tracking-wider">{r.name}</span>
+                     <div className="w-8 h-[1px] bg-brand-golden transform origin-left transition-all duration-300 group-hover:w-16"></div>
+                     <span className="text-xl font-serif text-brand-white tracking-wider drop-shadow-md">{r.name}</span>
                    </div>
                 </div>
              ))}
@@ -123,38 +123,38 @@ export default async function Home() {
       </section>
       
       {/* Elevated Experiences Bento (New Architectural Layer) */}
-      <section id="experiences" className="w-full py-32 bg-[#0A0A0A] border-t border-white/5">
+      <section id="experiences" className="w-full py-32 bg-[#050C16] border-t border-brand-white/5 shadow-inner">
         <div className="container mx-auto px-6 max-w-7xl">
            <div className="text-center mb-24">
-             <span className="text-[#E5D3B3] uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Specialized Services</span>
-             <h2 className="text-4xl md:text-5xl font-serif text-white font-light">Elevated Experiences</h2>
+             <span className="text-brand-golden uppercase tracking-[0.3em] text-xs font-semibold block mb-4">Specialized Services</span>
+             <h2 className="text-4xl md:text-5xl font-serif text-brand-white font-light drop-shadow-md">Elevated Experiences</h2>
            </div>
            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
               {/* Large Column */}
-              <div className="md:col-span-2 relative group overflow-hidden bg-[#111]">
+              <div className="md:col-span-2 relative group overflow-hidden bg-[#0A1628] border border-brand-white/5">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1605342880053-157457d15655?q=80&w=2000&auto=format&fit=crop')` }}></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-brand-navy/60 to-transparent"></div>
                 <div className="absolute bottom-10 left-10 z-10">
-                  <span className="text-xs tracking-[0.2em] text-[#E5D3B3] uppercase font-semibold mb-2 block">Marine Asset</span>
-                  <h3 className="text-3xl font-serif text-white">Private Yacht Charters</h3>
+                  <span className="text-xs tracking-[0.2em] text-brand-golden uppercase font-semibold mb-2 block">Marine Asset</span>
+                  <h3 className="text-3xl font-serif text-brand-white drop-shadow-md">Private Yacht Charters</h3>
                 </div>
               </div>
               
               {/* Small Columns */}
               <div className="flex flex-col gap-6">
-                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
+                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#0A1628] border border-brand-white/5">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-60" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1000&auto=format&fit=crop')` }}></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-brand-navy/60 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 z-10">
-                    <h3 className="text-xl font-serif text-white">Culinary Seclusion</h3>
+                    <h3 className="text-xl font-serif text-brand-white drop-shadow-md">Culinary Seclusion</h3>
                   </div>
                 </div>
-                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#111]">
+                <div className="h-64 md:h-1/2 relative group overflow-hidden bg-[#0A1628] border border-brand-white/5">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 opacity-70" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?q=80&w=1000&auto=format&fit=crop')` }}></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-brand-navy/60 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 z-10">
-                    <h3 className="text-xl font-serif text-white">Aviation Access</h3>
+                    <h3 className="text-xl font-serif text-brand-white drop-shadow-md">Aviation Access</h3>
                   </div>
                 </div>
               </div>
@@ -163,13 +163,13 @@ export default async function Home() {
       </section>
       
       {/* Elegant Awwwards Footer */}
-      <footer className="w-full py-24 bg-[#050505] text-center border-t border-white/5">
+      <footer className="w-full py-24 bg-[#03060B] text-center border-t border-brand-white/5 shadow-2xl">
         <div className="container mx-auto px-6 flex flex-col justify-center items-center">
-           <span className="text-4xl font-serif text-white mb-8 tracking-wide">CYouInGreece</span>
+           <span className="text-4xl font-serif text-brand-white mb-8 tracking-wide drop-shadow-md">CYouInGreece</span>
            <div className="flex space-x-12 mb-12">
-             <a href="#" className="text-sm text-gray-500 hover:text-white uppercase tracking-widest transition-colors">Manifesto</a>
-             <a href="#" className="text-sm text-gray-500 hover:text-white uppercase tracking-widest transition-colors">Nodes</a>
-             <a href="#" className="text-sm text-gray-500 hover:text-white uppercase tracking-widest transition-colors">Neural Sync</a>
+             <a href="#" className="text-sm text-gray-500 hover:text-brand-white uppercase tracking-widest transition-colors">Manifesto</a>
+             <a href="#" className="text-sm text-gray-500 hover:text-brand-white uppercase tracking-widest transition-colors">Nodes</a>
+             <a href="#experiences" className="text-sm text-gray-500 hover:text-brand-golden uppercase tracking-widest transition-colors">Neural Sync</a>
            </div>
            <p className="text-[10px] text-gray-600 font-light tracking-[0.2em] uppercase">
              © 2026 The Ultimate Hellenic Voyage. All Rights Reserved.

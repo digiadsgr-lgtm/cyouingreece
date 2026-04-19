@@ -33,15 +33,22 @@ export default function Header() {
         </div>
 
         {/* Navigation */}
-        <nav className="hidden md:flex space-x-12">
-          {['Sanctuaries', 'Regions', 'Experiences'].map((item) => (
+        <nav className="hidden lg:flex space-x-8">
+          {[
+            { name: 'Destinations', link: '#destinations' },
+            { name: 'Experiences', link: '#experiences' },
+            { name: 'Travel Planner', link: '#planner' },
+            { name: 'Seasons', link: '#seasons' },
+            { name: 'Local Voices', link: '#voices' },
+            { name: 'Practical Info', link: '#info' }
+          ].map((item) => (
             <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
-              className="text-xs uppercase tracking-[0.2em] font-semibold text-white/80 hover:text-white transition-colors relative group"
+              key={item.name} 
+              href={item.link}
+              className="text-[10px] uppercase tracking-[0.25em] font-semibold text-white/80 hover:text-brand-golden transition-colors relative group"
             >
-              {item}
-              <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#E5D3B3] transition-all duration-300 group-hover:w-full"></span>
+              {item.name}
+              <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-golden transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
         </nav>

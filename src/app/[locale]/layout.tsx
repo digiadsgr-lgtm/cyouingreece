@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 };
 
 import Header from '@/components/Header';
+import AnthropicGuide from '@/components/AnthropicGuide';
 
 export default async function LocaleLayout({
   children,
@@ -70,12 +71,13 @@ export default async function LocaleLayout({
  
   return (
     <html lang={locale}>
-      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased selection:bg-[#003366] selection:text-white bg-[#0A0A0A] text-white overflow-x-hidden`}>
+      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased selection:bg-brand-golden selection:text-black bg-brand-navy text-brand-white overflow-x-hidden`}>
         <NextIntlClientProvider messages={messages}>
           <Header />
           <SmoothScroller>
             {children}
           </SmoothScroller>
+          <AnthropicGuide />
         </NextIntlClientProvider>
       </body>
     </html>
