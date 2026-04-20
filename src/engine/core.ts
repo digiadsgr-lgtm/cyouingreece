@@ -2,9 +2,10 @@ import 'dotenv/config';
 import { generateSchema, generateLocalizedKeys } from './seo';
 import { pushToSanity, uploadImageFromUrl } from './cms';
 import { supabase } from '../lib/supabase';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' });
+// Instantiating Gemini using the API Key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AIzaSyAdSgbyitzj10zk6gR47bL1Y5f-YvjKcis');
 
 // Seed data - Initial destinations
 const SWARM_NODES = [
@@ -50,9 +51,9 @@ async function getAuthenticImages(nodeName: string, count: number): Promise<stri
   }
 }
 
-// 2. Anthropic Claude - "Nikos" Identity
-async function generateClaudeContent(node: any) {
-  console.log(`[Claude] Generating deeply localized editorial schema for ${node.name}...`);
+// 2. Gemini - "Nikos" Identity
+async function generateGeminiContent(node: any) {
+  console.log(`[Gemini] Generating deeply localized editorial schema for ${node.name}...`);
   
   const systemPrompt = `You are Nikos Papadimitriou, a 45-year-old Greek travel journalist born in Thessaloniki. You have slept on 60 islands and hiked every major mountain trail on the mainland. You write for a world-class travel publication. 
 You know Greece the way a local does — not from guidebooks. You know the exact best psarotaverna to recommend by name (e.g., Panormos Tavern). 
@@ -102,39 +103,38 @@ Return EXACTLY matching this JSON schema and absolutely no markdown formatting o
 }`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 4096,
-      temperature: 0.7,
-      system: systemPrompt,
-      messages: [
-        { role: 'user', content: `Generate the encyclopedic, localized Nikos-authored JSON payload for ${node.name}. Output only valid JSON.` }
-      ]
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      systemInstruction: systemPrompt,
+      generationConfig: { responseMimeType: "application/json" }
     });
     
-    // @ts-ignore
-    const rawText = response.content[0].text;
+    const result = await model.generateContent([
+      `Generate the encyclopedic, localized Nikos-authored JSON payload for ${node.name}. Output only valid JSON.`
+    ]);
+    
+    const rawText = result.response.text();
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
     if(jsonMatch) {
       return JSON.parse(jsonMatch[0]);
     }
   } catch(e) {
-    console.error("[Claude] Generation failed", e);
+    console.error(`[Gemini] Generation failed for ${node.name}`, e);
   }
   return null;
 }
 
 async function runAutonomousEngine() {
-  console.log("=== INITIATING PROJECT OLYMPUS: CORE GEMINI ENGINE v2 ===");
+  console.log("=== INITIATING PROJECT OLYMPUS: CORE GEMINI ENGINE v3 ===");
   
   for (const node of SWARM_NODES) {
     try {
       console.log(`\n⚙️ Processing Node: [${node.type}] ${node.name}`);
       
-      // 1. Anthropic Claude Content Generation (Nikos Edition)
-      const copyData = await generateClaudeContent(node);
+      // 1. Gemini Content Generation (Nikos Edition)
+      const copyData = await generateGeminiContent(node);
       if (!copyData) {
-        console.error(`Skipping ${node.name} - Failed to generate rich Claude data.`);
+        console.error(`Skipping ${node.name} - Failed to generate rich Gemini data.`);
         continue;
       }
       
