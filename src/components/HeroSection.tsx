@@ -142,7 +142,7 @@ export default function HeroSection() {
               castShadow 
             />
             {/* Soft fill light from the sea */}
-            <hemisphereLight skyColor="#0A1628" groundColor="#000000" intensity={0.5} />
+            <hemisphereLight args={["#0A1628", "#000000", 0.5]} />
 
             <Sea />
             <CycladicVillage />
