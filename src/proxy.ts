@@ -9,5 +9,8 @@ export default function proxy(request: import('next/server').NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/(en|de|fr|it|es|ro|ru|pl|el)/:path*'],
+  // Match ALL pathnames except: Next.js internals, API routes, and static files
+  matcher: [
+    '/((?!api|_next|_vercel|.*\\..*).*)',
+  ],
 };
