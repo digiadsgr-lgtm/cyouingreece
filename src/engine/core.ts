@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { generateSchema, generateLocalizedKeys } from './seo';
 import { pushToSanity, uploadImageFromUrl } from './cms';
 import { supabase } from '../lib/supabase';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' });
 
 // Seed data - Initial destinations
 const SWARM_NODES = [
@@ -50,37 +50,40 @@ async function getAuthenticImages(nodeName: string, count: number): Promise<stri
   }
 }
 
-// 2. Google Gemini Swarm Agent - Full Schema Gen
-async function generateGeminiContent(node: any) {
-  console.log(`[Gemini] Generating full high-end editorial schema for ${node.name}...`);
+// 2. Anthropic Claude - "Nikos" Identity
+async function generateClaudeContent(node: any) {
+  console.log(`[Claude] Generating deeply localized editorial schema for ${node.name}...`);
   
-  const systemPrompt = `You are Nikos, the ultimate luxury Greek travel concierge, architectural historian, and local expert.
-Your job is to write a highly descriptive, authentic, and premium JSON object for the destination: ${node.name} (${node.local_name}).
-We are building a platform to attract ultimate high-net-worth sponsorships. Your text must be masterful, evocative, and exceptionally detailed.
+  const systemPrompt = `You are Nikos Papadimitriou, a 45-year-old Greek travel journalist born in Thessaloniki. You have slept on 60 islands and hiked every major mountain trail on the mainland. You write for a world-class travel publication. 
+You know Greece the way a local does — not from guidebooks. You know the exact best psarotaverna to recommend by name (e.g., Panormos Tavern). 
+You NEVER use terms like "hidden gem" or "crystal clear waters" or "bustling". 
+You are specific: "turn left at the blue door, past the bakery that opens at 5am, there is a table with a view that will change you."
+Your tone is warm, highly specific, slightly poetic, never pompous.
+We are building a platform that feels like Greece. It is not TripAdvisor.
 
-CRITICAL CONTENT INSTRUCTIONS:
-1. "intro_paragraph": Must be a massive, evocative, and culturally deep introduction of at least 150 words. Do NOT use emojis.
-2. "body_content": Needs to be a structured array of Sanity blocks. Provide at least 5 massive paragraphs of 150+ words each, interspersed with H2 headings. Break down the topology, the history, the high-end zones, and the vibe.
-3. "hidden_gems": Exactly 4 incredibly specific untamed locations (e.g., hidden coves, tiny chapels). Include realistic lat/lng coordinates in Greece.
-4. "gastronomy": Exactly 4 precise, highly acclaimed luxury or hyper-local culinary items/experiences.
-5. "top_experiences": Exactly 4 extremely high-end private experiences (e.g. Helitours over the caldera, private 140ft yacht charters, Michelin-star cliffside dining).
+Destination to write about: ${node.name} (${node.local_name}).
 
-You MUST return ONLY a valid JSON object matching this structure EXACTLY. No markdown wrappers. No backticks. Just pure JSON:
+CRITICAL INSTRUCTIONS FOR JSON OUTPUT:
+1. "tagline": A profound, atmospheric statement. Max 10 words.
+2. "intro_paragraph": A masterful, slightly poetic 150-word introduction that captures the SMELL and FEEL of the place (e.g. oregano on a hillside, fishing boats). 
+3. "body_content": Return a highly structured array of Sanity blocks. Provide at least 4 massive paragraphs. Intersect them with H2 headers. Write in the first person ("I") as Nikos. Share an obscure local secret right in the middle of the text.
+4. "hidden_gems" (Rename mentally to "Local Truths"): Exactly 4 incredibly specific untamed locations or behaviors (e.g., "The lady who sells figs at 7 AM near the old port"). No tourist spots. Provide coordinates.
+5. "gastronomy": Exactly 4 highly acclaimed, precise tavernas or dishes (e.g., "Moussaka at Kyria Maria's courtyard").
+6. "top_experiences": Exactly 4 experiences that require local knowledge or high-end access.
+
+Return EXACTLY matching this JSON schema and absolutely no markdown formatting outside of the JSON wrapper:
 {
-  "tagline": "A punchy, atmospheric luxury tagline. Max 12 words.",
+  "tagline": "A punchy, atmospheric tagline.",
   "intro_paragraph": "A deep, local-voice 150-word introduction to the soul of ${node.name}.",
   "body_content": [
-    {"_type": "block", "style": "normal", "children": [{"_type": "span", "text": "Extensive editorial paragraph 1 (150+ words)..."}]},
-    {"_type": "block", "style": "h2", "children": [{"_type": "span", "text": "Architectural Anatomy"}]},
-    {"_type": "block", "style": "normal", "children": [{"_type": "span", "text": "Extensive paragraph 2 (150+ words)..."}]},
-    {"_type": "block", "style": "h2", "children": [{"_type": "span", "text": "Exclusive Thresholds"}]},
-    {"_type": "block", "style": "normal", "children": [{"_type": "span", "text": "Extensive paragraph 3 (150+ words)..."}]}
+    {"_type": "block", "style": "normal", "children": [{"_type": "span", "text": "Extensive editorial paragraph (150+ words)..."}]},
+    {"_type": "block", "style": "h2", "children": [{"_type": "span", "text": "The Real "}]}
   ],
   "at_a_glance": {
     "best_months": ["June", "September"],
     "min_days": 4,
-    "budget_tier": "$$$$$",
-    "vibe": ["Exclusive", "Architectural", "Secluded"]
+    "budget_tier": "$$$",
+    "vibe": ["Authentic", "Raw", "Poetic"]
   },
   "hidden_gems": [
     {"title": "Name", "description": "High-end detailed description", "coordinates": {"lat": 36.3, "lng": 25.4}, "access_difficulty": "high", "best_time": "Sunrise"}
@@ -89,32 +92,34 @@ You MUST return ONLY a valid JSON object matching this structure EXACTLY. No mar
     {"dish_name": "Name", "description": "Rich description", "must_try_at": "Acclaimed venue"}
   ],
   "top_experiences": [
-    {"title": "Private Helitour", "description": "Atmospheric details", "duration_hours": 2, "is_private": true}
+    {"title": "Experience", "description": "Atmospheric details", "duration_hours": 2, "is_private": true}
   ],
   "practical_info": {
-    "getting_there": "Private jet / VIP Ferry",
-    "getting_around": "Chauffeur details",
-    "where_to_stay": "Ultra luxury resorts"
+    "getting_there": "Specific ferry network details",
+    "getting_around": "Chauffeur/Scooter details",
+    "where_to_stay": "Specific boutique regions"
   }
 }`;
 
   try {
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.5-flash",
-      systemInstruction: systemPrompt,
-      generationConfig: { responseMimeType: "application/json" }
+    const response = await anthropic.messages.create({
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 4096,
+      temperature: 0.7,
+      system: systemPrompt,
+      messages: [
+        { role: 'user', content: `Generate the encyclopedic, localized Nikos-authored JSON payload for ${node.name}. Output only valid JSON.` }
+      ]
     });
-    const result = await model.generateContent([
-      `Generate the ultra-premium JSON payload for ${node.name}. Output only valid JSON.`
-    ]);
-    const rawText = result.response.text().trim();
     
+    // @ts-ignore
+    const rawText = response.content[0].text;
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
     if(jsonMatch) {
       return JSON.parse(jsonMatch[0]);
     }
   } catch(e) {
-    console.error("[Gemini] Generation failed", e);
+    console.error("[Claude] Generation failed", e);
   }
   return null;
 }
@@ -126,10 +131,10 @@ async function runAutonomousEngine() {
     try {
       console.log(`\n⚙️ Processing Node: [${node.type}] ${node.name}`);
       
-      // 1. Gemini Content Generation (Rich Edition)
-      const copyData = await generateGeminiContent(node);
+      // 1. Anthropic Claude Content Generation (Nikos Edition)
+      const copyData = await generateClaudeContent(node);
       if (!copyData) {
-        console.error(`Skipping ${node.name} - Failed to generate rich Gemini data.`);
+        console.error(`Skipping ${node.name} - Failed to generate rich Claude data.`);
         continue;
       }
       
