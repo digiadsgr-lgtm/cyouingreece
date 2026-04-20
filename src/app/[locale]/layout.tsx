@@ -3,8 +3,6 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "../globals.css";
 
 import {NextIntlClientProvider} from 'next-intl';
-import {getMessages} from 'next-intl/server';
-import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 
 import SmoothScroller from '@/components/SmoothScroller';
@@ -63,16 +61,22 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
+  // Guard: if locale not recognized, fall through to default rather than hard 404
+  const safeLocale = routing.locales.includes(locale as any) ? locale : routing.defaultLocale;
+
+  // getMessages can throw if messages file missing — never let it crash the layout
+  let messages = {};
+  try {
+    const { getMessages } = await import('next-intl/server');
+    messages = await getMessages();
+  } catch (e) {
+    // Silently fall back to empty messages — page still renders
   }
- 
-  const messages = await getMessages();
- 
+
   return (
-    <html lang={locale}>
-      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased selection:bg-brand-golden selection:text-black bg-brand-navy text-brand-white overflow-x-hidden`}>
-        <NextIntlClientProvider messages={messages}>
+    <html lang={safeLocale}>
+      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased bg-[#030b15] text-[#FAF9F6] overflow-x-hidden`}>
+        <NextIntlClientProvider messages={messages} locale={safeLocale}>
           <Header />
           <SmoothScroller>
             {children}

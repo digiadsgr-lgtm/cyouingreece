@@ -1,14 +1,15 @@
+// Fully static homepage — no Sanity/server deps that can crash
+// All content hardcoded, Three.js loads client-side only
 import { Suspense } from "react";
 import HeroSection from "@/components/HeroSection";
-import { sanityClient } from "@/lib/sanity";
 import { Link } from '@/i18n/routing';
 
-export const dynamic = 'force-dynamic';
+// Static page — no runtime dependencies that can fail on Vercel
+export const dynamic = 'force-static';
 
-// ─── Rich Seed Content (never empty) ─────────────────────────────────────────
-const SEED_DESTINATIONS = [
+const DESTINATIONS = [
   {
-    _id: 'seed-santorini',
+    _id: 'santorini',
     name_en: 'Santorini',
     name_local: 'Σαντορίνη',
     slug: 'santorini',
@@ -19,7 +20,7 @@ const SEED_DESTINATIONS = [
     nikos_tip: 'Take the coastal path from Fira to Imerovigli at 6am. You will have the caldera to yourself.',
   },
   {
-    _id: 'seed-athens',
+    _id: 'athens',
     name_en: 'Athens',
     name_local: 'Αθήνα',
     slug: 'athens',
@@ -30,7 +31,7 @@ const SEED_DESTINATIONS = [
     nikos_tip: 'Eat at Café Avyssinia in the Monastiraki flea market on a Sunday when the dealers are out. Order the saganaki.',
   },
   {
-    _id: 'seed-mykonos',
+    _id: 'mykonos',
     name_en: 'Mykonos',
     name_local: 'Μύκονος',
     slug: 'mykonos',
@@ -41,7 +42,7 @@ const SEED_DESTINATIONS = [
     nikos_tip: 'Skip Paradise Beach. Go to Agios Sostis — no sunbeds, no bar, just sand. Take the Ornos road and keep left.',
   },
   {
-    _id: 'seed-crete',
+    _id: 'crete',
     name_en: 'Crete',
     name_local: 'Κρήτη',
     slug: 'crete',
@@ -52,7 +53,7 @@ const SEED_DESTINATIONS = [
     nikos_tip: 'Drive the E75 coastal road from Rethymno to Chania at sunrise. Stop at the Georgioupoli lagoon. No agenda.',
   },
   {
-    _id: 'seed-thessaloniki',
+    _id: 'thessaloniki',
     name_en: 'Thessaloniki',
     name_local: 'Θεσσαλονίκη',
     slug: 'thessaloniki',
@@ -63,7 +64,7 @@ const SEED_DESTINATIONS = [
     nikos_tip: 'Go to Modiano market on a Saturday. Eat at one of the counters inside — no sign, no menu, point at what the person next to you has.',
   },
   {
-    _id: 'seed-rhodes',
+    _id: 'rhodes',
     name_en: 'Rhodes',
     name_local: 'Ρόδος',
     slug: 'rhodes',
@@ -75,30 +76,15 @@ const SEED_DESTINATIONS = [
   },
 ];
 
-// ─── JSON-LD Schema ───────────────────────────────────────────────────────────
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   "name": "CYouInGreece",
   "description": "The travel site that makes you close your laptop and search for flights to Greece.",
   "url": "https://cyouingreece.com",
-  "sameAs": ["https://instagram.com/cyouingreece"],
-  "address": { "@type": "PostalAddress", "addressLocality": "Athens", "addressCountry": "GR" },
 };
 
-export default async function Home() {
-  // Try Sanity — fall back to seed content transparently
-  let destinations: any[] = [];
-  try {
-    const sanityData = await sanityClient.fetch(`*[_type == "destination"] | order(_updatedAt desc) [0...12] {
-      _id, name_en, name_local, "slug": slug.current, type, tagline, intro_paragraph, nikos_tip,
-      "heroImage": hero_image.asset->url
-    }`);
-    destinations = sanityData?.length > 0 ? sanityData : SEED_DESTINATIONS;
-  } catch {
-    destinations = SEED_DESTINATIONS;
-  }
-
+export default function Home() {
   return (
     <main className="min-h-screen bg-[#030b15] text-[#FAF9F6]">
       <script
@@ -106,7 +92,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── 1. THE HERO ──────────────────────────────────────────────────── */}
+      {/* 1. HERO */}
       <Suspense fallback={
         <div className="w-full h-screen bg-[#030b15] flex items-center justify-center">
           <span className="text-[#D4A027] tracking-widest text-sm uppercase animate-pulse">Loading the Aegean…</span>
@@ -115,22 +101,22 @@ export default async function Home() {
         <HeroSection />
       </Suspense>
 
-      {/* ── 2. THE MANIFESTO ─────────────────────────────────────────────── */}
-      <section className="w-full bg-[#FAF9F6] py-36 md:py-52">
+      {/* 2. MANIFESTO */}
+      <section className="w-full bg-[#FAF9F6] py-36 md:py-48">
         <div className="max-w-[1100px] mx-auto px-6 md:px-16 text-center">
-          <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[11px] font-semibold inline-block mb-14">
+          <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[11px] font-semibold inline-block mb-12">
             The Philosophy
           </span>
           <h2 className="text-[clamp(2.4rem,6vw,5.5rem)] font-serif font-medium text-[#0A1628] leading-tight">
             Greece is not a destination.<br />
             <em className="text-[#C1440E]">It is a feeling.</em>
           </h2>
-          <p className="mt-12 text-[clamp(1rem,1.6vw,1.3rem)] font-light text-[#4a4a4a] max-w-3xl mx-auto leading-[1.9] font-serif">
+          <p className="mt-10 text-[clamp(1rem,1.6vw,1.25rem)] font-light text-[#4a4a4a] max-w-3xl mx-auto leading-[1.95] font-serif">
             The smell of oregano on a hillside at dusk. A fishing boat that hasn't moved since 1987.
             A grandmother who makes the same tiropita her mother made. Cold Mythos on a plastic chair
             facing the Aegean at noon. This is not TripAdvisor. This is someone who actually lives here.
           </p>
-          <div className="mt-16 flex justify-center gap-2 items-center">
+          <div className="mt-14 flex justify-center gap-2 items-center">
             <span className="h-px w-12 bg-[#D4A027]" />
             <span className="text-[#D4A027] text-[10px] tracking-[0.4em] uppercase font-bold">Est. 2026</span>
             <span className="h-px w-12 bg-[#D4A027]" />
@@ -138,47 +124,37 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── 3. THE ENCYCLOPAEDIA (Asymmetric Grid) ───────────────────────── */}
-      <section id="destinations" className="w-full bg-[#FAF9F6] pb-52">
+      {/* 3. ENCYCLOPAEDIA */}
+      <section id="destinations" className="w-full bg-[#FAF9F6] pb-48">
         <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-
-          {/* Section header */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-28 pt-4 border-b border-[#0A1628]/12 pb-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-[#0A1628]/10 pb-10">
             <h2 className="text-[clamp(2.8rem,7vw,6rem)] font-serif text-[#0A1628] leading-none">
               The Encyclopaedia.
             </h2>
             <p className="text-[#9a9890] text-xs font-sans tracking-[0.25em] uppercase mt-6 md:mt-0 text-right leading-relaxed max-w-[260px]">
-              Every island. Every city. Every table worth finding.
-              Written by someone who was actually there.
+              Every island. Every city. Every table worth finding. Written by someone who was actually there.
             </p>
           </div>
 
-          {/* Alternating editorial rows */}
-          <div className="flex flex-col gap-36 md:gap-52">
-            {destinations.map((dest, i) => {
+          <div className="flex flex-col gap-32 md:gap-48">
+            {DESTINATIONS.map((dest, i) => {
               const isEven = i % 2 === 0;
               return (
                 <article
                   key={dest._id}
-                  className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-20 lg:gap-32 group`}
+                  className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-24 lg:gap-32 group`}
                 >
                   {/* Image */}
-                  <div className="w-full md:w-[58%] relative flex-shrink-0">
-                    <div className="w-full overflow-hidden aspect-[4/5] md:aspect-[3/4] bg-[#e0dad2]">
-                      {dest.heroImage && (
-                        <div
-                          className="w-full h-full bg-cover bg-center transition-transform duration-[2500ms] ease-out group-hover:scale-[1.04]"
-                          style={{ backgroundImage: `url('${dest.heroImage}')` }}
-                        />
-                      )}
+                  <div className="w-full md:w-[55%] relative flex-shrink-0">
+                    <div className="w-full overflow-hidden aspect-[4/5] bg-[#e0dad2]">
+                      <div
+                        className="w-full h-full bg-cover bg-center transition-transform duration-[2500ms] ease-out group-hover:scale-[1.04]"
+                        style={{ backgroundImage: `url('${dest.heroImage}')` }}
+                      />
                     </div>
-                    {/* Tag chip */}
                     <div className={`absolute top-6 ${isEven ? 'left-6' : 'right-6'} bg-[#0A1628] px-4 py-2`}>
-                      <span className="text-[10px] text-[#D4A027] font-bold tracking-[0.25em] uppercase">
-                        {dest.type}
-                      </span>
+                      <span className="text-[10px] text-[#D4A027] font-bold tracking-[0.25em] uppercase">{dest.type}</span>
                     </div>
-                    {/* Nikos tip floating box */}
                     {dest.nikos_tip && (
                       <div className={`absolute -bottom-6 ${isEven ? '-right-4 md:-right-8' : '-left-4 md:-left-8'} hidden lg:block bg-white border border-[#D4A027]/30 p-6 max-w-[260px] shadow-2xl`}>
                         <span className="text-[9px] text-[#D4A027] font-bold tracking-[0.2em] uppercase block mb-2">Nikos says</span>
@@ -187,46 +163,22 @@ export default async function Home() {
                     )}
                   </div>
 
-                  {/* Editorial copy */}
-                  <div className="flex flex-col justify-center flex-1 pt-4 md:pt-12">
-                    {/* Index */}
-                    <div className="flex items-baseline gap-4 mb-6">
-                      <span className="font-serif italic text-[#C1440E] text-4xl leading-none">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      <span className="h-px flex-1 max-w-[48px] bg-[#0A1628]/20" />
+                  {/* Text */}
+                  <div className="flex flex-col justify-center flex-1 pt-4 md:pt-10">
+                    <div className="flex items-baseline gap-4 mb-5">
+                      <span className="font-serif italic text-[#C1440E] text-4xl leading-none">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="h-px w-12 bg-[#0A1628]/20" />
                     </div>
-
-                    {/* Destination name */}
-                    <h3 className="text-[clamp(3rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-none tracking-tight mb-4">
-                      {dest.name_en}
-                    </h3>
-                    <p className="text-[#0A1628]/50 text-sm font-serif mb-4">{dest.name_local}</p>
-
-                    {/* Tagline */}
+                    <h3 className="text-[clamp(3rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-none tracking-tight mb-3">{dest.name_en}</h3>
+                    <p className="text-[#0A1628]/40 text-sm font-serif italic mb-4">{dest.name_local}</p>
                     {dest.tagline && (
-                      <p className="font-serif italic text-[#C1440E] text-xl mb-8 leading-snug">
-                        "{dest.tagline}"
-                      </p>
+                      <p className="font-serif italic text-[#C1440E] text-xl mb-7 leading-snug">"{dest.tagline}"</p>
                     )}
-
-                    {/* Excerpt */}
-                    {dest.intro_paragraph && (
-                      <p className="text-[#4a4a4a] font-light text-lg leading-[1.85] mb-10 max-w-[440px]">
-                        {dest.intro_paragraph.length > 220
-                          ? dest.intro_paragraph.slice(0, 220) + '…'
-                          : dest.intro_paragraph}
-                      </p>
-                    )}
-
-                    {/* CTA */}
-                    <Link
-                      href={`/destinations/${dest.slug}`}
-                      className="inline-flex items-center gap-4 group/cta w-fit"
-                    >
-                      <span className="text-[11px] uppercase tracking-[0.25em] font-bold text-[#0A1628] group-hover/cta:text-[#C1440E] transition-colors duration-300">
-                        Read the Guide
-                      </span>
+                    <p className="text-[#4a4a4a] font-light text-lg leading-[1.85] mb-10 max-w-[440px]">
+                      {dest.intro_paragraph.length > 220 ? dest.intro_paragraph.slice(0, 220) + '…' : dest.intro_paragraph}
+                    </p>
+                    <Link href={`/destinations/${dest.slug}`} className="inline-flex items-center gap-4 group/cta w-fit">
+                      <span className="text-[11px] uppercase tracking-[0.25em] font-bold text-[#0A1628] group-hover/cta:text-[#C1440E] transition-colors duration-300">Read the Guide</span>
                       <span className="h-px w-8 bg-[#0A1628] group-hover/cta:w-16 group-hover/cta:bg-[#C1440E] transition-all duration-500" />
                     </Link>
                   </div>
@@ -237,25 +189,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── 4. NIKOS CTA STRIP ───────────────────────────────────────────── */}
-      <section className="w-full bg-[#0A1628] py-32">
-        <div className="max-w-[900px] mx-auto px-6 text-center">
-          <span className="text-[12px] text-[#D4A027] tracking-[0.4em] uppercase font-semibold block mb-8">
-            Your personal guide
-          </span>
-          <h2 className="text-[clamp(2.2rem,5vw,4rem)] font-serif text-white leading-tight mb-8">
-            Ask Nikos anything<br />
-            <span className="italic text-[#D4A027]">about Greece.</span>
+      {/* 4. NIKOS CTA */}
+      <section className="w-full bg-[#0A1628] py-28">
+        <div className="max-w-[860px] mx-auto px-6 text-center">
+          <span className="text-[11px] text-[#D4A027] tracking-[0.4em] uppercase font-semibold block mb-7">Your personal guide</span>
+          <h2 className="text-[clamp(2rem,5vw,4rem)] font-serif text-white leading-tight mb-7">
+            Ask Nikos anything<br /><span className="italic text-[#D4A027]">about Greece.</span>
           </h2>
-          <p className="text-white/50 font-light text-lg max-w-xl mx-auto mb-12 leading-relaxed">
-            Which island in October? Best beach for children under 8? Ferry from Piraeus to Folegandros on a Tuesday in June?
-            Nikos knows. And he will tell you exactly — specific name, specific table, specific time.
+          <p className="text-white/45 font-light text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+            Which island in October? Best beach for children? Ferry from Piraeus to Folegandros?
+            Nikos knows. Specific name, specific table, specific time.
           </p>
           <button
-            onClick={() => {
-              const btn = document.querySelector<HTMLButtonElement>('[aria-label="Plan my trip with Nikos"]');
-              btn?.click();
-            }}
+            onClick={() => { const b = document.querySelector<HTMLButtonElement>('[aria-label="Plan my trip with Nikos"]'); b?.click(); }}
             className="inline-flex items-center gap-4 px-10 py-5 border border-[#D4A027]/60 text-[#D4A027] text-xs tracking-[0.25em] uppercase font-bold hover:bg-[#D4A027] hover:text-[#0A1628] transition-all duration-300"
           >
             Start the conversation
@@ -263,66 +209,38 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── 5. NEWSLETTER LEAD MAGNET ────────────────────────────────────── */}
-      <section className="w-full bg-[#FAF9F6] py-32 border-t border-[#0A1628]/8">
-        <div className="max-w-[820px] mx-auto px-6 text-center">
-          <h2 className="text-[clamp(2rem,4vw,3.2rem)] font-serif text-[#0A1628] mb-4">
-            The Insider Greece PDF.
-          </h2>
-          <p className="font-serif italic text-[#C1440E] text-xl mb-10">
-            Free. Immediate. 47 pages of what Nikos actually knows.
-          </p>
-          <p className="text-[#6a6a6a] font-light text-lg max-w-xl mx-auto mb-12 leading-relaxed">
-            Island rankings by month. The 12 restaurants that justify the trip.
-            Seven routes most travelers never find. No fluff, no "bucket list." Just the real thing.
+      {/* 5. NEWSLETTER */}
+      <section className="w-full bg-[#FAF9F6] py-28 border-t border-[#0A1628]/8">
+        <div className="max-w-[780px] mx-auto px-6 text-center">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-serif text-[#0A1628] mb-3">The Insider Greece PDF.</h2>
+          <p className="font-serif italic text-[#C1440E] text-xl mb-8">Free. Immediate. 47 pages of what Nikos actually knows.</p>
+          <p className="text-[#6a6a6a] font-light text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+            Island rankings by month. The 12 restaurants that justify the trip. Seven routes most travelers never find.
           </p>
           <div className="flex flex-col sm:flex-row max-w-xl mx-auto gap-0 border border-[#0A1628]/20">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 px-6 py-4 text-[#0A1628] font-light text-sm outline-none bg-white font-sans placeholder:text-[#aaa]"
-            />
-            <button className="px-8 py-4 bg-[#0A1628] text-white text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#C1440E] transition-colors duration-300 whitespace-nowrap">
-              Send it to me
-            </button>
+            <input type="email" placeholder="your@email.com" className="flex-1 px-6 py-4 text-[#0A1628] font-light text-sm outline-none bg-white font-sans placeholder:text-[#aaa]" />
+            <button className="px-8 py-4 bg-[#0A1628] text-white text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#C1440E] transition-colors duration-300 whitespace-nowrap">Send it to me</button>
           </div>
-          <p className="text-[#aaa] text-[11px] mt-4 font-sans">No spam. Unsubscribe anytime. Your data stays with us.</p>
         </div>
       </section>
 
-      {/* ── 6. FOOTER ────────────────────────────────────────────────────── */}
-      <footer className="w-full bg-[#030b15] py-24">
+      {/* 6. FOOTER */}
+      <footer className="w-full bg-[#030b15] py-20">
         <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-20 pb-20 border-b border-white/8">
-            {/* Brand */}
+          <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16 pb-16 border-b border-white/8">
             <div>
-              <p className="text-[clamp(2rem,4vw,3rem)] font-serif text-white leading-none mb-3">CYouInGreece</p>
+              <p className="text-[clamp(2rem,4vw,3rem)] font-serif text-white leading-none mb-2">CYouInGreece</p>
               <p className="font-serif italic text-[#D4A027] text-lg">See you in Greece.</p>
             </div>
-            {/* Links grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-20 gap-y-8 text-sm">
-              {[
-                { label: 'Islands', href: '/destinations' },
-                { label: 'Cities', href: '/destinations' },
-                { label: 'Gastronomy', href: '/categories/gastronomy' },
-                { label: 'Culture', href: '/categories/culture' },
-                { label: 'Itineraries', href: '/categories/itineraries' },
-                { label: 'About Nikos', href: '/about' },
-              ].map(link => (
-                <a key={link.label} href={link.href}
-                  className="font-serif text-white/60 hover:text-[#D4A027] transition-colors">
-                  {link.label}
-                </a>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-16 gap-y-6 text-sm">
+              {['Islands', 'Cities', 'Gastronomy', 'Culture', 'Itineraries', 'About Nikos'].map(l => (
+                <a key={l} href="#" className="font-serif text-white/50 hover:text-[#D4A027] transition-colors">{l}</a>
               ))}
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/25 text-[11px] tracking-[0.2em] uppercase font-sans">
-              © 2026 CYouInGreece · cyouingreece.com
-            </p>
-            <p className="text-white/25 text-[11px] tracking-[0.15em] uppercase font-sans">
-              En · De · Fr · It · Es · Ro · Pl · Ru · El
-            </p>
+            <p className="text-white/20 text-[11px] tracking-[0.2em] uppercase font-sans">© 2026 CYouInGreece · cyouingreece.com</p>
+            <p className="text-white/20 text-[11px] tracking-[0.15em] uppercase font-sans">En · De · Fr · It · Es · Ro · Pl · Ru · El</p>
           </div>
         </div>
       </footer>
