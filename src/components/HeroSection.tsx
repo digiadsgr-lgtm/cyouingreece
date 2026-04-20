@@ -151,7 +151,7 @@ export default function HeroSection() {
             <CameraRig />
             <DeviceOrientationRig />
 
-            <EffectComposer disableNormalPass>
+            <EffectComposer>
               <DepthOfField target={[0, 0, -15]} focalLength={0.02} bokehScale={2} height={480} />
               <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.9} intensity={1.5} mipmapBlur />
             </EffectComposer>
