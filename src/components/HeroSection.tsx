@@ -1,174 +1,10 @@
 'use client';
-import { useRef, useMemo, useState, useEffect, Suspense } from 'react';
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { Float, Stars, Environment } from '@react-three/drei';
-import * as THREE from 'three';
-
-// ─── Vertex-Displaced Ocean ─────────────────────────────────────────────────
-// Real sine-wave ocean — every vertex moves, creating genuine 3D water
-function Ocean() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const timeRef = useRef(0);
-
-  const geometry = useMemo(() => {
-    const geo = new THREE.PlaneGeometry(60, 60, 128, 128);
-    return geo;
-  }, []);
-
-  useFrame((_, delta) => {
-    timeRef.current += delta * 0.35;
-    if (!meshRef.current) return;
-
-    const geo = meshRef.current.geometry as THREE.BufferGeometry;
-    const pos = geo.attributes.position;
-    const count = pos.count;
-
-    for (let i = 0; i < count; i++) {
-      const x = pos.getX(i);
-      const z = pos.getZ(i);
-      // Layer multiple sine waves at different frequencies for realism
-      const y =
-        Math.sin(x * 0.4 + timeRef.current) * 0.35 +
-        Math.sin(x * 0.15 - timeRef.current * 0.7) * 0.6 +
-        Math.sin(z * 0.25 + timeRef.current * 1.2) * 0.25 +
-        Math.cos(x * 0.08 + z * 0.12 + timeRef.current * 0.5) * 0.8;
-      pos.setY(i, y);
-    }
-    pos.needsUpdate = true;
-    geo.computeVertexNormals();
-  });
-
-  return (
-    <mesh
-      ref={meshRef}
-      geometry={geometry}
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, -0.8, 0]}
-      receiveShadow
-    >
-      <meshPhysicalMaterial
-        color="#0d2a3d"
-        emissive="#041525"
-        roughness={0.05}
-        metalness={0.9}
-        transmission={0.3}
-        thickness={0.5}
-        envMapIntensity={2}
-      />
-    </mesh>
-  );
-}
-
-// ─── Cycladic Island ─────────────────────────────────────────────────────────
-function Island() {
-  return (
-    <Float speed={0.4} floatIntensity={0.3} rotationIntensity={0} position={[3, 1.2, -22]}>
-      <group>
-        {/* Rocky base */}
-        <mesh position={[0, -1.2, 0]}>
-          <sphereGeometry args={[5, 32, 16, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
-          <meshStandardMaterial color="#2a1f15" roughness={1} />
-        </mesh>
-        {/* Hillside */}
-        <mesh position={[0, -0.4, 0]}>
-          <sphereGeometry args={[3.8, 24, 12, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
-          <meshStandardMaterial color="#3d2e1e" roughness={1} />
-        </mesh>
-        {/* White cubic houses — Cycladic architecture */}
-        {[
-          [-0.5, 0.8, 0], [0.8, 1.1, -0.3], [-1.2, 1.4, -0.6],
-          [0.2, 1.6, -0.8], [-0.3, 2.0, -1.2], [1.1, 0.6, 0.4],
-          [-1.5, 1.0, 0.2], [0.5, 2.3, -1.6],
-        ].map(([x, y, z], i) => (
-          <mesh key={i} position={[x, y, z]} scale={Math.random() * 0.2 + 0.25}>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color="#F8F6F1" roughness={0.2} />
-          </mesh>
-        ))}
-        {/* Small church dome */}
-        <mesh position={[-0.6, 2.6, -1.4]}>
-          <sphereGeometry args={[0.2, 16, 8, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
-          <meshStandardMaterial color="#1a4a8a" roughness={0.3} />
-        </mesh>
-      </group>
-    </Float>
-  );
-}
-
-// ─── Distant Silhouette Islands ──────────────────────────────────────────────
-function DistantIslands() {
-  return (
-    <>
-      {[[-12, 0.3, -35], [18, 0.2, -45], [-22, 0.15, -50]].map(([x, y, z], i) => (
-        <mesh key={i} position={[x, y, z]}>
-          <sphereGeometry args={[3 + i, 16, 8, 0, Math.PI * 2, 0, Math.PI * 0.4]} />
-          <meshStandardMaterial color="#0d1820" roughness={1} fog />
-        </mesh>
-      ))}
-    </>
-  );
-}
-
-// ─── Camera: Boat Drift + Mouse Parallax ────────────────────────────────────
-function CameraRig() {
-  const { camera, pointer } = useThree();
-  const t = useRef(0);
-
-  useFrame((_, delta) => {
-    t.current += delta;
-    // Boat bobbing: gentle sine on Y
-    const targetY = Math.sin(t.current * 0.3) * 0.15 + 1.8;
-    // Mouse parallax on X, subtle on Y
-    const targetX = pointer.x * 1.8;
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.015);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.02);
-    camera.lookAt(0, 0.5, -10);
-  });
-  return null;
-}
-
-// ─── Scene: everything together ──────────────────────────────────────────────
-function Scene() {
-  return (
-    <>
-      {/* Atmosphere */}
-      <color attach="background" args={['#030b15']} />
-      <fog attach="fog" args={['#030b15', 20, 65]} />
-
-      {/* Lighting: Golden Hour */}
-      <ambientLight intensity={0.08} />
-      {/* Low sun from the right-west */}
-      <directionalLight
-        position={[18, 2, -15]}
-        intensity={5}
-        color="#e8903a"
-        castShadow
-      />
-      {/* Soft sky fill */}
-      <hemisphereLight args={['#0a1e35', '#030b15', 0.4]} />
-      {/* Warm horizon glow */}
-      <pointLight position={[0, 1, -8]} intensity={2} color="#c95a15" distance={30} />
-
-      <Ocean />
-      <Island />
-      <DistantIslands />
-      <Stars radius={80} depth={60} count={600} factor={3} fade speed={0.3} />
-
-      <CameraRig />
-
-      <EffectComposer>
-        <Bloom luminanceThreshold={0.4} luminanceSmoothing={0.9} intensity={2.5} mipmapBlur />
-      </EffectComposer>
-    </>
-  );
-}
+import { useState, useEffect } from 'react';
 
 // ─── Hero Content Layer ──────────────────────────────────────────────────────
 function HeroContent() {
   return (
-    <div className="absolute inset-0 z-10 flex flex-col justify-end pointer-events-none select-none"
-      style={{ background: 'linear-gradient(to top, rgba(3,11,21,0.95) 0%, rgba(3,11,21,0.5) 40%, transparent 75%)' }}>
+    <div className="absolute inset-0 z-10 flex flex-col justify-end pointer-events-none select-none bg-gradient-to-t from-[#030b15] via-[#030b15]/40 to-transparent">
       <div className="max-w-[1320px] mx-auto w-full px-6 md:px-16 pb-20 md:pb-28">
         {/* Eyebrow */}
         <div className="flex items-center gap-4 mb-7">
@@ -182,8 +18,7 @@ function HeroContent() {
         <h1 className="text-[clamp(3.2rem,9vw,8.5rem)] font-serif font-light text-white leading-[0.9] mb-8"
           style={{ textShadow: '0 4px 40px rgba(0,0,0,0.6)' }}>
           C You In<br />
-          <em className="not-italic"
-            style={{ background: 'linear-gradient(90deg, #D4A027, #C1440E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <em className="not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4A027] to-[#C1440E]">
             Greece.
           </em>
         </h1>
@@ -225,16 +60,16 @@ function HeroContent() {
 // ─── Main Export ─────────────────────────────────────────────────────────────
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#030b15]">
-      {/* Fallback: full-bleed photo shown instantly (LCP) */}
+      {/* Fallback image shown immediately while iframe loads */}
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 transition-opacity duration-[2000ms]"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2000&auto=format&fit=crop')",
           backgroundSize: 'cover',
@@ -243,19 +78,16 @@ export default function HeroSection() {
         }}
       />
 
-      {/* WebGL Canvas — layered on top of fallback */}
+      {/* Vimeo Background Video - loads dynamically and fades in */}
       {mounted && (
-        <div className="absolute inset-0 z-[1]">
-          <Canvas
-            camera={{ position: [0, 1.8, 8], fov: 55 }}
-            gl={{ powerPreference: 'high-performance', antialias: false, alpha: true }}
-            dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.5)]}
-            shadows
-          >
-            <Suspense fallback={null}>
-              <Scene />
-            </Suspense>
-          </Canvas>
+        <div className="absolute inset-0 z-[1] w-[150vw] h-[150vh] xl:w-[120vw] xl:h-[120vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70 pointer-events-none">
+          <iframe
+            src="https://player.vimeo.com/video/285517336?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&dnt=1"
+            className="w-full h-full object-cover scale-[1.05]"
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            style={{ border: 'none', pointerEvents: 'none' }}
+          />
         </div>
       )}
 
