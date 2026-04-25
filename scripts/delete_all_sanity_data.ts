@@ -24,19 +24,6 @@ async function run() {
     }
   }
 
-  console.log('Fetching all image assets...');
-  const assets = await sanityClient.fetch(`*[_type == "sanity.imageAsset"]{_id}`);
-  console.log(`Found ${assets.length} images to delete.`);
-  
-  for (const asset of assets) {
-    try {
-      await sanityClient.delete(asset._id);
-      console.log(`Deleted image ${asset._id}`);
-    } catch (e: any) {
-      console.log(`Failed to delete image ${asset._id}: ${e.message}`);
-    }
-  }
-
   console.log('Clean complete!');
 }
 

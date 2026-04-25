@@ -4,6 +4,7 @@ export { regionSchema      } from './region'
 export { articleSchema     } from './article'
 export { contributorSchema } from './contributor'
 export { thematicSectionSchema } from './thematicSection'
+export { default as journeySchema } from './journeySchema'
 
 // Object types
 export {

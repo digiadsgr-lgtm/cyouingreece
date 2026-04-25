@@ -6,6 +6,7 @@ import {
   regionSchema,
   articleSchema,
   contributorSchema,
+  journeySchema,
   atAGlanceSchema,
   hiddenGemSchema,
   gastronomyItemSchema,
@@ -118,6 +119,7 @@ export default defineConfig({
       regionSchema,
       articleSchema,
       contributorSchema,
+      journeySchema,
       // Object types
       atAGlanceSchema,
       hiddenGemSchema,

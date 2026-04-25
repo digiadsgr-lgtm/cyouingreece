@@ -164,9 +164,11 @@ function Bubble({ msg, streaming }: { msg: Message; streaming?: boolean }) {
   const isUser = msg.role === 'user';
 
   // Parse out itinerary if present
-  const itineraryMatch = msg.content.match(/<ITINERARY>([\s\S]*?)<\/ITINERARY>/);
-  const textContent = msg.content.replace(/<ITINERARY>[\s\S]*?<\/ITINERARY>/, '').trim();
+  // Hide the itinerary block from the main text, even if it's incomplete during streaming
+  const textContent = msg.content.replace(/<ITINERARY>[\s\S]*/, '').trim();
+  
   let itineraryData = null;
+  const itineraryMatch = msg.content.match(/<ITINERARY>([\s\S]*?)<\/ITINERARY>/);
   if (itineraryMatch) {
     try { itineraryData = JSON.parse(itineraryMatch[1]); } catch {}
   }
@@ -258,22 +260,27 @@ export default function AnthropicGuide() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let full = '';
+      let buffer = '';
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // The last element is an incomplete line or empty string
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const p = line.slice(6);
+          const trimmed = line.trim();
+          if (trimmed.startsWith('data: ')) {
+            const p = trimmed.slice(6);
             if (p === '[DONE]') continue;
             try {
               const parsed = JSON.parse(p);
               const token = parsed.delta?.text ?? '';
               full += token;
               setStreamingContent(full);
-            } catch {}
+            } catch (e) {
+              // Ignore partial JSON errors from malformed data
+            }
           }
         }
       }
