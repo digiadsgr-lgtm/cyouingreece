@@ -236,19 +236,16 @@ export default function AnthropicGuide() {
   }, [isOpen]);
 
   // ── Streaming helper — sends full history so Nikos has context ───────────────
-  const streamMessage = useCallback(async (currentMessages: Message[], userText: string) => {
+  const streamMessage = useCallback(async (currentMessages: Message[]) => {
     setIsTyping(false);
     setIsStreaming(true);
     setStreamingContent('');
-
-    // Build the full conversation to send to API (history + new user message)
-    const payload = [...currentMessages, { role: 'user' as const, content: userText }];
 
     try {
       const res = await fetch('/api/concierge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: payload }),
+        body: JSON.stringify({ messages: currentMessages }),
       });
 
       if (!res.ok) {
@@ -308,7 +305,7 @@ export default function AnthropicGuide() {
       const updated = [...prev, { role: 'user' as const, content: text }];
       // Fire the stream with the snapshot that includes the user message
       setIsTyping(true);
-      streamMessage(updated, text).then(() => {});
+      streamMessage(updated).then(() => {});
       return updated;
     });
   }, [input, isStreaming, isTyping, streamMessage]);
@@ -317,7 +314,7 @@ export default function AnthropicGuide() {
     setMessages((prev) => {
       const updated = [...prev, { role: 'user' as const, content: chip }];
       setIsTyping(true);
-      streamMessage(updated, chip);
+      streamMessage(updated);
       return updated;
     });
   }, [streamMessage]);
