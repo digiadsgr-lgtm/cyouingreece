@@ -63,6 +63,12 @@ export const destinationSchema = defineType({
       ],
       group: 'content',
     }),
+    defineField({
+      name: 'diary_entries', type: 'array', title: 'The Diary of Nikos',
+      description: 'Exclusive editorial insights from Nikos (Local tips, restaurant verdicts, secrets)',
+      of: [defineArrayMember({ type: 'nikosDiaryEntry' })],
+      group: 'content',
+    }),
 
     // ── RICH DATA ─────────────────────────────────────────────────────────────
     defineField({ name: 'at_a_glance', type: 'atAGlance', group: 'content' }),

@@ -15,6 +15,7 @@ import PhotoGallery from '@/components/destination/PhotoGallery';
 import NearbyDestinations from '@/components/destination/NearbyDestinations';
 import EditorialArticles from '@/components/destination/EditorialArticles';
 import NewsletterCapture from '@/components/destination/NewsletterCapture';
+import NikosDiary from '@/components/destination/NikosDiary';
 
 export const revalidate = 3600;
 
@@ -160,6 +161,26 @@ export default async function DestinationPage({
               Full Editorial
             </span>
             <BodyContent blocks={dest.body_content as any} />
+          </div>
+        </section>
+      )}
+
+      {/* ── THE DIARY OF NIKOS ────────────────────────────────────────────── */}
+      {dest.diary_entries && dest.diary_entries.length > 0 && (
+        <section className="bg-[#030b15] py-24 md:py-32 border-b border-white/10">
+          <div className="max-w-[1320px] mx-auto px-6 md:px-12 mb-16 text-center">
+            <span className="text-[#D4A027] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">
+              Exclusive
+            </span>
+            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-serif text-white leading-tight mb-4">
+              The Diary of Nikos
+            </h2>
+            <p className="text-white/50 max-w-2xl mx-auto text-lg italic font-serif">
+              "I’ve slept on 60 Greek islands. Here is what I actually think about this place."
+            </p>
+          </div>
+          <div className="max-w-[1100px] mx-auto px-6 md:px-12">
+            <NikosDiary entries={dest.diary_entries} />
           </div>
         </section>
       )}

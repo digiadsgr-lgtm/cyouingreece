@@ -16,5 +16,6 @@ export {
   seoFieldsSchema,
   translationSetSchema,
   nikosTipSchema,
+  nikosDiaryEntrySchema,
   infoBoxSchema,
 } from './objects'

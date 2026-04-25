@@ -223,6 +223,30 @@ export const infoBoxSchema = defineType({
   ],
   preview: {
     select: { title: 'title', subtitle: 'tone' },
-    prepare: ({ title, subtitle }) => ({ title: `ℹ️ ${title}`, subtitle }),
+  },
+})
+
+// ─── Nikos' Diary Entry (For the new Diary of Nikos feature) ──────────────────
+export const nikosDiaryEntrySchema = defineType({
+  name: 'nikosDiaryEntry',
+  type: 'object',
+  title: "Nikos Diary Entry",
+  icon: () => '📓',
+  fields: [
+    defineField({ name: 'location', type: 'string', title: 'Specific Location (e.g. Panormos Beach)', validation: R => R.required() }),
+    defineField({ name: 'title', type: 'string', title: 'Catchy Diary Title', validation: R => R.required() }),
+    defineField({ 
+      name: 'body', 
+      type: 'array', 
+      title: 'Diary Entry Content', 
+      of: [{ type: 'block' }],
+      validation: R => R.required() 
+    }),
+    defineField({ name: 'image', type: 'image', title: 'Diary Image', options: { hotspot: true } }),
+    defineField({ name: 'verdict', type: 'string', title: 'The Verdict (TL;DR tip)' }),
+  ],
+  preview: {
+    select: { title: 'title', subtitle: 'location', media: 'image' },
+    prepare: ({ title, subtitle, media }) => ({ title: `📓 ${title}`, subtitle, media }),
   },
 })

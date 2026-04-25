@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 };
 
 import Header from '@/components/Header';
-import AnthropicGuide from '@/components/AnthropicGuide';
 import SmoothScroller from '@/components/SmoothScroller';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -40,7 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroller>
           {children}
         </SmoothScroller>
-        <AnthropicGuide />
       </body>
     </html>
   );

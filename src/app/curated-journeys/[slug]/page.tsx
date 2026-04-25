@@ -4,9 +4,10 @@ import Link from 'next/link';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
-export default async function JourneyPage({ params }: { params: { slug: string } }) {
+export default async function JourneyPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const query = `*[_type == "journey" && slug.current == $slug][0]`;
-  const journey = await sanityClient.fetch(query, { slug: params.slug });
+  const journey = await sanityClient.fetch(query, { slug });
 
   if (!journey) {
     notFound();

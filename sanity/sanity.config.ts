@@ -15,6 +15,7 @@ import {
   seoFieldsSchema,
   translationSetSchema,
   nikosTipSchema,
+  nikosDiaryEntrySchema,
   infoBoxSchema,
 } from './schemas'
 
@@ -129,6 +130,7 @@ export default defineConfig({
       seoFieldsSchema,
       translationSetSchema,
       nikosTipSchema,
+      nikosDiaryEntrySchema,
       infoBoxSchema,
     ],
   },
