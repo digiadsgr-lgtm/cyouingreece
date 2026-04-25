@@ -1,6 +1,31 @@
 {
-  "Index": {
-    "title": "CYouInGreece - The Ultimate Travel Guide",
-    "description": "Discover Greece through AI-powered recommendations."
+  "Navigation": {
+    "philosophy": "Filosofie",
+    "curatedJourneys": "Călătorii Curate",
+    "encyclopaedia": "Enciclopedie",
+    "vaultAccess": "Acces Privat"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Descoperă"
+  },
+  "Philosophy": {
+    "title": "Filosofia",
+    "text1": "Nu credem în 'comori ascunse' sau în liste 'must-see'.",
+    "text2": "Credem în a ști exact ce tavernă servește cel mai proaspăt pește la ora 20:00 și pe ce traseu să mergem înainte să se facă cald.",
+    "text3": "Aceasta este Grecia, autentică și riguros selectată."
+  },
+  "CuratedJourneys": {
+    "title": "Călătorii Curate",
+    "subtitle": "Itinerarii concepute cu atenție pentru a evita aglomerația."
+  },
+  "Encyclopaedia": {
+    "title": "Enciclopedia",
+    "subtitle": "Indexul nostru exhaustiv și actualizat constant al insulelor și continentului grecesc."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Toate drepturile rezervate.",
+    "poweredBy": "Susținut de cunoștințe locale."
   }
 }

@@ -1,6 +1,31 @@
 {
-  "Index": {
-    "title": "CYouInGreece - The Ultimate Travel Guide",
-    "description": "Discover Greece through AI-powered recommendations."
+  "Navigation": {
+    "philosophy": "Философия",
+    "curatedJourneys": "Отборные Маршруты",
+    "encyclopaedia": "Энциклопедия",
+    "vaultAccess": "Приватный Доступ"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Узнать больше"
+  },
+  "Philosophy": {
+    "title": "Философия",
+    "text1": "Мы не верим в 'скрытые жемчужины' или списки 'обязательно к посещению'.",
+    "text2": "Мы верим в то, что нужно точно знать, в какой таверне подают самую свежую рыбу в 8 вечера, и по какой тропе идти до наступления жары.",
+    "text3": "Это Греция, аутентичная и тщательно отобранная."
+  },
+  "CuratedJourneys": {
+    "title": "Отборные Маршруты",
+    "subtitle": "Тщательно продуманные маршруты вдали от толп туристов."
+  },
+  "Encyclopaedia": {
+    "title": "Энциклопедия",
+    "subtitle": "Наш исчерпывающий и постоянно обновляемый указатель греческих островов и материка."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Все права защищены.",
+    "poweredBy": "Создано на основе местных знаний."
   }
 }

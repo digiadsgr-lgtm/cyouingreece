@@ -3,80 +3,19 @@ import HeroSection from "@/components/HeroSection";
 import Link from "next/link";
 import NikosCTA from "@/components/NikosCTA";
 
-export const dynamic = 'force-static';
+import { sanityClient, urlFor } from '@/lib/sanity';
 
-const DESTINATIONS = [
-  {
-    id: 'santorini',
-    name_en: 'Santorini',
-    name_local: 'Σαντορίνη',
-    slug: 'santorini',
-    type: 'island',
-    tagline: 'Where the caldera swallowed a civilisation.',
-    intro_paragraph: 'I have watched the sun disappear into the caldera from Imerovigli — not Oia, where 4,000 tourists line the steps every evening — and I still cannot explain what happens to the light at that moment. It turns the white buildings amber, then rose, then a purple that has no name in any language I speak.',
-    heroImage: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Take the coastal path from Fira to Imerovigli at 6am. You will have the caldera to yourself.',
-  },
-  {
-    id: 'athens',
-    name_en: 'Athens',
-    name_local: 'Αθήνα',
-    slug: 'athens',
-    type: 'city',
-    tagline: 'The city that invented everything, still arguing about it.',
-    intro_paragraph: 'Athens smells of diesel and jasmine. Sometimes petrichor after afternoon storms in September. The Acropolis is not a museum — it is a living geological fact, a calcareous promontory that has been occupied for 5,000 years. The rest is context.',
-    heroImage: 'https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Eat at Café Avyssinia in the Monastiraki flea market on a Sunday when the dealers are out. Order the saganaki.',
-  },
-  {
-    id: 'mykonos',
-    name_en: 'Mykonos',
-    name_local: 'Μύκονος',
-    slug: 'mykonos',
-    type: 'island',
-    tagline: 'Come in late September, when it finally exhales.',
-    intro_paragraph: 'Everyone comes in August. I come in late September, when the ferry from Piraeus is half-full and the beach clubs have finally stopped pretending they are Ibiza. There is a Mykonos most people never find — the fishing port at Chora at 6am, the water that colour between teal and ultramarine.',
-    heroImage: 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Skip Paradise Beach. Go to Agios Sostis — no sunbeds, no bar, just sand. Take the Ornos road and keep left.',
-  },
-  {
-    id: 'crete',
-    name_en: 'Crete',
-    name_local: 'Κρήτη',
-    slug: 'crete',
-    type: 'island',
-    tagline: 'An island so large it forgot it was an island.',
-    intro_paragraph: 'Crete is not one place. It is an archipelago of micro-cultures stitched together by a mountain spine. In the west, Chania still smells of Venetian stone and orange blossom. In the east, Siteia is unhurried and honest in the way only places without airports can afford to be.',
-    heroImage: 'https://images.unsplash.com/photo-1607619662634-3ac55ec0e216?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Drive the E75 coastal road from Rethymno to Chania at sunrise. Stop at the Georgioupoli lagoon. No agenda.',
-  },
-  {
-    id: 'thessaloniki',
-    name_en: 'Thessaloniki',
-    name_local: 'Θεσσαλονίκη',
-    slug: 'thessaloniki',
-    type: 'city',
-    tagline: 'Where Byzantine history eats breakfast at the waterfront.',
-    intro_paragraph: 'I was born here and I am still discovering it. Thessaloniki is the city that Greeks themselves argue is the real cultural capital — and they are not wrong. The food is forensically better than Athens. The nightlife is longer. The Byzantine churches sit in traffic roundabouts with the nonchalance of a city that has stopped performing its history.',
-    heroImage: 'https://images.unsplash.com/photo-1601928529049-e68dbf0d7c8a?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Go to Modiano market on a Saturday. Eat at one of the counters inside — no sign, no menu. Point at what the person next to you has.',
-  },
-  {
-    id: 'rhodes',
-    name_en: 'Rhodes',
-    name_local: 'Ρόδος',
-    slug: 'rhodes',
-    type: 'island',
-    tagline: 'The medieval city that time decided to keep.',
-    intro_paragraph: 'Walk inside the walls at 11pm when the tour groups have gone. The cobblestones are so worn they are almost black. The Street of the Knights is empty. The sound is a cat somewhere. This is a city that has been continuously inhabited for 2,400 years and it feels like it.',
-    heroImage: 'https://images.unsplash.com/photo-1540571306688-0f6e6c7c0651?q=80&w=1600&auto=format&fit=crop',
-    nikos_tip: 'Eat at Ta Kardasia in the old town. Ask for the fish of the day — they will not have a menu for it, just tell you.',
-  },
-];
+export const revalidate = 60;
 
-export default function Home() {
+export default async function Home() {
+  const featuredSlugs = ['santorini', 'athens', 'mykonos', 'crete'];
+  const dbDestinations = await sanityClient.fetch(`*[_type == "destination" && slug.current in $slugs]`, { slugs: featuredSlugs });
+  
+  // Sort them in the exact order
+  const destinations = featuredSlugs.map(slug => dbDestinations.find((d: any) => d.slug.current === slug)).filter(Boolean);
+
   return (
-    <main className="min-h-screen bg-[#030b15] text-[#FAF9F6]">
+    <main className="min-h-screen bg-[#030b15] text-[#FAF9F6] selection:bg-[#D4A027] selection:text-[#0A1628]">
       {/* HERO */}
       <Suspense fallback={
         <div className="w-full h-screen bg-[#030b15] flex items-center justify-center">
@@ -86,80 +25,221 @@ export default function Home() {
         <HeroSection />
       </Suspense>
 
-      {/* MANIFESTO */}
-      <section className="w-full bg-[#FAF9F6] py-36 md:py-48">
-        <div className="max-w-[1100px] mx-auto px-6 md:px-16 text-center">
-          <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[11px] font-semibold inline-block mb-12">
-            The Philosophy
-          </span>
-          <h2 className="text-[clamp(2.4rem,6vw,5.5rem)] font-serif font-medium text-[#0A1628] leading-tight">
-            Greece is not a destination.<br />
-            <em className="text-[#C1440E]">It is a feeling.</em>
-          </h2>
-          <p className="mt-10 text-[clamp(1rem,1.6vw,1.25rem)] font-light text-[#4a4a4a] max-w-3xl mx-auto leading-[1.95] font-serif">
-            The smell of oregano on a hillside at dusk. A fishing boat that hasn't moved since 1987.
-            A grandmother who makes the same tiropita her mother made. Cold Mythos on a plastic chair
-            facing the Aegean at noon. This is not TripAdvisor. This is someone who actually lives here.
-          </p>
-          <div className="mt-14 flex justify-center gap-2 items-center">
-            <span className="h-px w-12 bg-[#D4A027]" />
-            <span className="text-[#D4A027] text-[10px] tracking-[0.4em] uppercase font-bold">Est. 2026</span>
-            <span className="h-px w-12 bg-[#D4A027]" />
+      {/* MANIFESTO - MAGAZINE SPREAD */}
+      <section className="relative w-full bg-[#FAF9F6] py-32 md:py-48 overflow-hidden">
+        {/* Decorative background typography */}
+        <div className="absolute top-10 -left-10 text-[20vw] font-serif font-bold text-[#0A1628]/[0.02] select-none pointer-events-none leading-none whitespace-nowrap">
+          The Aegean
+        </div>
+
+        <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+          <div className="flex flex-col lg:flex-row gap-20 items-center">
+            {/* Left Image */}
+            <div className="w-full lg:w-5/12">
+              <div className="relative aspect-[3/4] overflow-hidden w-full group shadow-2xl bg-[#e0dad2]">
+                <img 
+                  src="https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1200&auto=format&fit=crop"
+                  alt="Editor's Desk"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110"
+                />
+                <div className="absolute inset-0 border border-white/20 m-4 pointer-events-none z-10" />
+              </div>
+            </div>
+
+            {/* Right Text */}
+            <div className="w-full lg:w-7/12 relative">
+              <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-10 pl-1">
+                The Philosophy
+              </span>
+              
+              <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-serif text-[#0A1628] leading-[1.05] tracking-tight mb-12">
+                Greece is not a destination. <span className="italic text-[#C1440E]">It is a feeling.</span>
+              </h2>
+              
+              <div className="pl-0 md:pl-12 border-l-0 md:border-l border-[#D4A027]/40 relative">
+                <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-[#D4A027] hidden md:block" />
+                <p className="text-[clamp(1.1rem,1.5vw,1.35rem)] font-light text-[#4a4a4a] leading-[1.9] font-serif">
+                  <span className="text-4xl md:text-6xl text-[#0A1628] float-left pr-4 mt-2 font-bold leading-[0.8]">T</span>he smell of oregano on a hillside at dusk. A fishing boat that hasn't moved since 1987.
+                  A grandmother who makes the same tiropita her mother made. Cold Mythos on a plastic chair
+                  facing the Aegean at noon. This is not TripAdvisor. This is someone who actually lives here.
+                </p>
+                <div className="mt-14 flex items-center gap-6">
+                  <NikosCTA />
+                  <span className="text-[#0A1628]/40 text-xs tracking-widest uppercase">Or keep reading ↓</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ENCYCLOPAEDIA */}
-      <section id="destinations" className="w-full bg-[#FAF9F6] pb-48">
-        <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-[#0A1628]/10 pb-10">
-            <h2 className="text-[clamp(2.8rem,7vw,6rem)] font-serif text-[#0A1628] leading-none">
-              The Encyclopaedia.
+      {/* CURATED ITINERARIES - HORIZONTAL SCROLL CONCEPT */}
+      <section className="w-full bg-[#0A1628] py-32 md:py-48 text-white overflow-hidden relative">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-20 md:mb-32">
+          <span className="text-[#D4A027] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">Curated Journeys</span>
+          <div className="flex flex-col md:flex-row justify-between items-end gap-10">
+            <h2 className="text-[clamp(3rem,6vw,5.5rem)] font-serif leading-[0.95] max-w-3xl">
+              Don't just visit. <br/><span className="italic text-white/50">Experience.</span>
             </h2>
-            <p className="text-[#9a9890] text-xs font-sans tracking-[0.25em] uppercase mt-6 md:mt-0 text-right leading-relaxed max-w-[260px]">
-              Every island. Every city. Every table worth finding.
-            </p>
+            <Link href="#destinations" className="text-xs uppercase tracking-[0.2em] hover:text-[#D4A027] transition-colors border-b border-white/20 pb-1 mb-2">
+              View all 50+ Guides
+            </Link>
+          </div>
+        </div>
+
+        {/* Horizontal Slider Area (CSS grid fallback for now) */}
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { title: "The Quiet Cyclades", duration: "7 Days", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", desc: "Sikinos, Folegandros, and Serifos. No airports, no beach clubs." },
+              { title: "Minoan Echoes", duration: "10 Days", img: "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=80&w=800&auto=format&fit=crop", desc: "The deep south of Crete. Gorges, hidden ruins, and wild thyme." },
+              { title: "The Dodecanese Edge", duration: "14 Days", img: "https://images.unsplash.com/photo-1540571306688-0f6e6c7c0651?q=80&w=800&auto=format&fit=crop", desc: "Rhodes to Patmos. Castles, monasteries, and Italy's architectural ghost." }
+            ].map((itin, idx) => (
+              <div key={idx} className="group cursor-pointer relative overflow-hidden h-[500px] bg-[#0A1628]">
+                <img 
+                  src={itin.img}
+                  alt={itin.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/40 to-transparent opacity-80" />
+                
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <span className="text-[#D4A027] text-[10px] uppercase tracking-widest mb-3 block">{itin.duration}</span>
+                  <h3 className="text-3xl font-serif text-white mb-3 group-hover:text-[#D4A027] transition-colors">{itin.title}</h3>
+                  <p className="text-white/70 font-light text-sm max-w-[280px]">{itin.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* JOURNAL PREVIEW */}
+      {(() => {
+        // We statically define 3 curated article teaser cards for the homepage
+        const journalPreviews = [
+          {
+            title: 'Folegandros in May: The Last Island Without a Lie',
+            category: 'Travel Guide',
+            excerpt: 'Before the ferries increase in June, before the restaurants open their second seating \u2014 this is the only time Folegandros belongs to itself.',
+            img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=900&auto=format&fit=crop',
+            href: '/journal',
+          },
+          {
+            title: 'The Oldest Taverna in the Mani Still Serves One Dish',
+            category: 'Gastronomy',
+            excerpt: "Konstantina doesn\u2019t have a menu. She doesn\u2019t need one. The braised lamb with oregano has been the same since 1961.",
+            img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=900&auto=format&fit=crop',
+            href: '/journal',
+          },
+          {
+            title: 'Why You Should Skip Santorini in August',
+            category: 'Practical',
+            excerpt: 'The photographs are real. The experience is not. Here is an honest accounting of what August in Santorini actually looks like.',
+            img: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=900&auto=format&fit=crop',
+            href: '/journal',
+          },
+        ];
+
+        return (
+          <section className="w-full bg-[#FAF9F6] py-32 md:py-48 border-t border-[#0A1628]/10">
+            <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+              <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-20 md:mb-28">
+                <div>
+                  <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">
+                    The Journal
+                  </span>
+                  <h2 className="text-[clamp(3rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-[0.95]">
+                    Stories worth<br />
+                    <span className="italic">reading slowly.</span>
+                  </h2>
+                </div>
+                <Link href="/journal" className="text-xs uppercase tracking-[0.2em] hover:text-[#C1440E] transition-colors border-b border-[#0A1628]/20 pb-1 mb-2 text-[#0A1628]">
+                  All Articles →
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                {journalPreviews.map((item, idx) => (
+                  <Link key={idx} href={item.href} className="group flex flex-col">
+                    <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-[#e0dad2]">
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-105"
+                      />
+                      <div className="absolute top-4 left-4 bg-[#C1440E] px-3 py-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white">
+                        {item.category}
+                      </div>
+                    </div>
+                    <h3 className="font-serif text-[#0A1628] text-xl md:text-2xl leading-tight mb-4 group-hover:text-[#C1440E] transition-colors duration-300">
+                      {item.title}
+                    </h3>
+                    <p className="text-[#4a4a4a] font-light text-sm leading-relaxed flex-1">
+                      {item.excerpt}
+                    </p>
+                    <span className="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-[0.2em] text-[#0A1628] font-bold group-hover:text-[#C1440E] transition-colors">
+                      Read
+                      <span className="w-6 h-px bg-current group-hover:w-10 transition-all" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* THE ENCYCLOPAEDIA - ASYMMETRICAL GRID */}
+      <section id="destinations" className="w-full bg-[#FAF9F6] py-32 md:py-48">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          
+          <div className="text-center mb-32">
+            <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">
+              The Encyclopaedia
+            </span>
+            <h2 className="text-[clamp(3.5rem,8vw,7rem)] font-serif text-[#0A1628] leading-[0.9]">
+              Every island.<br/>
+              <span className="italic">Every table worth finding.</span>
+            </h2>
           </div>
 
-          <div className="flex flex-col gap-32 md:gap-48">
-            {DESTINATIONS.map((dest, i) => {
-              const isEven = i % 2 === 0;
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-24 md:gap-y-32">
+            {destinations.map((dest: any, i) => {
+              // Staggered layout logic
+              const isLarge = i % 3 === 0;
+              const colSpan = isLarge ? "lg:col-span-8" : "lg:col-span-4";
+              const colStart = isLarge ? (i % 2 === 0 ? "lg:col-start-1" : "lg:col-start-5") : "lg:col-auto";
+              
               return (
-                <article key={dest.id}
-                  className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-24 lg:gap-32 group`}
-                >
-                  {/* Image */}
-                  <div className="w-full md:w-[55%] relative flex-shrink-0">
-                    <div className="w-full overflow-hidden aspect-[4/5] bg-[#e0dad2]">
-                      <div
-                        className="w-full h-full bg-cover bg-center transition-transform duration-[2500ms] ease-out group-hover:scale-[1.04]"
-                        style={{ backgroundImage: `url('${dest.heroImage}')` }}
+                <article key={dest._id} className={`${colSpan} ${colStart} group flex flex-col`}>
+                  <Link href={`/destination/${dest.slug?.current}`} className="w-full relative overflow-hidden block aspect-[4/3] md:aspect-[3/4] mb-8 bg-[#e0dad2]">
+                    {dest.hero_image?.asset ? (
+                      <img
+                        src={urlFor(dest.hero_image).width(1200).url()}
+                        alt={dest.name_en}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
                       />
+                    ) : (
+                      <div className="absolute inset-0 bg-[#0A1628]" />
+                    )}
+                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 shadow-lg z-10">
+                      <span className="text-[9px] text-[#0A1628] font-bold tracking-[0.25em] uppercase">{dest.type}</span>
                     </div>
-                    <div className={`absolute top-6 ${isEven ? 'left-6' : 'right-6'} bg-[#0A1628] px-4 py-2`}>
-                      <span className="text-[10px] text-[#D4A027] font-bold tracking-[0.25em] uppercase">{dest.type}</span>
-                    </div>
-                    <div className={`absolute -bottom-6 ${isEven ? '-right-4 md:-right-8' : '-left-4 md:-left-8'} hidden lg:block bg-white border border-[#D4A027]/30 p-6 max-w-[260px] shadow-2xl`}>
-                      <span className="text-[9px] text-[#D4A027] font-bold tracking-[0.2em] uppercase block mb-2">Nikos says</span>
-                      <p className="font-serif italic text-[#0A1628] text-sm leading-relaxed">"{dest.nikos_tip}"</p>
-                    </div>
-                  </div>
+                  </Link>
 
-                  {/* Text */}
-                  <div className="flex flex-col justify-center flex-1 pt-4 md:pt-10">
-                    <div className="flex items-baseline gap-4 mb-5">
-                      <span className="font-serif italic text-[#C1440E] text-4xl leading-none">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="h-px w-12 bg-[#0A1628]/20" />
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex items-center gap-4 mb-4">
+                      <h3 className="text-4xl md:text-5xl font-serif text-[#0A1628] leading-none">{dest.name_en}</h3>
+                      <span className="text-[#0A1628]/30 font-serif italic text-xl">{dest.name_local}</span>
                     </div>
-                    <h3 className="text-[clamp(3rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-none tracking-tight mb-2">{dest.name_en}</h3>
-                    <p className="text-[#0A1628]/40 text-sm font-serif italic mb-5">{dest.name_local}</p>
-                    <p className="font-serif italic text-[#C1440E] text-xl mb-7 leading-snug">"{dest.tagline}"</p>
-                    <p className="text-[#4a4a4a] font-light text-lg leading-[1.85] mb-10 max-w-[440px]">
-                      {dest.intro_paragraph.slice(0, 220)}…
+                    <p className="font-serif italic text-[#C1440E] text-lg md:text-xl mb-6">"{dest.tagline}"</p>
+                    <p className="text-[#4a4a4a] font-light text-base leading-relaxed mb-8 flex-1">
+                      {isLarge ? dest.intro_paragraph : `${dest.intro_paragraph?.slice(0, 150)}...`}
                     </p>
-                    <Link href={`/destinations/${dest.slug}`} className="inline-flex items-center gap-4 group/cta w-fit">
-                      <span className="text-[11px] uppercase tracking-[0.25em] font-bold text-[#0A1628] group-hover/cta:text-[#C1440E] transition-colors duration-300">Read the Guide</span>
-                      <span className="h-px w-8 bg-[#0A1628] group-hover/cta:w-16 group-hover/cta:bg-[#C1440E] transition-all duration-500" />
+                    <Link href={`/destination/${dest.slug?.current}`} className="inline-flex items-center gap-3 w-fit text-xs uppercase tracking-[0.2em] font-bold text-[#0A1628] hover:text-[#C1440E] transition-colors group/link">
+                      Read Guide
+                      <span className="w-8 h-px bg-[#0A1628] group-hover/link:w-12 group-hover/link:bg-[#C1440E] transition-all" />
                     </Link>
                   </div>
                 </article>
@@ -169,50 +249,69 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NIKOS CTA */}
-      <section className="w-full bg-[#0A1628] py-28">
-        <div className="max-w-[860px] mx-auto px-6 text-center">
-          <span className="text-[11px] text-[#D4A027] tracking-[0.4em] uppercase font-semibold block mb-7">Your personal guide</span>
-          <h2 className="text-[clamp(2rem,5vw,4rem)] font-serif text-white leading-tight mb-7">
-            Ask Nikos anything<br /><span className="italic text-[#D4A027]">about Greece.</span>
-          </h2>
-          <p className="text-white/45 font-light text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-            Which island in October? Best beach for children? Ferry from Piraeus to Folegandros?
-            Nikos knows. Specific name, specific table, specific time.
-          </p>
-          <NikosCTA />
-        </div>
-      </section>
-
-      {/* NEWSLETTER */}
-      <section className="w-full bg-[#FAF9F6] py-28 border-t border-[#0A1628]/8">
-        <div className="max-w-[780px] mx-auto px-6 text-center">
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-serif text-[#0A1628] mb-3">The Insider Greece PDF.</h2>
-          <p className="font-serif italic text-[#C1440E] text-xl mb-8">Free. 47 pages of what Nikos actually knows.</p>
-          <div className="flex flex-col sm:flex-row max-w-xl mx-auto border border-[#0A1628]/20">
-            <input type="email" placeholder="your@email.com" className="flex-1 px-6 py-4 text-[#0A1628] font-light text-sm outline-none bg-white font-sans placeholder:text-[#aaa]" />
-            <button className="px-8 py-4 bg-[#0A1628] text-white text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#C1440E] transition-colors duration-300 whitespace-nowrap">Send it to me</button>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="w-full bg-[#030b15] py-20">
+      {/* FOOTER & NEWSLETTER BLOCK */}
+      <footer className="w-full bg-[#030b15] pt-32">
         <div className="max-w-[1320px] mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16 pb-16 border-b border-white/8">
-            <div>
-              <p className="text-[clamp(2rem,4vw,3rem)] font-serif text-white leading-none mb-2">CYouInGreece</p>
-              <p className="font-serif italic text-[#D4A027] text-lg">See you in Greece.</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-16 gap-y-5 text-sm">
-              {['Islands', 'Cities', 'Gastronomy', 'Culture', 'Itineraries', 'About Nikos'].map(l => (
-                <a key={l} href="#" className="font-serif text-white/50 hover:text-[#D4A027] transition-colors">{l}</a>
-              ))}
+          
+          {/* Newsletter Box */}
+          <div className="w-full bg-[#0A1628] border border-[#D4A027]/20 p-10 md:p-20 relative overflow-hidden mb-32 flex flex-col items-center text-center">
+            {/* Minimalist sun vector */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4A027] rounded-full blur-[120px] opacity-10 pointer-events-none" />
+            
+            <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-serif text-white leading-tight mb-4 relative z-10">
+              The Insider Greece PDF.
+            </h2>
+            <p className="font-serif italic text-[#D4A027] text-xl mb-12 relative z-10">
+              Free. 47 pages of what Nikos actually knows.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row w-full max-w-2xl relative z-10 gap-2 sm:gap-0">
+              <input 
+                type="email" 
+                placeholder="Where should we send it?" 
+                className="flex-1 px-8 py-5 text-white bg-white/5 border border-white/20 font-light text-sm outline-none focus:border-[#D4A027] transition-colors placeholder:text-white/40" 
+              />
+              <button className="px-10 py-5 bg-[#D4A027] text-[#0A1628] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-colors duration-300 whitespace-nowrap">
+                Unlock Now
+              </button>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/20 text-[11px] tracking-[0.2em] uppercase font-sans">© 2026 CYouInGreece</p>
-            <p className="text-white/20 text-[11px] tracking-[0.15em] uppercase font-sans">En · De · Fr · It · Es · Ro · Pl · Ru · El</p>
+
+          <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-20 pb-20 border-b border-white/10">
+            <div className="md:w-1/3">
+              <p className="text-4xl font-serif text-white leading-none mb-3">CYouInGreece</p>
+              <p className="font-serif italic text-[#D4A027] text-xl mb-8">See you in Greece.</p>
+              <p className="text-white/40 text-sm font-light leading-relaxed max-w-sm">
+                Built for the travelers who want to see the real Aegean. Curated by locals, powered by an obsession with authenticity.
+              </p>
+            </div>
+            
+            <div className="md:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 text-sm">
+              <div className="flex flex-col gap-4">
+                <span className="text-[#D4A027] text-[10px] tracking-widest uppercase font-bold mb-2">Regions</span>
+                {['Cyclades', 'Ionian', 'Dodecanese', 'Crete'].map(l => <a key={l} href="#" className="font-serif text-white/60 hover:text-white transition-colors">{l}</a>)}
+              </div>
+              <div className="flex flex-col gap-4">
+                <span className="text-[#D4A027] text-[10px] tracking-widest uppercase font-bold mb-2">Experiences</span>
+                {['Gastronomy', 'History', 'Sailing', 'Seclusion'].map(l => <a key={l} href="#" className="font-serif text-white/60 hover:text-white transition-colors">{l}</a>)}
+              </div>
+              <div className="flex flex-col gap-4">
+                <span className="text-[#D4A027] text-[10px] tracking-widest uppercase font-bold mb-2">Company</span>
+                {['About Us', 'Contact Nikos', 'Press', 'Journal'].map(l => <a key={l} href="#" className="font-serif text-white/60 hover:text-white transition-colors">{l}</a>)}
+              </div>
+              <div className="flex flex-col gap-4">
+                <span className="text-[#D4A027] text-[10px] tracking-widest uppercase font-bold mb-2">Social</span>
+                {['Instagram', 'Pinterest', 'Spotify', 'Vimeo'].map(l => <a key={l} href="#" className="font-serif text-white/60 hover:text-white transition-colors">{l}</a>)}
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-12">
+            <p className="text-white/20 text-[10px] tracking-[0.2em] uppercase font-sans">© 2026 CYouInGreece. All rights reserved.</p>
+            <div className="flex gap-4">
+              <a href="#" className="text-white/20 text-[10px] tracking-[0.1em] uppercase font-sans hover:text-[#D4A027] transition-colors">Privacy</a>
+              <a href="#" className="text-white/20 text-[10px] tracking-[0.1em] uppercase font-sans hover:text-[#D4A027] transition-colors">Terms</a>
+            </div>
           </div>
         </div>
       </footer>

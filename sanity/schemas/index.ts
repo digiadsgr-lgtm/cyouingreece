@@ -3,6 +3,7 @@ export { destinationSchema } from './destination'
 export { regionSchema      } from './region'
 export { articleSchema     } from './article'
 export { contributorSchema } from './contributor'
+export { thematicSectionSchema } from './thematicSection'
 
 // Object types
 export {

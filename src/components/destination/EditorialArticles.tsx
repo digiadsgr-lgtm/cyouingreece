@@ -5,10 +5,9 @@ import { ArrowRight } from 'lucide-react';
 
 interface Props {
   articles: EditorialArticle[];
-  locale: string;
 }
 
-export default function EditorialArticles({ articles, locale }: Props) {
+export default function EditorialArticles({ articles }: Props) {
   if (!articles?.length) return null;
 
   return (
@@ -26,7 +25,7 @@ export default function EditorialArticles({ articles, locale }: Props) {
           return (
             <a
               key={article._id}
-              href={`/${locale}/articles/${article.slug.current}`}
+              href={`/journal/${article.slug.current}`}
               className="editorial-card"
               aria-label={`Read: ${article.title}`}
             >

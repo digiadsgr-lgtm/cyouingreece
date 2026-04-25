@@ -1,6 +1,31 @@
 {
-  "Index": {
-    "title": "CYouInGreece - The Ultimate Travel Guide",
-    "description": "Discover Greece through AI-powered recommendations."
+  "Navigation": {
+    "philosophy": "Philosophy",
+    "curatedJourneys": "Curated Journeys",
+    "encyclopaedia": "Encyclopaedia",
+    "vaultAccess": "Vault Access"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Scroll to discover"
+  },
+  "Philosophy": {
+    "title": "The Philosophy",
+    "text1": "We don't believe in 'hidden gems' or 'must-see' lists.",
+    "text2": "We believe in knowing exactly which taverna serves the freshest catch at 8 PM, and which trail to hike before the heat sets in.",
+    "text3": "This is Greece, unedited and rigorously curated."
+  },
+  "CuratedJourneys": {
+    "title": "Curated Journeys",
+    "subtitle": "Carefully designed itineraries that bypass the crowds."
+  },
+  "Encyclopaedia": {
+    "title": "The Encyclopaedia",
+    "subtitle": "Our exhaustive, constantly updated index of the Greek islands and mainland."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. All rights reserved.",
+    "poweredBy": "Powered by local knowledge."
   }
 }

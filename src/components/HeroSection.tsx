@@ -1,13 +1,33 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-// ─── Hero Content Layer ──────────────────────────────────────────────────────
-function HeroContent() {
+const HERO_SLIDES = [
+  {
+    url: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=85&w=2400&auto=format&fit=crop',
+    caption: 'Santorini, Cyclades',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1555993539-1732b0258235?q=85&w=2400&auto=format&fit=crop',
+    caption: 'Athens, Attica',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=85&w=2400&auto=format&fit=crop',
+    caption: 'Crete, South Aegean',
+  },
+];
+
+function HeroContent({ currentSlide }: { currentSlide: number }) {
   return (
-    <div className="absolute inset-0 z-10 flex flex-col justify-end pointer-events-none select-none bg-gradient-to-t from-[#030b15] via-[#030b15]/40 to-transparent">
-      <div className="max-w-[1320px] mx-auto w-full px-6 md:px-16 pb-20 md:pb-28">
+    <div className="absolute inset-0 z-10 flex flex-col justify-end pointer-events-none select-none">
+      {/* Gradient overlay: bottom-heavy for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#030b15] via-[#030b15]/50 to-transparent" />
+      {/* Subtle top vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#030b15]/30 to-transparent" />
+
+      <div className="max-w-[1320px] mx-auto w-full px-6 md:px-16 pb-20 md:pb-32 relative z-10">
         {/* Eyebrow */}
-        <div className="flex items-center gap-4 mb-7">
+        <div className="flex items-center gap-4 mb-6">
           <span className="h-px w-10 bg-[#D4A027]" />
           <span className="text-[#D4A027] text-[11px] tracking-[0.45em] uppercase font-semibold">
             Aegean · 2026
@@ -15,26 +35,32 @@ function HeroContent() {
         </div>
 
         {/* Main headline */}
-        <h1 className="text-[clamp(3.2rem,9vw,8.5rem)] font-serif font-light text-white leading-[0.9] mb-8"
-          style={{ textShadow: '0 4px 40px rgba(0,0,0,0.6)' }}>
-          C You In<br />
+        <h1
+          className="text-[clamp(3.5rem,10vw,9rem)] font-serif font-light text-white leading-[0.88] mb-8"
+          style={{ textShadow: '0 4px 60px rgba(0,0,0,0.7)' }}
+        >
+          C You In{' '}
           <em className="not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4A027] to-[#C1440E]">
             Greece.
           </em>
         </h1>
 
         {/* Nikos Quote */}
-        <p className="font-serif italic text-[clamp(0.95rem,2vw,1.35rem)] text-white/70 max-w-2xl leading-relaxed mb-10"
-          style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+        <p
+          className="font-serif italic text-[clamp(1rem,2vw,1.4rem)] text-white/75 max-w-2xl leading-relaxed mb-10"
+          style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
+        >
           "Turn left at the blue door, past the bakery that opens at 5am.
           There is a table with a view that will change you."
           <span className="not-italic text-[#D4A027] text-xs ml-3 tracking-widest">— Nikos</span>
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-6 pointer-events-auto">
-          <a href="#destinations"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-[#D4A027] text-[#030b15] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-300">
+        <div className="flex flex-wrap gap-5 pointer-events-auto">
+          <a
+            href="#destinations"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-[#D4A027] text-[#030b15] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-300"
+          >
             Discover Greece
           </a>
           <button
@@ -42,57 +68,115 @@ function HeroContent() {
             onClick={() => {
               const btn = document.querySelector<HTMLButtonElement>('[aria-label="Plan my trip with Nikos"]');
               btn?.click();
-            }}>
+            }}
+          >
             Speak to Nikos →
           </button>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 right-10 hidden md:flex flex-col items-center gap-3">
-        <span className="text-[9px] uppercase tracking-[0.35em] text-white/30 -rotate-90 mb-6">Scroll</span>
-        <div className="w-px h-16 bg-gradient-to-b from-[#D4A027]/60 to-transparent" />
+        {/* Slide caption */}
+        <div className="absolute bottom-8 right-10 hidden md:flex items-center gap-3">
+          <span className="text-[9px] uppercase tracking-[0.35em] text-white/30">
+            {HERO_SLIDES[currentSlide].caption}
+          </span>
+          <div className="flex gap-1.5">
+            {HERO_SLIDES.map((_, i) => (
+              <span
+                key={i}
+                className={`w-4 h-px transition-all duration-700 ${
+                  i === currentSlide ? 'bg-[#D4A027] w-8' : 'bg-white/30'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// ─── Main Export ─────────────────────────────────────────────────────────────
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [prevSlide, setPrevSlide] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+    const timer = setInterval(() => {
+      setPrevSlide(currentSlide);
+      setCurrentSlide((s) => (s + 1) % HERO_SLIDES.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [mounted, currentSlide]);
+
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#030b15]">
-      {/* Fallback image shown immediately while iframe loads */}
-      <div
-        className="absolute inset-0 z-0 transition-opacity duration-[2000ms]"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2000&auto=format&fit=crop')",
-          backgroundSize: 'cover',
-          backgroundPosition: '50% 60%',
-          filter: 'brightness(0.35) saturate(0.8)',
-        }}
-      />
+      <style>{`
+        @keyframes kenBurns {
+          0%   { transform: scale(1.08) translate(0%, 0%); }
+          100% { transform: scale(1.0) translate(-1%, 1%); }
+        }
+        @keyframes kenBurnsReverse {
+          0%   { transform: scale(1.0) translate(-1%, 1%); }
+          100% { transform: scale(1.08) translate(1%, -1%); }
+        }
+        @keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes heroFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .slide-enter { animation: heroFadeIn 1.5s ease forwards; }
+        .slide-exit  { animation: heroFadeOut 1.5s ease forwards; pointer-events: none; }
+        .ken-burns-a { animation: kenBurns 8s ease-out forwards; }
+        .ken-burns-b { animation: kenBurnsReverse 8s ease-out forwards; }
 
-      {/* Vimeo Background Video - loads dynamically and fades in */}
-      {mounted && (
-        <div className="absolute inset-0 z-[1] w-[150vw] h-[150vh] xl:w-[120vw] xl:h-[120vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70 pointer-events-none">
-          <iframe
-            src="https://player.vimeo.com/video/285517336?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&dnt=1"
-            className="w-full h-full object-cover scale-[1.05]"
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            style={{ border: 'none', pointerEvents: 'none' }}
+        /* film-grain overlay */
+        .grain-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 5;
+          pointer-events: none;
+          opacity: 0.035;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 200px 200px;
+        }
+      `}</style>
+
+      {/* Previous slide fading out */}
+      {prevSlide !== null && (
+        <div key={`prev-${prevSlide}`} className="absolute inset-0 z-[1] slide-exit">
+          <img
+            src={HERO_SLIDES[prevSlide].url}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: 'brightness(0.45) saturate(1.1)' }}
           />
         </div>
       )}
 
+      {/* Current slide entering */}
+      <div key={`curr-${currentSlide}`} className="absolute inset-0 z-[2] slide-enter">
+        <img
+          src={HERO_SLIDES[currentSlide].url}
+          alt={HERO_SLIDES[currentSlide].caption}
+          className={`absolute inset-0 w-full h-full object-cover ${
+            currentSlide % 2 === 0 ? 'ken-burns-a' : 'ken-burns-b'
+          }`}
+          style={{ filter: 'brightness(0.45) saturate(1.15)' }}
+        />
+      </div>
+
+      {/* Film grain */}
+      <div className="grain-overlay" />
+
+      {/* Scroll indicator line */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 hidden md:block">
+        <div className="w-px h-16 bg-gradient-to-b from-[#D4A027]/60 to-transparent" />
+      </div>
+
       {/* Editorial content overlay */}
-      <HeroContent />
+      <HeroContent currentSlide={currentSlide} />
     </section>
   );
 }

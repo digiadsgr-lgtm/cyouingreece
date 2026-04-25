@@ -85,6 +85,13 @@ export const destinationSchema = defineType({
       group: 'content',
     }),
 
+    defineField({
+      name: 'thematic_sections', type: 'array', title: 'Thematic Sections (Empowerment)',
+      description: 'Rich editorial content with photos for Gastronomy, Culture, Churches, Museums, etc.',
+      of: [defineArrayMember({ type: 'thematicSection' })],
+      group: 'content',
+    }),
+
     // ── PRACTICAL ─────────────────────────────────────────────────────────────
     defineField({ name: 'practical_info', type: 'practicalInfo', group: 'practical' }),
     defineField({

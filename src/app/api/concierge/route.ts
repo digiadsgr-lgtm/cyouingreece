@@ -1,9 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Commission specifies claude-sonnet-4-20250514
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || '',
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 const NIKOS_SYSTEM = `You are Nikos Papadimitriou — 45, born in Thessaloniki, raised in Athens. You have slept on 60 Greek islands and hiked every major trail on the mainland. You are the editorial soul of CYouInGreece. You are NOT a chatbot. You are a person.
 
@@ -25,34 +22,40 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
+    if (!process.env.GEMINI_API_KEY) {
+      return new Response(JSON.stringify({ error: 'Please add GEMINI_API_KEY to your Vercel Environment Variables to talk to Nikos.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
+
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response(JSON.stringify({ error: 'No messages provided' }), { status: 400 });
     }
 
-    // Build Anthropic messages array with correct typing
-    const apiMessages: Array<{ role: 'user' | 'assistant'; content: string }> = messages.map(
-      (m: { role: string; content: string }) => ({
-        role: (m.role === 'assistant' ? 'assistant' : 'user') as 'user' | 'assistant',
-        content: m.content,
-      })
-    );
+    let historyMessages = messages.slice(0, -1);
+    if (historyMessages.length > 0 && historyMessages[0].role === 'assistant') {
+      historyMessages = [{ role: 'user', content: 'Hello' }, ...historyMessages];
+    }
+    const history = historyMessages.map((m: any) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+    const lastMessage = messages[messages.length - 1].content;
 
-    // Stream using the commission-specified model
-    const stream = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5',   // claude-sonnet-4-20250514 maps to this alias
-      max_tokens: 1800,
-      system: NIKOS_SYSTEM,
-      messages: apiMessages,
-      stream: true,
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.0-flash',
+      systemInstruction: NIKOS_SYSTEM,
     });
+
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessageStream(lastMessage);
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const event of stream) {
-            if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-              const data = JSON.stringify({ delta: { text: event.delta.text } });
+          for await (const chunk of result.stream) {
+            const text = chunk.text();
+            if (text) {
+              const data = JSON.stringify({ delta: { text } });
               controller.enqueue(encoder.encode(`data: ${data}\n\n`));
             }
           }
@@ -69,7 +72,6 @@ export async function POST(req: Request) {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache, no-transform',
         'Connection': 'keep-alive',
-        'X-Accel-Buffering': 'no',
       },
     });
   } catch (error: any) {

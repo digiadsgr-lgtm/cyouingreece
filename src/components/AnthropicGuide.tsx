@@ -30,9 +30,9 @@ When you have gathered enough info to build an itinerary (travel party, duration
 // ─── Quick Start Chips ────────────────────────────────────────────────────────
 
 const CHIPS = [
-  'Build my perfect itinerary',
-  'Surprise me with something unexpected',
-  'Best beaches for this time of year',
+  'Design a 7-day secret Cyclades itinerary',
+  'Where is the best seafood in Kalymnos?',
+  'Surprise me with an island without an airport',
 ];
 
 // ─── Nikos Avatar ─────────────────────────────────────────────────────────────
@@ -221,49 +221,39 @@ export default function AnthropicGuide() {
     }
   }, [input]);
 
-  // First welcome message on open
+  // First welcome message on open — stored in state so it's in history
   useEffect(() => {
     if (isOpen && !started) {
       setStarted(true);
-      setTimeout(() => streamMessage(
-        "Γεια σου! I'm Nikos. Tell me — what kind of Greece are you dreaming of? Relaxation on a quiet beach, ancient history, great food, adventure... or something you can't quite put into words yet?",
-        true // system-injected, no API call
-      ), 600);
+      const welcomeText = "Γεια σου. I'm Nikos. Forget the guidebooks. Tell me how many days you have and what you're dreaming of, and I'll build you an itinerary you won't find on TripAdvisor.";
+      // Add to messages immediately so it counts as history context
+      setTimeout(() => {
+        setMessages([{ role: 'assistant', content: welcomeText }]);
+      }, 600);
     }
   }, [isOpen]);
 
-  // ── Streaming helper ─────────────────────────────────────────────────────────
-  const streamMessage = useCallback(async (text: string, mock = false) => {
-    if (mock) {
-      // Animate locally without API
-      setIsTyping(false);
-      setIsStreaming(true);
-      setStreamingContent('');
-      let i = 0;
-      const interval = setInterval(() => {
-        setStreamingContent(text.slice(0, ++i));
-        if (i >= text.length) {
-          clearInterval(interval);
-          setIsStreaming(false);
-          setMessages((prev) => [...prev, { role: 'assistant', content: text }]);
-          setStreamingContent('');
-        }
-      }, 14);
-      return;
-    }
-
+  // ── Streaming helper — sends full history so Nikos has context ───────────────
+  const streamMessage = useCallback(async (currentMessages: Message[], userText: string) => {
     setIsTyping(false);
     setIsStreaming(true);
     setStreamingContent('');
+
+    // Build the full conversation to send to API (history + new user message)
+    const payload = [...currentMessages, { role: 'user' as const, content: userText }];
 
     try {
       const res = await fetch('/api/concierge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: messages.concat([{ role: 'user', content: text }]) }),
+        body: JSON.stringify({ messages: payload }),
       });
 
-      if (!res.ok || !res.body) throw new Error('Bad response');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server error (${res.status}) — please try again.`);
+      }
+      if (!res.body) throw new Error('No response stream received.');
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -273,14 +263,13 @@ export default function AnthropicGuide() {
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-        // SSE format: data: {...}
         const lines = chunk.split('\n');
         for (const line of lines) {
           if (line.startsWith('data: ')) {
-            const payload = line.slice(6);
-            if (payload === '[DONE]') continue;
+            const p = line.slice(6);
+            if (p === '[DONE]') continue;
             try {
-              const parsed = JSON.parse(payload);
+              const parsed = JSON.parse(p);
               const token = parsed.delta?.text ?? '';
               full += token;
               setStreamingContent(full);
@@ -292,28 +281,38 @@ export default function AnthropicGuide() {
       setIsStreaming(false);
       setMessages((prev) => [...prev, { role: 'assistant', content: full }]);
       setStreamingContent('');
-    } catch {
+    } catch (err: any) {
       setIsStreaming(false);
-      const err = 'The Aegean breeze disrupted my connection — please try again.';
-      setMessages((prev) => [...prev, { role: 'assistant', content: err }]);
+      const errMsg = err.message?.includes('500') || err.message?.includes('error')
+        ? `⚠️ ${err.message}`
+        : 'The Aegean breeze disrupted my connection — please try again.';
+      setMessages((prev) => [...prev, { role: 'assistant', content: errMsg }]);
       setStreamingContent('');
     }
-  }, [messages]);
+  }, []);
 
   // ── Send ─────────────────────────────────────────────────────────────────────
   const handleSend = useCallback(async () => {
     const text = input.trim();
     if (!text || isStreaming || isTyping) return;
     setInput('');
-    setMessages((prev) => [...prev, { role: 'user', content: text }]);
-    setIsTyping(true);
-    await streamMessage(text);
+    // Capture current messages BEFORE state update for the API call
+    setMessages((prev) => {
+      const updated = [...prev, { role: 'user' as const, content: text }];
+      // Fire the stream with the snapshot that includes the user message
+      setIsTyping(true);
+      streamMessage(updated, text).then(() => {});
+      return updated;
+    });
   }, [input, isStreaming, isTyping, streamMessage]);
 
   const handleChip = useCallback((chip: string) => {
-    setMessages((prev) => [...prev, { role: 'user', content: chip }]);
-    setIsTyping(true);
-    streamMessage(chip);
+    setMessages((prev) => {
+      const updated = [...prev, { role: 'user' as const, content: chip }];
+      setIsTyping(true);
+      streamMessage(updated, chip);
+      return updated;
+    });
   }, [streamMessage]);
 
   const handleKey = (e: React.KeyboardEvent) => {
