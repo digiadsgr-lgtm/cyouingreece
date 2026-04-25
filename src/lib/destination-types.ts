@@ -168,6 +168,7 @@ export interface Destination {
   tagline: string;
   intro_paragraph: string;
   body_content: unknown[]; // Portable Text blocks
+  diary_entries?: any[]; // The Diary of Nikos entries
   at_a_glance: AtAGlance;
   hidden_gems: HiddenGem[];
   gastronomy: GastronomyItem[];
