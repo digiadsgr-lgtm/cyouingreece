@@ -76,8 +76,15 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error('[Nikos/Concierge Error]', error?.message || error);
+    
+    // Check if it's a Gemini Quota Exceeded error
+    const isQuotaError = error?.message?.includes('429') || error?.message?.includes('quota');
+    const errorMessage = isQuotaError 
+      ? 'GEMINI_API_ERROR: Your Gemini API Key has exceeded its free tier quota. Please check your Google AI Studio billing details.'
+      : 'Nikos is catching a late ferry — please try again in a moment.';
+
     return new Response(
-      JSON.stringify({ error: 'Nikos is catching a late ferry — please try again in a moment.' }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
