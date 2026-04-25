@@ -20,8 +20,9 @@ import {
 export default defineConfig({
   name:      'cyouingreece-studio',
   title:     'CYouInGreece',
-  projectId: process.env.SANITY_PROJECT_ID || 'sntl6fxn',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'sntl6fxn',
   dataset:   'production',
+  basePath:  '/studio',
 
   plugins: [
     structureTool({
