@@ -4,6 +4,20 @@ import { useUserHistory } from '@/lib/useUserHistory';
 import { sanityClient, urlFor } from '@/lib/sanity';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 280, damping: 20 } }
+};
 
 export default function PersonalizedFeed() {
   const { history, isLoaded, getTopInterest } = useUserHistory();
@@ -52,21 +66,6 @@ export default function PersonalizedFeed() {
   const subtitle = topInterest
     ? 'Tailored recommendations based on your recent reading history.'
     : 'The most popular destinations across the Aegean right now.';
-
-import { motion } from 'framer-motion';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 280, damping: 20 } }
-};
 
   return (
     <section className="bg-[#FAF9F6] py-24 md:py-36 text-[#0A1628] overflow-hidden">
