@@ -1,15 +1,21 @@
 import { Suspense } from "react";
 import HeroSection from "@/components/HeroSection";
 import Link from "next/link";
-import NikosCTA from "@/components/NikosCTA";
-
 import { sanityClient, urlFor } from '@/lib/sanity';
 
 export const revalidate = 60;
 
 export default async function Home() {
   const featuredSlugs = ['santorini', 'athens', 'mykonos', 'crete'];
-  const dbDestinations = await sanityClient.fetch(`*[_type == "destination" && slug.current in $slugs]`, { slugs: featuredSlugs });
+  const [dbDestinations, recentJourneys, recentArticles] = await Promise.all([
+    sanityClient.fetch(`*[_type == "destination" && slug.current in $slugs]`, { slugs: featuredSlugs }),
+    sanityClient.fetch(`*[_type == "journey"] | order(_createdAt desc)[0...3] {
+      _id, title, slug, duration_days, summary, hero_image
+    }`),
+    sanityClient.fetch(`*[_type == "article"] | order(published_at desc)[0...3] {
+      _id, title, slug, category, excerpt, hero_image
+    }`)
+  ]);
   
   // Sort them in the exact order
   const destinations = featuredSlugs.map(slug => dbDestinations.find((d: any) => d.slug.current === slug)).filter(Boolean);
@@ -64,7 +70,9 @@ export default async function Home() {
                   facing the Aegean at noon. This is not TripAdvisor. This is someone who actually lives here.
                 </p>
                 <div className="mt-14 flex items-center gap-6">
-                  <NikosCTA />
+                  <Link href="/encyclopaedia" className="inline-flex items-center gap-4 px-10 py-5 border border-[#0A1628]/20 text-[#0A1628] text-xs tracking-[0.25em] uppercase font-bold hover:bg-[#0A1628] hover:text-[#FAF9F6] transition-all duration-300">
+                    Read the Encyclopaedia
+                  </Link>
                   <span className="text-[#0A1628]/40 text-xs tracking-widest uppercase">Or keep reading ↓</span>
                 </div>
               </div>
@@ -90,25 +98,23 @@ export default async function Home() {
         {/* Horizontal Slider Area (CSS grid fallback for now) */}
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: "The Quiet Cyclades", duration: "7 Days", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop", desc: "Sikinos, Folegandros, and Serifos. No airports, no beach clubs." },
-              { title: "Minoan Echoes", duration: "10 Days", img: "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=80&w=800&auto=format&fit=crop", desc: "The deep south of Crete. Gorges, hidden ruins, and wild thyme." },
-              { title: "The Dodecanese Edge", duration: "14 Days", img: "https://images.unsplash.com/photo-1540571306688-0f6e6c7c0651?q=80&w=800&auto=format&fit=crop", desc: "Rhodes to Patmos. Castles, monasteries, and Italy's architectural ghost." }
-            ].map((itin, idx) => (
-              <div key={idx} className="group cursor-pointer relative overflow-hidden h-[500px] bg-[#0A1628]">
-                <img 
-                  src={itin.img}
-                  alt={itin.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
+            {recentJourneys && recentJourneys.map((itin: any) => (
+              <Link key={itin._id} href={`/curated-journeys/${itin.slug.current}`} className="group relative overflow-hidden h-[500px] bg-[#0A1628] block">
+                {itin.hero_image?.asset && (
+                  <img 
+                    src={urlFor(itin.hero_image).width(800).url()}
+                    alt={itin.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/40 to-transparent opacity-80" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                  <span className="text-[#D4A027] text-[10px] uppercase tracking-widest mb-3 block">{itin.duration}</span>
+                  <span className="text-[#D4A027] text-[10px] uppercase tracking-widest mb-3 block">{itin.duration_days} Days</span>
                   <h3 className="text-3xl font-serif text-white mb-3 group-hover:text-[#D4A027] transition-colors">{itin.title}</h3>
-                  <p className="text-white/70 font-light text-sm max-w-[280px]">{itin.desc}</p>
+                  <p className="text-white/70 font-light text-sm max-w-[280px]">{itin.summary}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -116,31 +122,6 @@ export default async function Home() {
 
       {/* JOURNAL PREVIEW */}
       {(() => {
-        // We statically define 3 curated article teaser cards for the homepage
-        const journalPreviews = [
-          {
-            title: 'Folegandros in May: The Last Island Without a Lie',
-            category: 'Travel Guide',
-            excerpt: 'Before the ferries increase in June, before the restaurants open their second seating \u2014 this is the only time Folegandros belongs to itself.',
-            img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=900&auto=format&fit=crop',
-            href: '/journal',
-          },
-          {
-            title: 'The Oldest Taverna in the Mani Still Serves One Dish',
-            category: 'Gastronomy',
-            excerpt: "Konstantina doesn\u2019t have a menu. She doesn\u2019t need one. The braised lamb with oregano has been the same since 1961.",
-            img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=900&auto=format&fit=crop',
-            href: '/journal',
-          },
-          {
-            title: 'Why You Should Skip Santorini in August',
-            category: 'Practical',
-            excerpt: 'The photographs are real. The experience is not. Here is an honest accounting of what August in Santorini actually looks like.',
-            img: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=900&auto=format&fit=crop',
-            href: '/journal',
-          },
-        ];
-
         return (
           <section className="w-full bg-[#FAF9F6] py-32 md:py-48 border-t border-[#0A1628]/10">
             <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -160,16 +141,18 @@ export default async function Home() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                {journalPreviews.map((item, idx) => (
-                  <Link key={idx} href={item.href} className="group flex flex-col">
+                {recentArticles && recentArticles.map((item: any) => (
+                  <Link key={item._id} href={`/journal/${item.slug.current}`} className="group flex flex-col">
                     <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-[#e0dad2]">
-                      <img
-                        src={item.img}
-                        alt={item.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-105"
-                      />
+                      {item.hero_image?.asset && (
+                        <img
+                          src={urlFor(item.hero_image).width(900).url()}
+                          alt={item.title}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-105"
+                        />
+                      )}
                       <div className="absolute top-4 left-4 bg-[#C1440E] px-3 py-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white">
-                        {item.category}
+                        {item.category || 'Editorial'}
                       </div>
                     </div>
                     <h3 className="font-serif text-[#0A1628] text-xl md:text-2xl leading-tight mb-4 group-hover:text-[#C1440E] transition-colors duration-300">

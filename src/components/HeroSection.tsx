@@ -52,26 +52,23 @@ function HeroContent({ currentSlide }: { currentSlide: number }) {
         >
           "Turn left at the blue door, past the bakery that opens at 5am.
           There is a table with a view that will change you."
-          <span className="not-italic text-[#D4A027] text-xs ml-3 tracking-widest">— Nikos</span>
+          <span className="not-italic text-[#D4A027] text-xs ml-3 tracking-widest">— The Diary of Nikos</span>
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-5 pointer-events-auto">
+        <div className="flex flex-wrap gap-5 pointer-events-auto items-center">
           <a
             href="#destinations"
             className="inline-flex items-center gap-3 px-8 py-4 bg-[#D4A027] text-[#030b15] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-300"
           >
-            Discover Greece
+            Explore The Encyclopaedia
           </a>
-          <button
+          <Link
+            href="/curated-journeys"
             className="text-xs tracking-[0.2em] uppercase text-white/70 border-b border-white/30 pb-1 hover:text-[#D4A027] hover:border-[#D4A027] transition-all duration-300"
-            onClick={() => {
-              const btn = document.querySelector<HTMLButtonElement>('[aria-label="Plan my trip with Nikos"]');
-              btn?.click();
-            }}
           >
-            Speak to Nikos →
-          </button>
+            Curated Journeys →
+          </Link>
         </div>
 
         {/* Slide caption */}
