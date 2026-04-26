@@ -228,8 +228,25 @@ async function run() {
 
   if (destinations.length === 0) return console.log('🎉 All destinations processed!');
 
-  console.log(`RATE LIMIT SAFETY: Processing ONLY 1 destination per run.`);
-  await processDestination(destinations[0]);
+  console.log(`🚀 [SYSTEM] BATCH MODE ACTIVATED: Found ${destinations.length} destinations to process.`);
+  
+  for (let i = 0; i < destinations.length; i++) {
+    const dest = destinations[i];
+    console.log(`\n⏳ Processing ${i + 1} of ${destinations.length}: ${dest.name_en}`);
+    
+    try {
+      await processDestination(dest);
+    } catch (e) {
+      console.error(`❌ FAILED to process ${dest.name_en}. Skipping to next. Error:`, e);
+    }
+
+    if (i < destinations.length - 1) {
+      console.log(`\n💤 Sleeping for 45 seconds to respect Gemini & Unsplash rate limits...`);
+      await delay(45000);
+    }
+  }
+  
+  console.log('🎉 Batch processing complete!');
 }
 
 run().catch(console.error);

@@ -147,19 +147,29 @@ export default function AtAGlanceCard({ destination, weather }: Props) {
 
       <style>{`
         .glance-card {
-          padding: 1.5rem;
-          border-radius: 16px;
+          padding: 1.75rem;
+          border-radius: 20px;
           display: flex;
           flex-direction: column;
           gap: 0;
-          position: sticky;
-          top: 90px;
+          background: rgba(10, 22, 40, 0.7);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        @media (min-width: 1024px) {
+          .glance-card {
+            position: sticky;
+            top: 120px;
+          }
         }
         .glance-section {
-          padding: 1rem 0;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 1.25rem 0;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        .glance-section:last-of-type { border-bottom: none; }
+        .glance-section:first-of-type { padding-top: 0; }
+        .glance-section:last-of-type { border-bottom: none; padding-bottom: 0; }
         .glance-section-title {
           font-family: var(--font-inter), sans-serif;
           font-size: 10px;

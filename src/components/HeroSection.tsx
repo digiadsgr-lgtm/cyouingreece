@@ -45,7 +45,7 @@ function HeroContent({ currentSlide }: { currentSlide: number }) {
         </div>
 
         {/* Main headline - Rotating */}
-        <div className="h-[280px] md:h-[220px] lg:h-[200px] mb-8 relative flex items-end">
+        <div className="h-[200px] md:h-[220px] lg:h-[200px] mb-6 md:mb-8 relative flex items-end">
           <AnimatePresence mode="wait">
             <motion.h1
               key={headline}
@@ -53,7 +53,7 @@ function HeroContent({ currentSlide }: { currentSlide: number }) {
               animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
               exit={{ y: -20, opacity: 0, filter: 'blur(10px)' }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-[clamp(3.5rem,8vw,7rem)] font-serif font-light text-white leading-[1] absolute bottom-0 left-0"
+              className="text-[clamp(2.75rem,10vw,7rem)] font-serif font-light text-white leading-[1] absolute bottom-0 left-0 w-full"
               style={{ textShadow: '0 4px 60px rgba(0,0,0,0.7)' }}
             >
               <em className="not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4A027] to-[#FAF9F6]">
@@ -66,16 +66,16 @@ function HeroContent({ currentSlide }: { currentSlide: number }) {
 
         {/* Nikos Quote */}
         <p
-          className="font-serif italic text-[clamp(1rem,2vw,1.4rem)] text-white/75 max-w-2xl leading-relaxed mb-10"
+          className="font-serif italic text-[clamp(1rem,3.5vw,1.4rem)] text-white/80 max-w-2xl leading-relaxed mb-8 md:mb-10"
           style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
         >
           "Turn left at the blue door, past the bakery that opens at 5am.
           There is a table with a view that will change you."
-          <span className="not-italic text-[#D4A027] text-xs ml-3 tracking-widest">— The Diary of Nikos</span>
+          <span className="not-italic block md:inline text-[#D4A027] text-xs mt-2 md:mt-0 md:ml-3 tracking-widest">— The Diary of Nikos</span>
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-5 pointer-events-auto items-center">
+        <div className="flex flex-col md:flex-row gap-5 pointer-events-auto items-start md:items-center">
           <a
             href="#destinations"
             className="inline-flex items-center gap-3 px-8 py-4 bg-[#D4A027] text-[#030b15] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-300"

@@ -36,48 +36,48 @@ export default async function Home() {
       <PersonalizedFeed />
 
       {/* MANIFESTO - MAGAZINE SPREAD */}
-      <section className="relative w-full bg-[#FAF9F6] py-32 md:py-48 overflow-hidden">
+      <section className="relative w-full bg-[#FAF9F6] py-24 md:py-48 overflow-hidden">
         {/* Decorative background typography */}
         <div className="absolute top-10 -left-10 text-[20vw] font-serif font-bold text-[#0A1628]/[0.02] select-none pointer-events-none leading-none whitespace-nowrap">
           The Aegean
         </div>
 
         <div className="max-w-[1200px] mx-auto px-6 md:px-12">
-          <div className="flex flex-col lg:flex-row gap-20 items-center">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             {/* Left Image */}
             <div className="w-full lg:w-5/12">
-              <div className="relative aspect-[3/4] overflow-hidden w-full group shadow-2xl bg-[#e0dad2]">
+              <div className="relative aspect-[3/4] overflow-hidden w-full group shadow-[0_20px_50px_rgba(0,0,0,0.15)] bg-[#e0dad2] rounded-lg">
                 <img 
                   src="https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1200&auto=format&fit=crop"
                   alt="Editor's Desk"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105"
                 />
-                <div className="absolute inset-0 border border-white/20 m-4 pointer-events-none z-10" />
+                <div className="absolute inset-0 border border-white/30 m-3 md:m-4 pointer-events-none z-10 rounded-sm" />
               </div>
             </div>
 
             {/* Right Text */}
-            <div className="w-full lg:w-7/12 relative">
-              <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-10 pl-1">
+            <div className="w-full lg:w-7/12 relative mt-8 lg:mt-0">
+              <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-8 pl-1">
                 The Philosophy
               </span>
               
-              <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-serif text-[#0A1628] leading-[1.05] tracking-tight mb-12">
+              <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-serif text-[#0A1628] leading-[1.1] md:leading-[1.05] tracking-tight mb-10">
                 Greece is not a destination. <span className="italic text-[#C1440E]">It is a feeling.</span>
               </h2>
               
-              <div className="pl-0 md:pl-12 border-l-0 md:border-l border-[#D4A027]/40 relative">
+              <div className="pl-0 md:pl-10 border-l-0 md:border-l border-[#D4A027]/40 relative">
                 <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-[#D4A027] hidden md:block" />
-                <p className="text-[clamp(1.1rem,1.5vw,1.35rem)] font-light text-[#4a4a4a] leading-[1.9] font-serif">
-                  <span className="text-4xl md:text-6xl text-[#0A1628] float-left pr-4 mt-2 font-bold leading-[0.8]">T</span>he smell of oregano on a hillside at dusk. A fishing boat that hasn't moved since 1987.
+                <p className="text-[clamp(1.05rem,1.8vw,1.35rem)] font-light text-[#4a4a4a] leading-[1.8] md:leading-[1.9] font-serif">
+                  <span className="text-4xl md:text-6xl text-[#0A1628] float-left pr-3 md:pr-4 mt-1 md:mt-2 font-bold leading-[0.8]">T</span>he smell of oregano on a hillside at dusk. A fishing boat that hasn't moved since 1987.
                   A grandmother who makes the same tiropita her mother made. Cold Mythos on a plastic chair
                   facing the Aegean at noon. This is not TripAdvisor. This is someone who actually lives here.
                 </p>
-                <div className="mt-14 flex items-center gap-6">
-                  <Link href="/encyclopaedia" className="inline-flex items-center gap-4 px-10 py-5 border border-[#0A1628]/20 text-[#0A1628] text-xs tracking-[0.25em] uppercase font-bold hover:bg-[#0A1628] hover:text-[#FAF9F6] transition-all duration-300">
+                <div className="mt-10 md:mt-14 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  <Link href="/encyclopaedia" className="inline-flex items-center justify-center w-full sm:w-auto gap-4 px-8 py-4 md:px-10 md:py-5 border border-[#0A1628]/20 text-[#0A1628] text-xs tracking-[0.25em] uppercase font-bold hover:bg-[#0A1628] hover:text-[#FAF9F6] transition-all duration-300">
                     Read the Encyclopaedia
                   </Link>
-                  <span className="text-[#0A1628]/40 text-xs tracking-widest uppercase">Or keep reading ↓</span>
+                  <span className="text-[#0A1628]/40 text-[10px] md:text-xs tracking-widest uppercase hidden sm:block">Or keep reading ↓</span>
                 </div>
               </div>
             </div>
