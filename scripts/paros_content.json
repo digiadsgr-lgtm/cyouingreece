@@ -1,0 +1,97 @@
+{
+  "diary_entries": [
+    {
+      "location": "Naoussa Harbour at 6 AM",
+      "title": "Before the Influencers Wake Up",
+      "body_paragraphs": [
+        "If you want to understand Paros, you have to be awake before the hangovers hit. At 6 AM, Naoussa is still a working fishing village. The air smells of diesel, salt, and strong black coffee. The fishermen untangle their yellow nets on the damp flagstones, completely ignoring the closed, high-end cocktail bars behind them.",
+        "There is a raw, unapologetic truth to the island at this hour. The light is a bruised purple, and for exactly sixty minutes, the harbor belongs entirely to the locals who built it."
+      ],
+      "verdict": "Skip the sunset cocktails. Wake up at dawn and sit on the harbor wall with a bad coffee.",
+      "unsplash_query": "Paros fisherman morning"
+    },
+    {
+      "location": "Lefkes Village",
+      "title": "The Marble Spine of the Island",
+      "body_paragraphs": [
+        "Forget the coast for a day. Lefkes sits high in the mountains, a labyrinth of blindingly white alleys and ancient marble. It was built up here to hide from pirates, and it still feels secretive.",
+        "Walking the Byzantine Road—a thousand-year-old path paved in Parian marble—you realize this island was an empire of stone long before it was a summer playground. The silence up here is heavy, interrupted only by cicadas and the occasional goat bell."
+      ],
+      "verdict": "Hike the Byzantine road. Bring water, wear boots, and leave the linen shirts at the hotel.",
+      "unsplash_query": "Lefkes paros village"
+    },
+    {
+      "location": "Santa Maria Peninsula",
+      "title": "The Wind and the Kite",
+      "body_paragraphs": [
+        "The Meltemi wind doesn't just blow here; it violently reshapes the landscape. On the eastern edge, the windsurfers treat the gusts like a religion. It's loud, chaotic, and completely exhilarating.",
+        "I sat on the rocks, letting the sand whip my ankles, watching the kites tear across the sky. This isn't the Paros of infinity pools and chilled rosé. This is adrenaline, salt spray, and raw Aegean power."
+      ],
+      "verdict": "Embrace the Meltemi. Don't fight it.",
+      "unsplash_query": "windsurfing paros"
+    }
+  ],
+  "hidden_gems": [
+    {
+      "title": "The Ancient Quarries of Marathi",
+      "description": "This is where the marble for the Venus de Milo was ripped from the earth. You can literally walk deep into the pitch-black, ancient mining tunnels. No ticket booth, no guide rails. Just you and the dark.",
+      "location_hint": "5km inland from Parikia. Bring a strong flashlight.",
+      "unsplash_query": "marble quarry cave"
+    },
+    {
+      "title": "Kalogeros Beach Mud",
+      "description": "Skip the organized beach clubs. Kalogeros is backed by clay cliffs. Break off a piece of the rock, mix it with seawater, and cover yourself in the grey mud. It’s a free, primitive spa treatment.",
+      "location_hint": "Just south of Molos beach on the east coast.",
+      "unsplash_query": "Kalogeros beach"
+    },
+    {
+      "title": "Agios Antonios Monastery",
+      "description": "A brutal, steep drive up Kefalos Hill rewards you with a ruined 16th-century monastery and a 360-degree view of Paros and Naxos. The wind here is deafening. It feels like the edge of the world.",
+      "location_hint": "Above Marpissa village.",
+      "unsplash_query": "monastery hill view"
+    }
+  ],
+  "gastronomy": [
+    {
+      "name": "Klarinos",
+      "type": "Traditional Taverna",
+      "description": "Located high in Lefkes. No foam, no tweezers. Just slow-roasted goat, wild mountain greens drowning in olive oil, and house wine that hits you like a truck. This is what Cretan and Parian grandmothers actually cook.",
+      "price_level": "€€",
+      "unsplash_query": "greek taverna meat"
+    },
+    {
+      "name": "Tsachpinis Ouzeri",
+      "type": "Seafood Joint",
+      "description": "Right on the water in Naoussa. Yes, it gets busy, but the sun-dried mackerel (gouna) grilled over charcoal is a religious experience. Wash it down with a dangerous amount of souma.",
+      "price_level": "€€",
+      "unsplash_query": "grilled mackerel greek"
+    },
+    {
+      "name": "Siparos",
+      "type": "Elevated Seaside",
+      "description": "If you must do 'fancy', do it here. The sea urchin pasta tastes exactly like the Aegean Sea on a windy day. Refined, but deeply respectful of local ingredients.",
+      "price_level": "€€€",
+      "unsplash_query": "sea urchin pasta"
+    }
+  ],
+  "top_experiences": [
+    {
+      "title": "Sailing the Antiparos Strait",
+      "description": "Charter a traditional wooden Kaiki. Sail between Paros and Antiparos, dropping anchor in coves that have no names and no road access. Dive off the bow into the deep blue.",
+      "duration": "Full Day",
+      "unsplash_query": "greek wooden boat kaiki"
+    },
+    {
+      "title": "The Souma Distilleries",
+      "description": "In October, the locals distill 'souma' (the Parian raki) in primitive copper stills. It's a fiery, potent spirit and the distillation process is an excuse for a massive, impromptu village party.",
+      "duration": "Evening",
+      "unsplash_query": "copper still alcohol"
+    },
+    {
+      "title": "Exploring the Kastro of Parikia",
+      "description": "The Venetian castle was built directly on top of an ancient temple, using the sliced marble columns of the temple as building blocks. It’s an architectural Frankenstein’s monster that tells the violent history of the Cyclades.",
+      "duration": "2 hours",
+      "unsplash_query": "parikia kastro"
+    }
+  ]
+}
