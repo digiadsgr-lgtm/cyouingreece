@@ -52,12 +52,6 @@ export default function Header() {
 
           {/* CTA + Mobile */}
           <div className="flex items-center gap-6">
-            <Link
-              href="/vault-access"
-              className="hidden md:block text-xs uppercase tracking-[0.2em] font-medium text-[#030b15] bg-[#D4A027] px-6 py-3 hover:bg-white transition-all duration-300"
-            >
-              Vault Access
-            </Link>
 
             {/* Mobile hamburger */}
             <button
@@ -87,13 +81,6 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              href="/vault-access"
-              onClick={() => setMobileOpen(false)}
-              className="mt-4 self-start text-xs uppercase tracking-[0.2em] font-medium text-[#030b15] bg-[#D4A027] px-8 py-4"
-            >
-              Vault Access
-            </Link>
           </nav>
           <button
             className="absolute top-6 right-6 text-white/60 hover:text-white text-3xl"

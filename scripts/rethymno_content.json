@@ -1,0 +1,97 @@
+{
+  "diary_entries": [
+    {
+      "location": "Old Town Alleys",
+      "title": "Shadows of the Venetian Loggia",
+      "body_paragraphs": [
+        "The heat of the midday sun rarely reaches the deepest, narrowest alleys of Rethymno's Old Town. I spent the afternoon tracing the curves of the Venetian doorways, some still bearing the faded coats of arms of long-dead nobility. The air here smells distinctly of sea salt, roasted pistachios, and old stone.",
+        "There’s a specific quiet that settles over the town just before the evening crowds arrive. It's the perfect time to sit near the Rimondi Fountain. The water still flows from the mouths of the three stone lions, just as it has since 1626, offering a cool respite."
+      ],
+      "verdict": "Essential wandering. Ditch the map and let the architecture guide you.",
+      "unsplash_query": "Rethymno old town alley"
+    },
+    {
+      "location": "Fortezza",
+      "title": "Windswept Views at the Citadel",
+      "body_paragraphs": [
+        "Climbing the pine-shaded path to the Fortezza just before sunset is almost a ritual. The massive star-shaped citadel dominates the headland. Once inside the walls, the noise of the modern city drops away entirely.",
+        "I stood near the Sultan Ibrahim mosque, its grand dome catching the golden light. Looking out over the Cretan Sea, the water was a bruised, deep indigo. You can feel the strategic weight of this place; it’s not just a ruin, it’s a vantage point over centuries of conflict and trade."
+      ],
+      "verdict": "Go at golden hour. The contrast between the golden stone and the blue sea is unparalleled.",
+      "unsplash_query": "Rethymno Fortezza sunset"
+    },
+    {
+      "location": "Preveli Beach",
+      "title": "The Palm Forest Oasis",
+      "body_paragraphs": [
+        "The drive south from Rethymno through the Kourtaliotiko Gorge is dramatic enough, but the descent to Preveli is the real reward. The river cuts right through the beach, flanked by a dense forest of Theophrastus palm trees.",
+        "I waded up the cold, fresh river water, leaving the salty sea behind. It feels more like a North African oasis than a Mediterranean beach. Yes, the hike back up the cliff in the midday sun is brutal, but the isolation and raw beauty of the palm forest make every step worth it."
+      ],
+      "verdict": "A must-do, but bring actual hiking shoes for the descent, not just sandals.",
+      "unsplash_query": "Preveli palm forest crete"
+    }
+  ],
+  "hidden_gems": [
+    {
+      "title": "The Minaret of Valide Sultana",
+      "description": "Tucked away in the narrow streets behind the grand Megali Panagia church stands an incomplete minaret. It’s a stark, beautiful reminder of the Ottoman era, often entirely missed by tourists walking just one street over.",
+      "location_hint": "Look up when walking near the corner of Tombazi and Nikiforou Foka.",
+      "unsplash_query": "Rethymno minaret"
+    },
+    {
+      "title": "Eleutherna Ruins at Dawn",
+      "description": "While Knossos gets the crowds, the ancient city of Eleutherna offers a far more intimate archaeological experience. Arrive at dawn when the morning mist still clings to the olive groves and the ancient stone bridges.",
+      "location_hint": "25km southeast of Rethymno, in the foothills of Mount Ida.",
+      "unsplash_query": "Eleutherna ruins crete"
+    },
+    {
+      "title": "Avli's Secret Courtyard",
+      "description": "Beyond the busy dining room of this famous restaurant lies a hidden courtyard filled with bougainvillea and antique Venetian stone. It’s quiet, incredibly atmospheric, and perfect for a late-night glass of Cretan Vidiano.",
+      "location_hint": "Xanthoudidou 22, Old Town.",
+      "unsplash_query": "Rethymno courtyard bougainvillea"
+    }
+  ],
+  "gastronomy": [
+    {
+      "name": "Othonas",
+      "type": "Traditional Taverna",
+      "description": "Forget the tourist menus. Ask Othonas for the 'antikristo'—lamb cooked slowly across an open fire—or the wild greens (horta) foraged that very morning. The flavors are unapologetically rugged and authentic.",
+      "price_level": "€€",
+      "unsplash_query": "Cretan antikristo lamb"
+    },
+    {
+      "name": "Hasika",
+      "type": "Modern Cretan",
+      "description": "A brilliant modernization of Cretan staples. The apaki (smoked pork) risotto and the deconstructed dakos are revelations. Book a table outside on the cobblestones.",
+      "price_level": "€€€",
+      "unsplash_query": "Gourmet cretan food"
+    },
+    {
+      "name": "To Pigadi",
+      "type": "Courtyard Dining",
+      "description": "Set in a Venetian mansion's courtyard around an old well. Order the slow-cooked goat with stamnagathi (wild chicory) and pair it with a robust local Marouvas wine.",
+      "price_level": "€€€",
+      "unsplash_query": "Greek food courtyard"
+    }
+  ],
+  "top_experiences": [
+    {
+      "title": "Wine Tasting in the Amari Valley",
+      "description": "Escape the coast and head into the lush Amari Valley. Visit boutique wineries cultivating ancient, revived Cretan grape varieties like Liatiko and Thrapsathiri in the shadow of Mount Psiloritis.",
+      "duration": "Half day",
+      "unsplash_query": "Crete vineyard"
+    },
+    {
+      "title": "Pottery Workshop in Margarites",
+      "description": "The village of Margarites has been the center of Cretan pottery for millennia. Spend an afternoon at a local studio learning the wheel and understanding the traditional Minoan techniques.",
+      "duration": "2-3 hours",
+      "unsplash_query": "Greek pottery"
+    },
+    {
+      "title": "Sailing to Balos Lagoon",
+      "description": "Charter a private catamaran from the harbor for a day trip to the surreal turquoise waters of Balos. Avoid the ferries and arrive before the crowds for an exclusive swim.",
+      "duration": "Full day",
+      "unsplash_query": "Balos lagoon boat"
+    }
+  ]
+}
