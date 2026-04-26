@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import HeroSection from "@/components/HeroSection";
+import PersonalizedFeed from "@/components/home/PersonalizedFeed";
 import Link from "next/link";
 import { sanityClient, urlFor } from '@/lib/sanity';
 
@@ -30,6 +31,9 @@ export default async function Home() {
       }>
         <HeroSection />
       </Suspense>
+
+      {/* PERSONALIZED FEED */}
+      <PersonalizedFeed />
 
       {/* MANIFESTO - MAGAZINE SPREAD */}
       <section className="relative w-full bg-[#FAF9F6] py-32 md:py-48 overflow-hidden">

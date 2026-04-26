@@ -16,8 +16,18 @@ const HERO_SLIDES = [
     caption: 'Crete, South Aegean',
   },
 ];
+import { AnimatePresence, motion } from 'framer-motion';
+
+const HEADLINES = [
+  "Discover the Authentic.",
+  "Beyond the Guidebooks.",
+  "The Real Aegean.",
+  "Where Locals Hide."
+];
 
 function HeroContent({ currentSlide }: { currentSlide: number }) {
+  const headline = HEADLINES[currentSlide % HEADLINES.length];
+
   return (
     <div className="absolute inset-0 z-10 flex flex-col justify-end pointer-events-none select-none">
       {/* Gradient overlay: bottom-heavy for text legibility */}
@@ -30,20 +40,29 @@ function HeroContent({ currentSlide }: { currentSlide: number }) {
         <div className="flex items-center gap-4 mb-6">
           <span className="h-px w-10 bg-[#D4A027]" />
           <span className="text-[#D4A027] text-[11px] tracking-[0.45em] uppercase font-semibold">
-            Aegean · 2026
+            C You In Greece
           </span>
         </div>
 
-        {/* Main headline */}
-        <h1
-          className="text-[clamp(3.5rem,10vw,9rem)] font-serif font-light text-white leading-[0.88] mb-8"
-          style={{ textShadow: '0 4px 60px rgba(0,0,0,0.7)' }}
-        >
-          C You In{' '}
-          <em className="not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4A027] to-[#C1440E]">
-            Greece.
-          </em>
-        </h1>
+        {/* Main headline - Rotating */}
+        <div className="h-[280px] md:h-[220px] lg:h-[200px] mb-8 relative flex items-end">
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={headline}
+              initial={{ y: 20, opacity: 0, filter: 'blur(10px)' }}
+              animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+              exit={{ y: -20, opacity: 0, filter: 'blur(10px)' }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-[clamp(3.5rem,8vw,7rem)] font-serif font-light text-white leading-[1] absolute bottom-0 left-0"
+              style={{ textShadow: '0 4px 60px rgba(0,0,0,0.7)' }}
+            >
+              <em className="not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4A027] to-[#FAF9F6]">
+                {headline.split('.')[0]}
+              </em>
+              <span className="text-[#C1440E]">.</span>
+            </motion.h1>
+          </AnimatePresence>
+        </div>
 
         {/* Nikos Quote */}
         <p

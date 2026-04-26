@@ -12,12 +12,7 @@ export default function HiddenGems({ gems }: Props) {
   if (!gems?.length) return null;
 
   return (
-    <section className="gems-section" aria-labelledby="gems-heading">
-      <div className="gems-header">
-        <h2 id="gems-heading" className="gems-title">Hidden Gems</h2>
-        <p className="gems-subtitle">Places the guidebooks haven't found yet</p>
-      </div>
-
+    <section className="gems-section">
       <div className="gems-grid">
         {gems.map((gem, i) => {
           const imgSrc = gem.image?.asset?.url
@@ -70,21 +65,7 @@ export default function HiddenGems({ gems }: Props) {
       </div>
 
       <style>{`
-        .gems-section { padding: 3rem 0; }
-        .gems-header { margin-bottom: 2rem; }
-        .gems-title {
-          font-family: var(--font-serif), serif;
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          color: #FAF9F6;
-          margin: 0 0 0.4rem;
-        }
-        .gems-subtitle {
-          font-size: 14px;
-          color: rgba(255,255,255,0.45);
-          margin: 0;
-          font-family: var(--font-inter), sans-serif;
-          font-style: italic;
-        }
+        .gems-section { padding: 1rem 0; }
         .gems-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -97,9 +78,10 @@ export default function HiddenGems({ gems }: Props) {
           position: relative;
           border-radius: 14px;
           overflow: hidden;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: #FFFFFF;
+          border: 1px solid rgba(10,22,40,0.1);
           cursor: pointer;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
         .gem-badge {
           position: absolute;
@@ -132,18 +114,18 @@ export default function HiddenGems({ gems }: Props) {
         .gem-image-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to bottom, transparent 50%, rgba(10,22,40,0.85) 100%);
+          background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1) 100%);
         }
         .gem-content { padding: 1rem 1.1rem 1.2rem; }
         .gem-name {
           font-family: var(--font-serif), serif;
-          font-size: 1.1rem;
-          color: #FAF9F6;
+          font-size: 1.25rem;
+          color: #0A1628;
           margin: 0 0 0.5rem;
         }
         .gem-description {
           font-size: 13px;
-          color: rgba(255,255,255,0.6);
+          color: rgba(10,22,40,0.7);
           line-height: 1.7;
           margin: 0;
           font-family: var(--font-inter), sans-serif;

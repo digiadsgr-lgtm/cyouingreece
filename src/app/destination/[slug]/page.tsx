@@ -16,6 +16,7 @@ import NearbyDestinations from '@/components/destination/NearbyDestinations';
 import EditorialArticles from '@/components/destination/EditorialArticles';
 import NewsletterCapture from '@/components/destination/NewsletterCapture';
 import NikosDiary from '@/components/destination/NikosDiary';
+import HistoryTracker from '@/components/destination/HistoryTracker';
 
 export const revalidate = 3600;
 
@@ -68,6 +69,7 @@ export default async function DestinationPage({
 
   return (
     <main className="bg-[#030b15] min-h-screen">
+      <HistoryTracker slug={slug} type={dest.type || 'unknown'} />
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative h-screen flex flex-col justify-end overflow-hidden">
         {/* Background image */}

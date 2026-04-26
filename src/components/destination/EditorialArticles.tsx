@@ -11,9 +11,7 @@ export default function EditorialArticles({ articles }: Props) {
   if (!articles?.length) return null;
 
   return (
-    <section className="editorial-section" aria-labelledby="editorial-heading">
-      <h2 id="editorial-heading" className="editorial-title">From Our Writers</h2>
-
+    <section className="editorial-section">
       <div className="editorial-grid">
         {articles.slice(0, 6).map((article) => {
           const imgSrc = article.hero_image?.asset?.url
@@ -64,9 +62,7 @@ export default function EditorialArticles({ articles }: Props) {
       </div>
 
       <style>{`
-        .editorial-section { padding: 3rem 0; }
-        .editorial-title { font-family: var(--font-serif), serif; font-size: clamp(1.5rem, 3vw, 2rem); color: #FAF9F6; margin: 0 0 1.5rem; }
-
+        .editorial-section { padding: 1rem 0; }
         .editorial-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -79,8 +75,9 @@ export default function EditorialArticles({ articles }: Props) {
           flex-direction: column;
           border-radius: 14px;
           overflow: hidden;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: #FFFFFF;
+          border: 1px solid rgba(10,22,40,0.1);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
           text-decoration: none;
           transition: transform 0.25s, border-color 0.25s;
         }
@@ -91,10 +88,10 @@ export default function EditorialArticles({ articles }: Props) {
         .editorial-img-placeholder { position: absolute; inset: 0; background: #1a2a40; }
 
         .editorial-info { padding: 1rem 1.25rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
-        .editorial-date { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 6px; display: block; font-family: var(--font-inter), sans-serif; }
-        .editorial-card-title { font-family: var(--font-serif), serif; font-size: 1.1rem; color: #FAF9F6; margin: 0 0 0.5rem; line-height: 1.35; }
-        .editorial-excerpt { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; margin: 0 0 0.75rem; font-family: var(--font-inter), sans-serif; font-weight: 300; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .editorial-cta { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #D4A027; font-family: var(--font-inter), sans-serif; margin-top: auto; }
+        .editorial-date { font-size: 11px; color: rgba(10,22,40,0.5); margin-bottom: 6px; display: block; font-family: var(--font-inter), sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        .editorial-card-title { font-family: var(--font-serif), serif; font-size: 1.25rem; color: #0A1628; margin: 0 0 0.5rem; line-height: 1.35; }
+        .editorial-excerpt { font-size: 13.5px; color: rgba(10,22,40,0.75); line-height: 1.65; margin: 0 0 1rem; font-family: var(--font-inter), sans-serif; font-weight: 400; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .editorial-cta { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #C1440E; font-family: var(--font-inter), sans-serif; margin-top: auto; text-transform: uppercase; letter-spacing: 0.05em; }
       `}</style>
     </section>
   );
