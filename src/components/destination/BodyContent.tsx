@@ -44,7 +44,7 @@ export default function BodyContent({ blocks }: Props) {
           font-weight: 500;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.4);
+          color: rgba(10,22,40,0.5);
           margin-bottom: 1.5rem;
           font-family: var(--font-inter), sans-serif;
         }

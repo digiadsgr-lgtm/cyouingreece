@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -13,7 +13,7 @@ const sanity = createClient({
   useCdn: false,
 });
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 // Delay utility
@@ -63,7 +63,7 @@ RULES:
 2. Be hyper-specific. Name specific dishes, specific streets, specific times of day.
 3. Don't be overly positive. If a place is loud and chaotic, say it. If a beach is ruined by umbrellas, say it.
 
-OUTPUT FORMAT (JSON ONLY):
+OUTPUT FORMAT (JSON ONLY, NO MARKDOWN BACKTICKS):
 {
   "diary_entries": [ { "location": "", "title": "", "body_paragraphs": ["...", "..."], "verdict": "", "unsplash_query": "specific photo search term" } x 3 ],
   "hidden_gems": [ { "title": "", "description": "", "location_hint": "", "unsplash_query": "" } x 3 ],
@@ -77,7 +77,7 @@ You are the "Chief Editor" of a Conde Nast / Monocle style publication.
 Your job is to audit the JSON content provided by the Writer.
 Check for cliches: "hidden gem", "crystal clear", "breathtaking".
 If the content feels generic, "vanilla", or like a standard Lonely Planet guide, you MUST REJECT IT.
-Return JSON:
+Return JSON (NO MARKDOWN BACKTICKS):
 {
   "approved": boolean,
   "feedback": "string explaining exactly what needs to be fixed if rejected"
@@ -91,34 +91,38 @@ Return JSON:
 async function generateContentWithSyndicate(destName: string) {
   let attempt = 1;
   const maxAttempts = 3;
+  
+  const writerModel = genAI.getGenerativeModel({ 
+    model: "gemini-2.5-flash",
+    systemInstruction: WRITER_PROMPT,
+    generationConfig: { responseMimeType: "application/json" }
+  });
+
+  const editorModel = genAI.getGenerativeModel({ 
+    model: "gemini-2.5-flash",
+    systemInstruction: EDITOR_PROMPT,
+    generationConfig: { responseMimeType: "application/json" }
+  });
 
   while (attempt <= maxAttempts) {
     console.log(`\n📝 [WRITER AGENT] Drafting piece for ${destName} (Attempt ${attempt})...`);
     
     // Writer generates
-    const writerRes = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: WRITER_PROMPT },
-        { role: 'user', content: `Write an insider, gritty, elite piece about: ${destName}` }
-      ],
-      response_format: { type: 'json_object' }
-    });
-
-    const draftText = writerRes.choices[0].message.content || '{}';
+    const writerRes = await writerModel.generateContent(`Write an insider, gritty, elite piece about: ${destName}`);
+    const draftText = writerRes.response.text() || '{}';
 
     console.log(`🕵️‍♂️ [CHIEF EDITOR AGENT] Auditing the draft...`);
     // Editor audits
-    const editorRes = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: EDITOR_PROMPT },
-        { role: 'user', content: `Review this draft for ${destName}:\n\n${draftText}` }
-      ],
-      response_format: { type: 'json_object' }
-    });
-
-    const audit = JSON.parse(editorRes.choices[0].message.content || '{"approved": false}');
+    const editorRes = await editorModel.generateContent(`Review this draft for ${destName}:\n\n${draftText}`);
+    const auditText = editorRes.response.text() || '{"approved": false}';
+    
+    let audit;
+    try {
+      audit = JSON.parse(auditText);
+    } catch (e) {
+      console.log(`❌ [CHIEF EDITOR AGENT] JSON parse failed, rejecting.`);
+      audit = { approved: false, feedback: "Invalid JSON format." };
+    }
 
     if (audit.approved) {
       console.log(`✅ [CHIEF EDITOR AGENT] Draft APPROVED!`);
@@ -137,10 +141,10 @@ async function processDestination(dest: any) {
   console.log(`🏛️ PUBLISHER: Starting pipeline for ${dest.name_en}`);
   console.log(`=================================================`);
 
-  // If we don't have OpenAI keys, we'll try to read a static mock file for demo purposes
+  // If we don't have Gemini keys, we'll try to read a static mock file for demo purposes
   let content: any = {};
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'sk-your-openai-key-here') {
-    console.log(`⚠️ [SYSTEM] No valid OpenAI API key found. Bypassing Syndicate and reading local static file...`);
+  if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'AIzaSyCj8jvAk_EsSZrnXaYhVToQZBKsIPTFKRw') {
+    console.log(`⚠️ [SYSTEM] No valid Gemini API key found. Bypassing Syndicate and reading local static file...`);
     const fs = await import('fs/promises');
     content = JSON.parse(await fs.readFile(path.join(process.cwd(), 'scripts', `${dest.slug.current}_content.json`), 'utf-8'));
   } else {
@@ -218,7 +222,7 @@ async function processDestination(dest: any) {
 }
 
 async function run() {
-  const destinations = await sanity.fetch(`*[_type == "destination" && slug.current == "paros"] {
+  const destinations = await sanity.fetch(`*[_type == "destination" && !defined(diary_entries)] {
     _id, name_en, slug, hero_image
   }`);
 
