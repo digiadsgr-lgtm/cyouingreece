@@ -92,62 +92,78 @@ export default function PhotoGallery({ images, destinationName }: Props) {
       )}
 
       <style>{`
-        .gallery-section { padding: 3rem 0; }
+        .gallery-section { padding: 4rem 0; }
         .gallery-title {
           font-family: var(--font-serif), serif;
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          color: #FAF9F6;
-          margin: 0 0 0.3rem;
+          font-size: clamp(2.5rem, 4vw, 3.5rem);
+          color: #070A0F;
+          font-weight: 300;
+          margin: 0 0 0.5rem;
+          letter-spacing: -0.02em;
         }
-        .gallery-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); font-style: italic; margin: 0 0 1.5rem; font-family: var(--font-inter), sans-serif; }
+        .gallery-subtitle { font-size: 14px; color: rgba(7,10,15,0.4); font-style: italic; margin: 0 0 3rem; font-family: var(--font-inter), sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
 
         .gallery-masonry {
-          columns: 3;
-          column-gap: 10px;
-          gap: 10px;
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          grid-auto-flow: dense;
+          gap: 1.5rem;
         }
-        @media (max-width: 768px) { .gallery-masonry { columns: 2; } }
-        @media (max-width: 480px) { .gallery-masonry { columns: 1; } }
+        @media (max-width: 768px) { .gallery-masonry { display: flex; flex-direction: column; gap: 1rem; } }
 
         .gallery-item {
-          break-inside: avoid;
+          position: relative;
           display: block;
-          margin-bottom: 10px;
           border: none;
           background: none;
           padding: 0;
           cursor: zoom-in;
           width: 100%;
-          border-radius: 10px;
+          border-radius: 4px;
           overflow: hidden;
         }
+
+        /* ── Asymmetric Magazine Grid Rules ── */
+        .gallery-item:nth-child(1) { grid-column: span 12; aspect-ratio: 21/9; }
+        .gallery-item:nth-child(2) { grid-column: span 5; aspect-ratio: 3/4; }
+        .gallery-item:nth-child(3) { grid-column: span 7; aspect-ratio: 4/3; margin-top: 4rem; }
+        .gallery-item:nth-child(4) { grid-column: span 8; aspect-ratio: 16/9; }
+        .gallery-item:nth-child(5) { grid-column: span 4; aspect-ratio: 1/1; }
+        .gallery-item:nth-child(6) { grid-column: span 6; aspect-ratio: 3/2; }
+        .gallery-item:nth-child(7) { grid-column: span 6; aspect-ratio: 3/2; margin-top: -2rem; }
+        .gallery-item:nth-child(n+8) { grid-column: span 4; aspect-ratio: 4/5; }
+
+        @media (max-width: 768px) {
+          .gallery-item { aspect-ratio: auto !important; height: 50vh; margin-top: 0 !important; }
+        }
+
         .gallery-img-wrap {
           position: relative;
           width: 100%;
-          padding-top: 75%;
+          height: 100%;
           overflow: hidden;
-          border-radius: 10px;
+          background: rgba(182,169,150,0.1);
         }
-        .gallery-item:nth-child(3n+2) .gallery-img-wrap { padding-top: 100%; }
-        .gallery-item:nth-child(5n+1) .gallery-img-wrap { padding-top: 60%; }
-        .gallery-img { object-fit: cover; transition: transform 0.45s ease, filter 0.3s; }
-        .gallery-item:hover .gallery-img { transform: scale(1.04); filter: brightness(0.85); }
-        .gallery-img-placeholder { position: absolute; inset: 0; background: #1a2a40; }
+        
+        .gallery-img { object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s; }
+        .gallery-item:hover .gallery-img { transform: scale(1.05); filter: brightness(0.8); }
+        .gallery-img-placeholder { position: absolute; inset: 0; background: #E8E3DA; }
+        
         .gallery-img-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(10,22,40,0.8) 0%, transparent 50%);
+          background: linear-gradient(to top, rgba(7,10,15,0.6) 0%, transparent 40%);
           opacity: 0;
-          transition: opacity 0.3s;
+          transition: opacity 0.5s;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 10px 12px;
-          gap: 2px;
+          padding: 1.5rem;
+          gap: 4px;
         }
         .gallery-item:hover .gallery-img-overlay { opacity: 1; }
-        .gallery-caption { font-size: 11px; color: rgba(255,255,255,0.9); font-family: var(--font-inter), sans-serif; font-weight: 500; }
-        .gallery-credit { font-size: 10px; color: rgba(255,255,255,0.55); font-family: var(--font-inter), sans-serif; }
+        .gallery-caption { font-size: 13px; color: #F4F0EA; font-family: var(--font-serif), serif; font-style: italic; font-weight: 400; letter-spacing: 0.02em; }
+        .gallery-credit { font-size: 10px; color: rgba(244,240,234,0.6); font-family: var(--font-inter), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
       `}</style>
     </section>
   );

@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ChevronDown, MapPin, Users, Calendar } from 'lucide-react';
 import type { Destination, CrowdLevel } from '@/lib/destination-types';
 import ScoreRadialBadges from './ScoreRadialBadges';
@@ -77,19 +78,26 @@ export default function DestinationHero({ destination, locale }: Props) {
       <div ref={sentinelRef} className="hero-sentinel" />
 
       {/* Background image */}
-      <div className="hero-image-container">
+      <div className="hero-image-container overflow-hidden">
         {heroSrc ? (
-          <Image
-            src={heroSrc}
-            alt={`${name_en}, Greece`}
-            fill
-            priority
-            sizes="100vw"
-            className="hero-image"
-            style={hotspotStyle}
-            placeholder={hero_image?.asset?.metadata?.lqip ? 'blur' : 'empty'}
-            blurDataURL={hero_image?.asset?.metadata?.lqip}
-          />
+          <motion.div
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 3, ease: "easeOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={heroSrc}
+              alt={`${name_en}, Greece`}
+              fill
+              priority
+              sizes="100vw"
+              className="hero-image"
+              style={hotspotStyle}
+              placeholder={hero_image?.asset?.metadata?.lqip ? 'blur' : 'empty'}
+              blurDataURL={hero_image?.asset?.metadata?.lqip}
+            />
+          </motion.div>
         ) : (
           <div className="hero-image-placeholder" />
         )}

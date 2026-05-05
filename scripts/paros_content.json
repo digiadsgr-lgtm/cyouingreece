@@ -1,97 +1,64 @@
 {
-  "diary_entries": [
+  "thematic_sections": [
     {
-      "location": "Naoussa Harbour at 6 AM",
-      "title": "Before the Influencers Wake Up",
-      "body_paragraphs": [
-        "If you want to understand Paros, you have to be awake before the hangovers hit. At 6 AM, Naoussa is still a working fishing village. The air smells of diesel, salt, and strong black coffee. The fishermen untangle their yellow nets on the damp flagstones, completely ignoring the closed, high-end cocktail bars behind them.",
-        "There is a raw, unapologetic truth to the island at this hour. The light is a bruised purple, and for exactly sixty minutes, the harbor belongs entirely to the locals who built it."
+      "category": "History",
+      "title": "The Parian Marble: Sculpting Antiquity",
+      "content": [
+        "Paros is defined by its snow-white marble, known as 'Lychnites'. This is the most translucent marble in the world, once mined from the deep, dark quarries of Marathi. It was from this very stone that the Venus de Milo and the Winged Victory of Samothrace were carved.",
+        "The island's history spans from the Cycladic civilization through the Venetian era. The Kastro in Parikia is a testament to this, built by the Venetians using the ruins of ancient Greek temples as building blocks—a literal architectural collage of millennia.",
+        "In the 4th century, Saint Helen, mother of Constantine the Great, founded the Panagia Ekatontapyliani (Church of 100 Doors). Legend says 99 doors have been found, and the 100th will only appear when Constantinople is reclaimed."
       ],
-      "verdict": "Skip the sunset cocktails. Wake up at dawn and sit on the harbor wall with a bad coffee.",
-      "unsplash_query": "Paros fisherman morning"
+      "unsplash_query": "Paros ancient marble quarry"
     },
     {
-      "location": "Lefkes Village",
-      "title": "The Marble Spine of the Island",
-      "body_paragraphs": [
-        "Forget the coast for a day. Lefkes sits high in the mountains, a labyrinth of blindingly white alleys and ancient marble. It was built up here to hide from pirates, and it still feels secretive.",
-        "Walking the Byzantine Road—a thousand-year-old path paved in Parian marble—you realize this island was an empire of stone long before it was a summer playground. The silence up here is heavy, interrupted only by cicadas and the occasional goat bell."
+      "category": "Nature",
+      "title": "Sculpted Coastlines & Salt Breezes",
+      "content": [
+        "The geological phenomenon of Kolymbithres beach is unparalleled. Here, millions of years of wind and sea erosion have sculpted grey granite rocks into smooth, otherworldly shapes that look like lunar sculptures dipped in turquoise water.",
+        "The interior of the island reveals the Valley of the Butterflies (Petaloudes), a lush biotope where the Jersey Tiger Moth congregates in thousands during the summer months, attracted by the scent of the Oriental Sweetgum trees.",
+        "The northern winds, the Meltemi, define the landscape, bending the tamarisk trees and creating the world-class windsurfing conditions found at Golden Beach (Chryssi Akti)."
       ],
-      "verdict": "Hike the Byzantine road. Bring water, wear boots, and leave the linen shirts at the hotel.",
-      "unsplash_query": "Lefkes paros village"
+      "unsplash_query": "Paros Kolymbithres beach rocks"
     },
     {
-      "location": "Santa Maria Peninsula",
-      "title": "The Wind and the Kite",
-      "body_paragraphs": [
-        "The Meltemi wind doesn't just blow here; it violently reshapes the landscape. On the eastern edge, the windsurfers treat the gusts like a religion. It's loud, chaotic, and completely exhilarating.",
-        "I sat on the rocks, letting the sand whip my ankles, watching the kites tear across the sky. This isn't the Paros of infinity pools and chilled rosé. This is adrenaline, salt spray, and raw Aegean power."
+      "category": "Activities",
+      "title": "The Byzantine Road: A Hike Through Time",
+      "content": [
+        "For those who seek the island's soul on foot, the Byzantine Road is the definitive experience. This 1,000-year-old paved path connects the mountain village of Lefkes to Prodromos. Walking on these ancient stones, surrounded by the scent of wild thyme and sage, is a meditation on Parian heritage.",
+        "The sea offers its own adventures. Sailing around the small island of Antiparos reveals hidden sea caves and the uninhabited islet of Despotiko, home to an ongoing archaeological excavation of an ancient sanctuary of Apollo.",
+        "Windsurfing and Kitesurfing at Santa Maria are not just sports here; they are a way of life, with the island hosting international championships every summer."
       ],
-      "verdict": "Embrace the Meltemi. Don't fight it.",
-      "unsplash_query": "windsurfing paros"
+      "unsplash_query": "Paros Lefkes village hiking"
+    },
+    {
+      "category": "Gastronomy",
+      "title": "Sun-Dried Flavors & Parian Soul",
+      "content": [
+        "Parian cuisine is a lesson in simplicity. The most iconic dish is 'Gouna'—mackerel or other fatty fish that is salted and left to dry in the Aegean sun for hours before being grilled. The result is a concentrated, smoky taste of the sea.",
+        "In the mountainous regions, try 'Karavoli' snail dishes usually served with a potent garlic dip (skordalia). This is a staple of the Lefkes local festivals.",
+        "The island is also reviving its ancient wine traditions. The Moraitis winery in Naoussa uses local varieties like Monemvasia and Mandilaria to create wines that capture the volcanic and salty terroir of the Cyclades."
+      ],
+      "unsplash_query": "Greek sun dried fish gouna"
+    },
+    {
+      "category": "Secrets",
+      "title": "Beyond the Naoussa Harbor",
+      "content": [
+        "While Naoussa is famous for its sunset cocktails, the secret is to visit the harbor at dawn. You'll see the traditional 'kaiki' boats returning with their catch and the fishermen mending their nets in silence before the tourist storm arrives.",
+        "The monastery of Agios Antonios atop Kefalos Hill offers the best 360-degree view of the island, yet remains largely unvisited by the crowds.",
+        "If you visit in late August, look for the 'Pirates Festival' in Naoussa, a wild reenactment of the Barbarossa raid on the island, where locals dress as pirates and battle in the harbor with fireworks."
+      ],
+      "unsplash_query": "Paros Naoussa harbor dawn"
     }
   ],
-  "hidden_gems": [
-    {
-      "title": "The Ancient Quarries of Marathi",
-      "description": "This is where the marble for the Venus de Milo was ripped from the earth. You can literally walk deep into the pitch-black, ancient mining tunnels. No ticket booth, no guide rails. Just you and the dark.",
-      "location_hint": "5km inland from Parikia. Bring a strong flashlight.",
-      "unsplash_query": "marble quarry cave"
-    },
-    {
-      "title": "Kalogeros Beach Mud",
-      "description": "Skip the organized beach clubs. Kalogeros is backed by clay cliffs. Break off a piece of the rock, mix it with seawater, and cover yourself in the grey mud. It’s a free, primitive spa treatment.",
-      "location_hint": "Just south of Molos beach on the east coast.",
-      "unsplash_query": "Kalogeros beach"
-    },
-    {
-      "title": "Agios Antonios Monastery",
-      "description": "A brutal, steep drive up Kefalos Hill rewards you with a ruined 16th-century monastery and a 360-degree view of Paros and Naxos. The wind here is deafening. It feels like the edge of the world.",
-      "location_hint": "Above Marpissa village.",
-      "unsplash_query": "monastery hill view"
-    }
-  ],
-  "gastronomy": [
-    {
-      "name": "Klarinos",
-      "type": "Traditional Taverna",
-      "description": "Located high in Lefkes. No foam, no tweezers. Just slow-roasted goat, wild mountain greens drowning in olive oil, and house wine that hits you like a truck. This is what Cretan and Parian grandmothers actually cook.",
-      "price_level": "€€",
-      "unsplash_query": "greek taverna meat"
-    },
-    {
-      "name": "Tsachpinis Ouzeri",
-      "type": "Seafood Joint",
-      "description": "Right on the water in Naoussa. Yes, it gets busy, but the sun-dried mackerel (gouna) grilled over charcoal is a religious experience. Wash it down with a dangerous amount of souma.",
-      "price_level": "€€",
-      "unsplash_query": "grilled mackerel greek"
-    },
-    {
-      "name": "Siparos",
-      "type": "Elevated Seaside",
-      "description": "If you must do 'fancy', do it here. The sea urchin pasta tastes exactly like the Aegean Sea on a windy day. Refined, but deeply respectful of local ingredients.",
-      "price_level": "€€€",
-      "unsplash_query": "sea urchin pasta"
-    }
-  ],
-  "top_experiences": [
-    {
-      "title": "Sailing the Antiparos Strait",
-      "description": "Charter a traditional wooden Kaiki. Sail between Paros and Antiparos, dropping anchor in coves that have no names and no road access. Dive off the bow into the deep blue.",
-      "duration": "Full Day",
-      "unsplash_query": "greek wooden boat kaiki"
-    },
-    {
-      "title": "The Souma Distilleries",
-      "description": "In October, the locals distill 'souma' (the Parian raki) in primitive copper stills. It's a fiery, potent spirit and the distillation process is an excuse for a massive, impromptu village party.",
-      "duration": "Evening",
-      "unsplash_query": "copper still alcohol"
-    },
-    {
-      "title": "Exploring the Kastro of Parikia",
-      "description": "The Venetian castle was built directly on top of an ancient temple, using the sliced marble columns of the temple as building blocks. It’s an architectural Frankenstein’s monster that tells the violent history of the Cyclades.",
-      "duration": "2 hours",
-      "unsplash_query": "parikia kastro"
-    }
+  "gallery_queries": [
+    "Paros Naoussa harbor",
+    "Paros Kolymbithres beach",
+    "Paros Parikia Kastro",
+    "Paros Lefkes mountain village",
+    "Paros Golden Beach windsurfing",
+    "Paros Panagia Ekatontapyliani",
+    "Paros Marathi marble quarries",
+    "Paros Antiparos sea caves"
   ]
 }

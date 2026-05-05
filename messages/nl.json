@@ -1,0 +1,31 @@
+{
+  "Navigation": {
+    "philosophy": "Filosofie",
+    "curatedJourneys": "Samengestelde Reizen",
+    "encyclopaedia": "Encyclopedie",
+    "vaultAccess": "Kluistoegang"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Scroll om te ontdekken"
+  },
+  "Philosophy": {
+    "title": "De Filosofie",
+    "text1": "Wij geloven niet in 'verborgen parels' of 'must-see' lijsten.",
+    "text2": "Wij geloven in precies weten welke taverna de verste vangst serveert om 20:00 uur, en welk pad te bewandelen voordat de hitte toeslaat.",
+    "text3": "Dit is Griekenland, onbewerkt en rigoureus samengesteld."
+  },
+  "CuratedJourneys": {
+    "title": "Samengestelde Reizen",
+    "subtitle": "Zorgvuldig ontworpen routes die de drukte omzeilen."
+  },
+  "Encyclopaedia": {
+    "title": "De Encyclopedie",
+    "subtitle": "Onze uitputtende, voortdurend bijgewerkte index van de Griekse eilanden en het vasteland."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Alle rechten voorbehouden.",
+    "poweredBy": "Aangedreven door lokale kennis."
+  }
+}

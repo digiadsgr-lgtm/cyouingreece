@@ -43,6 +43,21 @@ export const destinationBySlugQuery = (slug: string, locale = 'en') => `
     tagline,
     intro_paragraph,
     body_content,
+    thematic_sections[] {
+      _key,
+      category,
+      title,
+      content,
+      hero_image ${IMAGE_PROJECTION}
+    },
+    diary_entries[] {
+      _key,
+      location,
+      title,
+      verdict,
+      body,
+      image ${IMAGE_PROJECTION}
+    },
     at_a_glance {
       best_months,
       avg_daily_budget,
@@ -108,10 +123,10 @@ export const allDestinationSlugsQuery = `
 // ─── Editorial articles tagged with destination slug ──────────────────────────
 
 export const editorialArticlesQuery = (destinationSlug: string) => `
-  *[_type == "article" && "${destinationSlug}" in destination_tags] | order(published_at desc)[0...6] {
+  *[_type == "article" && references(*[_type == "destination" && slug.current == "${destinationSlug}"]._id)] | order(published_at desc)[0...6] {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
     hero_image ${IMAGE_PROJECTION},
     published_at,

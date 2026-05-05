@@ -1,0 +1,31 @@
+{
+  "Navigation": {
+    "philosophy": "Filosofi",
+    "curatedJourneys": "Kuraterte Reiser",
+    "encyclopaedia": "Ensyklopedi",
+    "vaultAccess": "Tilgang til Hvelvet"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Rull for å oppdage"
+  },
+  "Philosophy": {
+    "title": "Filosofien",
+    "text1": "Vi tror ikke på 'skjulte perler' eller 'må-se' lister.",
+    "text2": "Vi tror på å vite nøyaktig hvilken taverna som serverer dagens ferskeste fangst klokken 20:00, og hvilken sti man bør gå før varmen setter inn.",
+    "text3": "Dette is Hellas, uredigert og grundig kuratert."
+  },
+  "CuratedJourneys": {
+    "title": "Kuraterte Reiser",
+    "subtitle": "Nøye utformede reiseruter som unngår folkemengdene."
+  },
+  "Encyclopaedia": {
+    "title": "Ensyklopedien",
+    "subtitle": "Vår uttømmende, kontinuerlig oppdaterte indeks over de greske øyene og fastlandet."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Alle rettigheter forbeholdt.",
+    "poweredBy": "Drevet av lokal kunnskap."
+  }
+}

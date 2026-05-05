@@ -80,10 +80,11 @@ export default function NearbyDestinations({ destinations, locale }: Props) {
         .nearby-title {
           font-family: var(--font-serif), serif;
           font-size: clamp(1.5rem, 3vw, 2rem);
-          color: #FAF9F6;
+          color: #070A0F;
+          font-weight: 300;
           margin: 0 0 0.3rem;
         }
-        .nearby-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); font-style: italic; margin: 0; font-family: var(--font-inter), sans-serif; }
+        .nearby-subtitle { font-size: 13px; color: rgba(7,10,15,0.4); font-style: italic; margin: 0; font-family: var(--font-inter), sans-serif; letter-spacing: 0.05em; }
 
         .nearby-scroll {
           display: flex;
@@ -99,17 +100,17 @@ export default function NearbyDestinations({ destinations, locale }: Props) {
         .nearby-card {
           flex-shrink: 0;
           width: 220px;
-          border-radius: 14px;
+          border-radius: 4px;
           overflow: hidden;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: rgba(7,10,15,0.02);
+          border: 1px solid rgba(7,10,15,0.06);
           text-decoration: none;
           scroll-snap-align: start;
           transition: transform 0.25s, border-color 0.25s;
           display: flex;
           flex-direction: column;
         }
-        .nearby-card:hover { transform: translateY(-4px); border-color: rgba(212,160,39,0.3); }
+        .nearby-card:hover { transform: translateY(-4px); border-color: rgba(164,51,18,0.2); }
 
         .nearby-img-wrap {
           position: relative;
@@ -119,34 +120,34 @@ export default function NearbyDestinations({ destinations, locale }: Props) {
         }
         .nearby-img { object-fit: cover; transition: transform 0.45s; }
         .nearby-card:hover .nearby-img { transform: scale(1.06); }
-        .nearby-img-placeholder { position: absolute; inset: 0; background: #1a2a40; }
+        .nearby-img-placeholder { position: absolute; inset: 0; background: #E8E3DA; }
         .nearby-img-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to bottom, transparent 50%, rgba(10,22,40,0.75) 100%);
+          background: linear-gradient(to bottom, transparent 50%, rgba(7,10,15,0.1) 100%);
         }
         .nearby-type-badge {
           position: absolute;
           top: 10px;
           right: 10px;
-          background: rgba(10,22,40,0.8);
+          background: rgba(244,240,234,0.8);
           backdrop-filter: blur(8px);
-          border: 1px solid rgba(255,255,255,0.12);
-          border-radius: 100px;
+          border: 1px solid rgba(7,10,15,0.05);
+          border-radius: 4px;
           padding: 3px 8px;
           font-size: 9px;
           font-weight: 600;
           text-transform: capitalize;
-          color: rgba(255,255,255,0.7);
+          color: #070A0F;
           letter-spacing: 0.06em;
           font-family: var(--font-inter), sans-serif;
         }
 
         .nearby-info { padding: 0.9rem 1rem 1rem; flex: 1; }
-        .nearby-region { display: flex; align-items: center; gap: 4px; font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; font-family: var(--font-inter), sans-serif; }
-        .nearby-name { font-family: var(--font-inter), sans-serif; font-size: 14px; font-weight: 600; color: #FAF9F6; margin: 0 0 3px; line-height: 1.3; }
-        .nearby-local { font-size: 12px; color: rgba(255,255,255,0.4); display: block; margin-bottom: 6px; font-family: var(--font-serif), serif; font-style: italic; }
-        .nearby-travel { font-size: 11px; color: #D4A027; font-family: var(--font-inter), sans-serif; }
+        .nearby-region { display: flex; align-items: center; gap: 4px; font-size: 10px; color: rgba(7,10,15,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; font-family: var(--font-inter), sans-serif; }
+        .nearby-name { font-family: var(--font-inter), sans-serif; font-size: 14px; font-weight: 500; color: #070A0F; margin: 0 0 3px; line-height: 1.3; }
+        .nearby-local { font-size: 12px; color: rgba(7,10,15,0.5); display: block; margin-bottom: 6px; font-family: var(--font-serif), serif; font-style: italic; }
+        .nearby-travel { font-size: 11px; color: #A43312; font-weight: 500; font-family: var(--font-inter), sans-serif; }
       `}</style>
     </section>
   );

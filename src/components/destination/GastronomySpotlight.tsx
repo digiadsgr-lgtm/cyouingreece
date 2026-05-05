@@ -108,7 +108,8 @@ export default function GastronomySpotlight({ items }: Props) {
         .gastro-title {
           font-family: var(--font-serif), serif;
           font-size: clamp(1.5rem, 3vw, 2rem);
-          color: #FAF9F6;
+          color: #070A0F;
+          font-weight: 300;
           margin: 0;
           display: flex;
           align-items: center;
@@ -116,10 +117,11 @@ export default function GastronomySpotlight({ items }: Props) {
         }
         .gastro-subtitle {
           font-size: 13px;
-          color: rgba(255,255,255,0.4);
+          color: rgba(7,10,15,0.4);
           font-style: italic;
           margin: 0;
           font-family: var(--font-inter), sans-serif;
+          letter-spacing: 0.05em;
         }
         .gastro-grid {
           display: grid;
@@ -142,13 +144,13 @@ export default function GastronomySpotlight({ items }: Props) {
         }
 
         .gastro-card {
-          border-radius: 14px;
+          border-radius: 4px;
           overflow: hidden;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: rgba(7,10,15,0.02);
+          border: 1px solid rgba(7,10,15,0.06);
           transition: box-shadow 0.25s, transform 0.25s;
         }
-        .gastro-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+        .gastro-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
         .gastro-image-wrap {
           position: relative;
           width: 100%;
@@ -162,21 +164,21 @@ export default function GastronomySpotlight({ items }: Props) {
           align-items: center;
           justify-content: center;
           font-size: 3rem;
-          background: linear-gradient(135deg, #1a2640 0%, #0A1628 100%);
+          background: #E8E3DA;
         }
-        .gastro-info { padding: 1rem 1.1rem 1.2rem; }
+        .gastro-info { padding: 1.5rem; }
         .gastro-dish {
           font-family: var(--font-serif), serif;
-          font-size: 1.15rem;
-          font-style: italic;
-          color: #FAF9F6;
+          font-size: 1.3rem;
+          color: #070A0F;
+          font-weight: 400;
           margin: 0 0 0.5rem;
         }
         .gastro-desc {
-          font-size: 13px;
-          color: rgba(255,255,255,0.6);
-          line-height: 1.65;
-          margin: 0 0 0.75rem;
+          font-size: 14px;
+          color: rgba(7,10,15,0.7);
+          line-height: 1.7;
+          margin: 0 0 1rem;
           font-family: var(--font-inter), sans-serif;
           font-weight: 300;
         }
@@ -184,19 +186,20 @@ export default function GastronomySpotlight({ items }: Props) {
           display: flex;
           align-items: center;
           gap: 5px;
-          font-size: 11px;
-          color: rgba(255,255,255,0.4);
+          font-size: 12px;
+          color: rgba(7,10,15,0.5);
           font-family: var(--font-inter), sans-serif;
         }
         .gastro-maps-link {
           display: flex;
           align-items: center;
           gap: 4px;
-          color: #D4A027;
+          color: #A43312;
+          font-weight: 500;
           text-decoration: none;
           transition: opacity 0.2s;
         }
-        .gastro-maps-link:hover { opacity: 0.8; }
+        .gastro-maps-link:hover { opacity: 0.7; }
       `}</style>
     </section>
   );

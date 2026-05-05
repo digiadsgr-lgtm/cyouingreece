@@ -76,26 +76,26 @@ export default function HiddenGems({ gems }: Props) {
 
         .gem-card {
           position: relative;
-          border-radius: 14px;
+          border-radius: 4px;
           overflow: hidden;
-          background: #FFFFFF;
-          border: 1px solid rgba(10,22,40,0.1);
+          background: rgba(244,240,234,0.02);
+          border: 1px solid rgba(244,240,234,0.08);
           cursor: pointer;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .gem-badge {
           position: absolute;
           top: 12px;
           left: 12px;
           z-index: 3;
-          background: rgba(10,22,40,0.85);
+          background: rgba(244,240,234,0.9);
           backdrop-filter: blur(8px);
-          border: 1px solid rgba(212,160,39,0.4);
-          border-radius: 100px;
+          border: 1px solid rgba(7,10,15,0.1);
+          border-radius: 4px;
           padding: 4px 10px;
           font-size: 10px;
           font-weight: 600;
-          color: #D4A027;
+          color: #070A0F;
           letter-spacing: 0.06em;
           font-family: var(--font-inter), sans-serif;
         }
@@ -109,23 +109,24 @@ export default function HiddenGems({ gems }: Props) {
         .gem-image-placeholder {
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, #0A1628 0%, #1a3355 100%);
+          background: #E8E3DA;
         }
         .gem-image-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1) 100%);
+          background: linear-gradient(to bottom, transparent 60%, rgba(7,10,15,0.3) 100%);
         }
-        .gem-content { padding: 1rem 1.1rem 1.2rem; }
+        .gem-content { padding: 1.5rem; }
         .gem-name {
           font-family: var(--font-serif), serif;
-          font-size: 1.25rem;
-          color: #0A1628;
+          font-size: 1.3rem;
+          color: #F4F0EA;
+          font-weight: 400;
           margin: 0 0 0.5rem;
         }
         .gem-description {
-          font-size: 13px;
-          color: rgba(10,22,40,0.7);
+          font-size: 14px;
+          color: rgba(244,240,234,0.7);
           line-height: 1.7;
           margin: 0;
           font-family: var(--font-inter), sans-serif;

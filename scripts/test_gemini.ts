@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 async function run() {
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=AIzaSyCj8jvAk_EsSZrnXaYhVToQZBKsIPTFKRw`);
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=AIzaSyBEPIjJZvlHpe7H-cAMccFa9YMoNiQ3Otc`);
     const data = await res.json();
     if (data.models) {
       console.log('Available models:');

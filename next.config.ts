@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
     ],
   },
+  transpilePackages: ['sanity', 'styled-components'],
 };
 
 export default nextConfig;

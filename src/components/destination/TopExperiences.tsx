@@ -94,29 +94,31 @@ export default function TopExperiences({ experiences }: Props) {
         .exp-title {
           font-family: var(--font-serif), serif;
           font-size: clamp(1.5rem, 3vw, 2rem);
-          color: #FAF9F6;
+          color: #070A0F;
+          font-weight: 300;
           margin: 0 0 0.4rem;
         }
         .exp-subtitle {
           font-size: 13px;
-          color: rgba(255,255,255,0.4);
+          color: rgba(7,10,15,0.4);
           font-style: italic;
           margin: 0 0 1.75rem;
           font-family: var(--font-inter), sans-serif;
+          letter-spacing: 0.05em;
         }
         .exp-accordion {
           display: flex;
           flex-direction: column;
           gap: 0;
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
+          border: 1px solid rgba(7,10,15,0.08);
+          border-radius: 4px;
           overflow: hidden;
         }
         .exp-item {
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid rgba(7,10,15,0.06);
         }
         .exp-item:last-child { border-bottom: none; }
-        .exp-item--open { background: rgba(212,160,39,0.04); }
+        .exp-item--open { background: rgba(182,169,150,0.05); }
 
         .exp-trigger {
           width: 100%;
@@ -131,20 +133,20 @@ export default function TopExperiences({ experiences }: Props) {
           gap: 1rem;
           transition: background 0.2s;
         }
-        .exp-trigger:hover { background: rgba(255,255,255,0.03); }
+        .exp-trigger:hover { background: rgba(7,10,15,0.03); }
         .exp-trigger-left { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; }
         .exp-trigger-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
         .exp-number {
           font-family: var(--font-serif), serif;
-          font-size: 1rem;
-          color: #D4A027;
+          font-size: 1.1rem;
+          color: #B6A996;
           min-width: 28px;
         }
         .exp-name {
           font-family: var(--font-inter), sans-serif;
-          font-size: 15px;
-          font-weight: 500;
-          color: #FAF9F6;
+          font-size: 16px;
+          font-weight: 400;
+          color: #070A0F;
           line-height: 1.3;
         }
         .exp-duration {
@@ -152,19 +154,19 @@ export default function TopExperiences({ experiences }: Props) {
           align-items: center;
           gap: 4px;
           font-size: 11px;
-          color: rgba(255,255,255,0.4);
+          color: rgba(7,10,15,0.4);
           white-space: nowrap;
           font-family: var(--font-inter), sans-serif;
         }
-        .exp-chevron { color: rgba(255,255,255,0.4); display: flex; }
+        .exp-chevron { color: rgba(7,10,15,0.4); display: flex; }
 
         .exp-content-wrap { overflow: hidden; }
         .exp-content { padding: 0 1.5rem 1.5rem 4rem; }
         .exp-description {
           font-size: 14px;
-          line-height: 1.75;
-          color: rgba(255,255,255,0.65);
-          margin: 0 0 1rem;
+          line-height: 1.8;
+          color: rgba(7,10,15,0.65);
+          margin: 0 0 1.5rem;
           font-family: var(--font-inter), sans-serif;
           font-weight: 300;
         }
@@ -172,19 +174,19 @@ export default function TopExperiences({ experiences }: Props) {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #D4A027;
+          color: #A43312;
           text-decoration: none;
-          border: 1px solid rgba(212,160,39,0.35);
-          padding: 7px 14px;
-          border-radius: 100px;
+          border: 1px solid rgba(164,51,18,0.2);
+          padding: 8px 16px;
+          border-radius: 4px;
           transition: background 0.2s, color 0.2s;
           font-family: var(--font-inter), sans-serif;
         }
-        .exp-cta:hover { background: rgba(212,160,39,0.12); }
+        .exp-cta:hover { background: rgba(164,51,18,0.05); }
       `}</style>
     </section>
   );

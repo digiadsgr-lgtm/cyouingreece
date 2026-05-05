@@ -1,0 +1,31 @@
+{
+  "Navigation": {
+    "philosophy": "Filosofi",
+    "curatedJourneys": "Kuraterade Resor",
+    "encyclopaedia": "Encyklopedi",
+    "vaultAccess": "Valvåtkomst"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Scrolla för att upptäcka"
+  },
+  "Philosophy": {
+    "title": "Filosofin",
+    "text1": "Vi tror inte på 'dolda pärlor' eller 'måste-se'-listor.",
+    "text2": "Vi tror på att veta exakt vilken taverna som serverar den färskaste fångsten kl. 20:00, och vilken stig man ska vandra innan hettan sätter in.",
+    "text3": "Det här är Grekland, oredigerat och rigoröst kuraterat."
+  },
+  "CuratedJourneys": {
+    "title": "Kuraterade Resor",
+    "subtitle": "Noggrant utformade resplaner som undviker folkmassorna."
+  },
+  "Encyclopaedia": {
+    "title": "Encyklopedin",
+    "subtitle": "Vårt uttömmande, ständigt uppdaterade index över de grekiska öarna och fastlandet."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Alla rättigheter förbehållna.",
+    "poweredBy": "Drivs av lokal kunskap."
+  }
+}

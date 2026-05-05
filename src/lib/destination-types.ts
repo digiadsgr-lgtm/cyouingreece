@@ -151,6 +151,14 @@ export interface EditorialArticle {
   author?: string;
 }
 
+export interface ThematicSection {
+  _key: string;
+  category: 'Nature' | 'History' | 'Culture' | 'Gastronomy' | 'Activities' | 'Churches' | 'Museums' | 'Entertainment' | 'Secrets';
+  title: string;
+  content: any[]; // Portable Text
+  hero_image?: SanityImage;
+}
+
 // ─── Main Destination Document ────────────────────────────────────────────────
 
 export interface Destination {
@@ -168,8 +176,10 @@ export interface Destination {
   tagline: string;
   intro_paragraph: string;
   body_content: unknown[]; // Portable Text blocks
+  thematic_sections?: ThematicSection[];
   diary_entries?: any[]; // The Diary of Nikos entries
   at_a_glance: AtAGlance;
+  youtube_video_url?: string;
   hidden_gems: HiddenGem[];
   gastronomy: GastronomyItem[];
   top_experiences: TopExperience[];

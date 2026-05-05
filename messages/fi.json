@@ -1,0 +1,31 @@
+{
+  "Navigation": {
+    "philosophy": "Filosofia",
+    "curatedJourneys": "Kuratoidut Matkat",
+    "encyclopaedia": "Ensyklopedia",
+    "vaultAccess": "Pääsy Holviin"
+  },
+  "Hero": {
+    "title": "C You In",
+    "subtitle": "Greece.",
+    "scroll": "Vieritä tutustuaksesi"
+  },
+  "Philosophy": {
+    "title": "Filosofia",
+    "text1": "Emme usko 'piilotettuihin helmiin' tai 'pakko nähdä' -listoihin.",
+    "text2": "Uskomme siihen, että tiedämme tarkalleen, mikä taverna tarjoilee tuoreimman saaliin klo 20.00 ja mikä polku kannattaa vaeltaa ennen hellettä.",
+    "text3": "Tämä on Kreikka, muokkaamaton ja tinkimättömästi kuratoitu."
+  },
+  "CuratedJourneys": {
+    "title": "Kuratoidut Matkat",
+    "subtitle": "Huolellisesti suunniteltuja matkareittejä, jotka välttävät väkijoukot."
+  },
+  "Encyclopaedia": {
+    "title": "Ensyklopedia",
+    "subtitle": "Kattava, jatkuvasti päivittyvä hakemistomme Kreikan saarista ja mantereesta."
+  },
+  "Footer": {
+    "rights": "© 2026 CYouInGreece. Kaikki oikeudet pidätetään.",
+    "poweredBy": "Paikallisen tiedon voimalla."
+  }
+}
