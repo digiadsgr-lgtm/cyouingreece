@@ -1,5 +1,5 @@
 import { sanityClient, urlFor } from '@/lib/sanity';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 

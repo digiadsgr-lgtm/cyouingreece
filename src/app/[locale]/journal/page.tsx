@@ -1,5 +1,5 @@
 import { sanityClient, urlFor } from '@/lib/sanity';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import type { Metadata } from 'next';
 
 export const revalidate = 3600;
