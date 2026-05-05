@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import SmartHero from "@/components/home/SmartHero";
-import Link from "next/link";
+import { Link } from '@/i18n/routing';
 import { sanityClient, urlFor } from '@/lib/sanity';
 import { websiteJsonLd, JsonLdScript } from '@/lib/jsonld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';

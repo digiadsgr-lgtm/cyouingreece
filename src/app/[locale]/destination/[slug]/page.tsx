@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Destination } from '@/lib/destination-types';
 import { urlFor } from '@/lib/sanity';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 // ── Import all destination components ──────────────────────────────────────────
 import AtAGlanceCard from '@/components/destination/AtAGlanceCard';
