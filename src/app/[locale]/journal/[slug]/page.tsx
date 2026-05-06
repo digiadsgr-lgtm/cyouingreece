@@ -7,6 +7,8 @@ import AdSlot from '@/components/monetization/AdSlot';
 import BookingWidget from '@/components/monetization/BookingWidget';
 import { articleJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
+import { routing } from '@/i18n/routing';
+
 export const revalidate = 3600;
 
 const IMAGE_PROJECTION = `{
@@ -43,8 +45,10 @@ async function getNextPrevArticles(slug: string, category?: string) {
 }
 
 export async function generateStaticParams() {
-  const slugs = await sanityClient.fetch(`*[_type == "article" && defined(slug.current)]{ "slug": slug.current }`);
-  return slugs.map((s: any) => ({ slug: s.slug }));
+  const articles = await sanityClient.fetch(`*[_type == "article" && defined(slug.current)]{ "slug": slug.current }`);
+  return routing.locales.flatMap((locale) =>
+    articles.map((a: any) => ({ locale, slug: a.slug }))
+  );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
