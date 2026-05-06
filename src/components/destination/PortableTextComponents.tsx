@@ -1,6 +1,10 @@
 'use client';
 import Image from 'next/image';
 import type { PortableTextComponents } from '@portabletext/react';
+import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
+import HotelWidget from '@/components/monetization/HotelWidget';
+import RentACarWidget from '@/components/monetization/RentACarWidget';
+import AdSlot from '@/components/monetization/AdSlot';
 
 // ─── Custom Portable Text block components ────────────────────────────────────
 
@@ -55,6 +59,28 @@ export const destinationPortableTextComponents: PortableTextComponents = {
           <span className="pt-nikos-label">Nikos says</span>
           <p className="pt-nikos-text">{value.tip}</p>
         </div>
+      </div>
+    ),
+
+    // Injected Smart Widgets
+    widget_affiliate: ({ value }) => (
+      <div className="my-12">
+        <AffiliateLinkBar destination={value.destinationName} />
+      </div>
+    ),
+    widget_hotel: () => (
+      <div className="my-12">
+        <HotelWidget />
+      </div>
+    ),
+    widget_car: () => (
+      <div className="my-12">
+        <RentACarWidget />
+      </div>
+    ),
+    widget_ad: () => (
+      <div className="my-12">
+        <AdSlot format="horizontal" />
       </div>
     ),
   },

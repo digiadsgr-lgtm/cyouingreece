@@ -25,8 +25,8 @@ export function getLocalizedContent(doc: any, locale: string) {
   
   if (doc._type === 'article') {
     return {
-      title: getLocalizedField(doc, 'tagline', locale) || doc.title, // I stored article title in 'tagline' in translationSet
-      excerpt: getLocalizedField(doc, 'intro_paragraph', locale) || doc.excerpt,
+      title: getLocalizedField(doc, 'title', locale) || doc.title,
+      excerpt: getLocalizedField(doc, 'excerpt', locale) || doc.excerpt,
       body: getLocalizedField(doc, 'body_content', locale) || doc.body,
     };
   }

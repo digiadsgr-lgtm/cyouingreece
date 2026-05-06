@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { PortableText } from '@portabletext/react';
 import AdSlot from '@/components/monetization/AdSlot';
 import BookingWidget from '@/components/monetization/BookingWidget';
+import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
+import HotelWidget from '@/components/monetization/HotelWidget';
 import { articleJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
 import { routing } from '@/i18n/routing';
@@ -110,20 +112,27 @@ function buildComponents(articleTitle: string) {
         <h3 className="text-xl font-serif text-[#D4A027] mt-10 mb-4">{children}</h3>
       ),
       normal: ({ children }: any) => {
-        paragraphCount++;
-        // Inject mid-article ad slot after paragraph 4
-        const showAd = paragraphCount === 4;
-        return (
-          <>
-            <p className="text-white/80 font-light text-lg leading-[1.9] mb-7 font-serif">{children}</p>
-            {showAd && (
-              <div className="my-10">
-                <AdSlot format="rectangle" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} className="mx-auto max-w-sm" />
-              </div>
-            )}
-          </>
-        );
+        return <p className="text-white/80 font-light text-lg leading-[1.9] mb-7 font-serif">{children}</p>;
       },
+      // Injected Custom Blocks
+      widget_affiliate: () => (
+        <div className="my-14 mx-auto max-w-2xl bg-white/5 rounded-xl border border-[#D4A027]/20 p-6">
+          <span className="text-[#D4A027] tracking-[0.2em] uppercase text-[9px] font-bold block mb-4 text-center">Exclusive Offers</span>
+          <AffiliateLinkBar destination={articleTitle} />
+        </div>
+      ),
+      widget_hotel: () => (
+        <div className="my-14 mx-auto max-w-3xl bg-white/5 rounded-xl border border-white/10 p-6">
+          <span className="text-white/40 tracking-[0.2em] uppercase text-[9px] font-bold block mb-4 text-center">Recommended Stays</span>
+          <HotelWidget />
+        </div>
+      ),
+      widget_ad: () => (
+        <div className="my-14 mx-auto max-w-sm">
+          <AdSlot format="rectangle" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} />
+        </div>
+      ),
+
       blockquote: ({ children }: any) => (
         <blockquote className="border-l-[3px] border-[#D4A027] pl-8 my-12 font-serif italic text-2xl text-white/70 leading-relaxed">
           {children}
@@ -194,7 +203,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   const heroUrl = article.hero_image?.asset?._ref
     ? urlFor(article.hero_image).width(1920).height(1080).auto('format').url()
-    : null;
+    : 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=2000&auto=format&fit=crop';
 
   const pubDate = article.published_at
     ? new Date(article.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -203,8 +212,35 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const catColor = CAT_COLORS[article.category] || '#D4A027';
   const catLabel = CAT_LABELS[article.category] || article.category;
 
-  // Estimate read time
   const bodyContent = localized.body || article.body || [];
+  
+  // --- SMART CONTENT INJECTOR ---
+  const processedBlocks: unknown[] = [];
+  let paragraphCount = 0;
+
+  if (Array.isArray(bodyContent)) {
+    bodyContent.forEach((block: any) => {
+      processedBlocks.push(block);
+      
+      if (block._type === 'block' && block.style === 'normal') {
+        paragraphCount++;
+        
+        // AdSense after paragraph 3
+        if (paragraphCount === 3) {
+          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+        }
+        // Affiliate Links after paragraph 6
+        if (paragraphCount === 6) {
+          processedBlocks.push({ _type: 'widget_affiliate', _key: `injected-aff-${paragraphCount}` });
+        }
+        // Hotel Widget after paragraph 9
+        if (paragraphCount === 9) {
+          processedBlocks.push({ _type: 'widget_hotel', _key: `injected-hot-${paragraphCount}` });
+        }
+      }
+    });
+  }
+
   const wordCount = bodyContent
     .filter((b: any) => b._type === 'block')
     .flatMap((b: any) => b.children || [])
@@ -290,8 +326,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       {/* ── ARTICLE BODY ──────────────────────────────────────────── */}
       <section className="py-16 md:py-24">
         <div className="max-w-[760px] mx-auto px-6 md:px-12">
-          {bodyContent && bodyContent.length > 0 ? (
-            <PortableText value={bodyContent} components={buildComponents(localized.title)} />
+          {processedBlocks && processedBlocks.length > 0 ? (
+            <PortableText value={processedBlocks as any} components={buildComponents(localized.title)} />
           ) : (
             <p className="font-serif italic text-white/40 text-xl text-center py-20">
               Full article coming soon...

@@ -177,7 +177,7 @@ export default async function DestinationPage({
                   <span className="text-[#A43312] tracking-[0.3em] uppercase text-[10px] font-bold block mb-10">
                     Full Editorial
                   </span>
-                  <BodyContent blocks={localized.body as any} />
+                  <BodyContent blocks={localized.body as any} destinationName={dest.name_en} />
                 </div>
               </FadeInScroll>
             </section>
@@ -341,7 +341,7 @@ export default async function DestinationPage({
         </section>
       )}
 
-      {/* ── MONETIZATION: BOOKING + GYG ───────────────────────────────────── */}
+      {/* ── PLAN YOUR TRIP ─────────────────────────────────────────────────── */}
       <section className="bg-[#0A1628] py-20 md:py-28">
         <FadeInScroll yOffset={40}>
           <div className="max-w-[1320px] mx-auto px-6 md:px-12">
@@ -351,32 +351,17 @@ export default async function DestinationPage({
                 Book your {dest.name_en} experience.
               </h2>
             </div>
-
-            {/* Top row: Booking + GYG */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <BookingWidget destination={`${dest.name_en}, Greece`} />
               <GetYourGuideWidget locationKey={slug} numberOfItems={4} locale={locale} />
             </div>
-
-            {/* Second row: Hotels + Rent A Car */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <HotelWidget />
-              <RentACarWidget />
-            </div>
-
-            {/* Affiliate links: Flights + Experiences */}
-            <AffiliateLinkBar destination={dest.name_en} />
-
-            {/* Athens Exclusive: Metasearch Widget */}
-            {slug === 'athens' && (
-              <MetasearchWidget />
-            )}
-
-            {/* Ad slot */}
-            <div className="mt-10">
-              <AdSlot format="horizontal" className="max-w-3xl mx-auto" />
-            </div>
           </div>
+          {/* Athens Exclusive: Metasearch Widget */}
+          {slug === 'athens' && (
+            <div className="max-w-[1320px] mx-auto px-6 md:px-12 mt-20">
+              <MetasearchWidget />
+            </div>
+          )}
         </FadeInScroll>
       </section>
 

@@ -142,13 +142,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {articles.map((article: any) => (
                 <Link key={article._id} href={`/journal/${article.slug}`} className="group block">
                   <div className="aspect-[4/5] overflow-hidden mb-8 bg-[#070A0F]/5 relative">
-                    {article.hero_image?.asset && (
-                      <img
-                        src={urlFor(article.hero_image).width(800).height(1000).url()}
-                        alt={article.title}
-                        className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-                      />
-                    )}
+                    <img 
+                      src={article.hero_image?.asset ? urlFor(article.hero_image).width(800).height(1000).url() : 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=2000&auto=format&fit=crop'}
+                      alt={article.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                    />
                   </div>
                   <h3 className="text-2xl font-serif text-[#070A0F] font-light leading-[1.3] mb-4 group-hover:text-[#A43312] transition-colors">
                     {article.title}

@@ -5,6 +5,7 @@ import { destinationPortableTextComponents } from './PortableTextComponents';
 
 interface Props {
   blocks: unknown[];
+  destinationName?: string;
 }
 
 function estimateReadingTime(blocks: unknown[]): number {
@@ -13,9 +14,39 @@ function estimateReadingTime(blocks: unknown[]): number {
   return Math.max(1, Math.ceil(wordCount / 200));
 }
 
-export default function BodyContent({ blocks }: Props) {
-  if (!blocks || blocks.length === 0) return null;
+export default function BodyContent({ blocks, destinationName }: Props) {
+  if (!blocks || !Array.isArray(blocks) || blocks.length === 0) return null;
   const minutes = estimateReadingTime(blocks);
+
+  // --- SMART CONTENT INJECTOR ---
+  // Injects monetization widgets directly between paragraphs to avoid a "wall of ads" at the bottom
+  const processedBlocks: unknown[] = [];
+  let paragraphCount = 0;
+
+  blocks.forEach((block: any) => {
+    processedBlocks.push(block);
+    
+    if (block._type === 'block' && block.style === 'normal') {
+      paragraphCount++;
+      
+      // Inject Affiliate Links after 2nd paragraph
+      if (paragraphCount === 2) {
+        processedBlocks.push({ _type: 'widget_affiliate', _key: `injected-aff-${paragraphCount}`, destinationName });
+      }
+      // Inject Hotel Widget after 4th paragraph
+      if (paragraphCount === 4) {
+        processedBlocks.push({ _type: 'widget_hotel', _key: `injected-hot-${paragraphCount}` });
+      }
+      // Inject Rent A Car Widget after 6th paragraph
+      if (paragraphCount === 6) {
+        processedBlocks.push({ _type: 'widget_car', _key: `injected-car-${paragraphCount}` });
+      }
+      // Inject an AdSense slot every 4 paragraphs after the 7th
+      if (paragraphCount > 6 && (paragraphCount - 6) % 4 === 0) {
+        processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+      }
+    }
+  });
 
   return (
     <article className="body-content" aria-label="Full destination guide">
@@ -26,7 +57,7 @@ export default function BodyContent({ blocks }: Props) {
 
       <div className="prose">
         <PortableText
-          value={blocks as any}
+          value={processedBlocks as any}
           components={destinationPortableTextComponents}
         />
       </div>

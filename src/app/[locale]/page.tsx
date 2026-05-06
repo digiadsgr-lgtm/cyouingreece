@@ -16,6 +16,8 @@ const resolveSlug = (slug: any): string => {
   return slug.current || '';
 };
 
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=2000&auto=format&fit=crop';
+
 export default async function Home({
   params
 }: {
@@ -127,13 +129,11 @@ const resolveSlug = (slug: any): string => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {recentJourneys && recentJourneys.map((itin: any) => (
               <Link key={itin._id} href={`/curated-journeys/${resolveSlug(itin.slug)}`} className="group relative overflow-hidden aspect-[4/5] sm:aspect-[3/4] bg-[#0A1628] block">
-                {itin.hero_image?.asset && (
-                  <img 
-                    src={urlFor(itin.hero_image).width(800).url()}
-                    alt={itin.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                  />
-                )}
+                <img 
+                  src={itin.hero_image?.asset ? urlFor(itin.hero_image).width(800).url() : FALLBACK_IMAGE}
+                  alt={itin.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/20 to-transparent opacity-90" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -166,13 +166,11 @@ const resolveSlug = (slug: any): string => {
           {featuredArticle && (
             <Link href={`/journal/${resolveSlug(featuredArticle.slug)}`} className="group block mb-24 lg:mb-36">
               <div className="relative w-full aspect-[16/10] md:aspect-video lg:h-[75vh] overflow-hidden bg-[#0A1628] rounded-xl shadow-2xl">
-                {featuredArticle.hero_image?.asset && (
-                  <img
-                    src={urlFor(featuredArticle.hero_image).width(1800).height(900).auto('format').url()}
-                    alt={featuredArticle.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105"
-                  />
-                )}
+                <img
+                  src={featuredArticle.hero_image?.asset ? urlFor(featuredArticle.hero_image).width(1800).height(900).auto('format').url() : FALLBACK_IMAGE}
+                  alt={featuredArticle.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/95 via-[#0A1628]/20 to-transparent" />
                 <div className="absolute top-6 left-6 md:top-10 md:left-10">
                   <span className="bg-[#C1440E] text-white text-[9px] font-bold uppercase tracking-[0.3em] px-4 py-2">
@@ -219,15 +217,11 @@ const resolveSlug = (slug: any): string => {
                   {catArticles.map((article: any) => (
                     <Link key={article._id} href={`/journal/${resolveSlug(article.slug)}`} className="group flex flex-col">
                       <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-[#e0dad2] rounded-lg shadow-lg">
-                        {article.hero_image?.asset ? (
-                          <img
-                            src={urlFor(article.hero_image).width(800).height(600).auto('format').url()}
-                            alt={article.title}
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-110"
-                          />
-                        ) : (
-                          <div className="absolute inset-0" style={{ backgroundColor: meta.color, opacity: 0.1 }} />
-                        )}
+                        <img
+                          src={article.hero_image?.asset ? urlFor(article.hero_image).width(800).height(600).auto('format').url() : FALLBACK_IMAGE}
+                          alt={article.title}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-110"
+                        />
                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
                       <h4 className="font-serif text-[#0A1628] text-xl md:text-2xl leading-snug mb-3 group-hover:text-[#C1440E] transition-colors duration-300">
@@ -268,16 +262,13 @@ const resolveSlug = (slug: any): string => {
               
               return (
                 <article key={dest._id} className={`${colSpan} group flex flex-col`}>
-                  <Link href={`/destination/${dest.slug?.current}`} className="w-full relative overflow-hidden block aspect-[4/5] md:aspect-[16/10] lg:aspect-[16/10] mb-10 bg-[#e0dad2] rounded-xl shadow-2xl">
-                    {dest.hero_image?.asset ? (
-                      <img
-                        src={urlFor(dest.hero_image).width(1400).url()}
-                        alt={dest.name_en}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-[#0A1628]" />
-                    )}
+                  <Link href={`/destination/${dest.slug?.current}`} className="group block relative overflow-hidden aspect-square md:aspect-[16/10] bg-[#0A1628] mb-10 rounded-xl shadow-2xl">
+                    <img
+                      src={dest.hero_image?.asset ? urlFor(dest.hero_image).width(1400).url() : FALLBACK_IMAGE}
+                      alt={dest.name_en}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-5 py-2 shadow-xl z-10 rounded-sm">
                       <span className="text-[10px] text-[#0A1628] font-black tracking-[0.3em] uppercase">{dest.type}</span>
                     </div>

@@ -49,9 +49,9 @@ async function getAllDestinations() {
 }
 
 function DestinationCard({ dest, size = 'normal', locale }: { dest: any; size?: 'large' | 'normal' | 'small', locale: string }) {
-  const heroUrl = dest.hero_image?.asset
+  const heroUrl = dest.hero_image?.asset?._ref
     ? urlFor(dest.hero_image).width(size === 'large' ? 1400 : 700).height(size === 'large' ? 900 : 600).auto('format').url()
-    : null;
+    : 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=2000&auto=format&fit=crop';
 
   const lqip = dest.hero_image?.asset?.metadata?.lqip;
 
