@@ -6,18 +6,21 @@ import HotelWidget from '@/components/monetization/HotelWidget';
 import RentACarWidget from '@/components/monetization/RentACarWidget';
 import AdSlot from '@/components/monetization/AdSlot';
 
+import { urlFor } from '@/lib/sanity';
+
 // ─── Custom Portable Text block components ────────────────────────────────────
 
 export const destinationPortableTextComponents: PortableTextComponents = {
   types: {
     // Full-bleed image inside prose
     image: ({ value }) => {
-      if (!value?.asset?.url) return null;
+      const imgUrl = value?.asset?._ref ? urlFor(value).auto('format').url() : null;
+      if (!imgUrl) return null;
       return (
         <figure className="pt-photo-embed">
           <div className="pt-photo-wrap">
             <Image
-              src={value.asset.url}
+              src={imgUrl}
               alt={value.caption || 'Destination photo'}
               fill
               sizes="(max-width: 768px) 100vw, 800px"

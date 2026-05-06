@@ -5,7 +5,8 @@ export const proxy = createMiddleware(routing);
 
 export const config = {
   matcher: [
-    // Match root and all locale-prefixed pages
-    '/((?!_next|_vercel|.*\\..*|api|studio).*)'
+    // Match all locale-prefixed paths, but EXCLUDE the absolute root (/)
+    // so that the verification bot can read our fo-verify meta tag in app/page.tsx
+    '/((?!_next|_vercel|.*\\..*|api|studio|^/$).*)'
   ]
 };

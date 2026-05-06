@@ -229,13 +229,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         if (paragraphCount === 3) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
-        // Affiliate Links after paragraph 6
+        // AdSense after paragraph 6
         if (paragraphCount === 6) {
-          processedBlocks.push({ _type: 'widget_affiliate', _key: `injected-aff-${paragraphCount}` });
+          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
-        // Hotel Widget after paragraph 9
+        // AdSense after paragraph 9
         if (paragraphCount === 9) {
-          processedBlocks.push({ _type: 'widget_hotel', _key: `injected-hot-${paragraphCount}` });
+          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
       }
     });

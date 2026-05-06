@@ -37,12 +37,16 @@ export default function BodyContent({ blocks, destinationName }: Props) {
       if (paragraphCount === 4) {
         processedBlocks.push({ _type: 'widget_hotel', _key: `injected-hot-${paragraphCount}` });
       }
-      // Inject Rent A Car Widget after 6th paragraph
+      // Inject AdSense after 6th paragraph
       if (paragraphCount === 6) {
-        processedBlocks.push({ _type: 'widget_car', _key: `injected-car-${paragraphCount}` });
+        processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
-      // Inject an AdSense slot every 4 paragraphs after the 7th
-      if (paragraphCount > 6 && (paragraphCount - 6) % 4 === 0) {
+      // Inject AdSense after 9th paragraph
+      if (paragraphCount === 9) {
+        processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+      }
+      // Inject an AdSense slot every 4 paragraphs after the 10th
+      if (paragraphCount > 10 && (paragraphCount - 10) % 4 === 0) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
     }
