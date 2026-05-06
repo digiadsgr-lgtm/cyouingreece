@@ -4,6 +4,8 @@ import { Link } from '@/i18n/routing';
 import { sanityClient, urlFor } from '@/lib/sanity';
 import { websiteJsonLd, JsonLdScript } from '@/lib/jsonld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getLocalizedContent } from '@/lib/i18n-utils';
+import { ArrowRight } from 'lucide-react';
 
 export const revalidate = 0; // Fresh content for testing
 
@@ -18,12 +20,14 @@ export default async function Home({
 
   const featuredSlugs = ['santorini', 'athens', 'mykonos', 'crete', 'paros'];
   const [dbDestinations, recentJourneys, allArticles] = await Promise.all([
-    sanityClient.fetch(`*[_type == "destination" && slug.current in $slugs]`, { slugs: featuredSlugs }),
+    sanityClient.fetch(`*[_type == "destination" && slug.current in $slugs] {
+      ..., translations
+    }`, { slugs: featuredSlugs }),
     sanityClient.fetch(`*[_type == "journey"] | order(_createdAt desc)[0...3] {
-      _id, title, slug, duration_days, summary, hero_image
+      _id, title, slug, duration_days, summary, hero_image, translations
     }`),
     sanityClient.fetch(`*[_type == "article"] | order(published_at desc)[0...20] {
-      _id, title, slug, category, excerpt, hero_image
+      _id, title, slug, category, excerpt, hero_image, translations
     }`)
   ]);
 
@@ -48,11 +52,11 @@ export default async function Home({
           The Aegean
         </div>
 
-        <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             {/* Left Image */}
-            <div className="w-full lg:w-5/12">
-              <div className="relative aspect-[3/4] overflow-hidden w-full group shadow-[0_20px_50px_rgba(0,0,0,0.15)] bg-[#e0dad2] rounded-lg">
+            <div className="w-full lg:w-5/12 order-2 lg:order-1">
+              <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden w-full group shadow-[0_20px_50px_rgba(0,0,0,0.15)] bg-[#e0dad2] rounded-lg">
                 <img 
                   src="https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1200&auto=format&fit=crop"
                   alt="Editor's Desk"
@@ -63,12 +67,12 @@ export default async function Home({
             </div>
 
             {/* Right Text */}
-            <div className="w-full lg:w-7/12 relative mt-8 lg:mt-0">
+            <div className="w-full lg:w-7/12 relative mt-8 lg:mt-0 order-1 lg:order-2">
               <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-8 pl-1">
                 {t('title')}
               </span>
               
-              <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-serif text-[#0A1628] leading-[1.1] md:leading-[1.05] tracking-tight mb-10">
+              <h2 className="text-[clamp(2rem,5vw,5rem)] font-serif text-[#0A1628] leading-[1.1] md:leading-[1.05] tracking-tight mb-10">
                 Greece is not a destination. <span className="italic text-[#C1440E]">It is a feeling.</span>
               </h2>
               
@@ -77,11 +81,13 @@ export default async function Home({
                 <p className="text-[clamp(1.05rem,1.8vw,1.35rem)] font-light text-[#4a4a4a] leading-[1.8] md:leading-[1.9] font-serif">
                   <span className="text-4xl md:text-6xl text-[#0A1628] float-left pr-3 md:pr-4 mt-1 md:mt-2 font-bold leading-[0.8]">T</span>{t('text1')} {t('text2')} {t('text3')}
                 </p>
-                <div className="mt-10 md:mt-14 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                  <Link href="/encyclopaedia" className="inline-flex items-center justify-center w-full sm:w-auto gap-4 px-8 py-4 md:px-10 md:py-5 border border-[#0A1628]/20 text-[#0A1628] text-xs tracking-[0.25em] uppercase font-bold hover:bg-[#0A1628] hover:text-[#FAF9F6] transition-all duration-300">
-                    Read the Encyclopaedia
+                <div className="mt-10 md:mt-14 flex flex-col sm:flex-row items-center gap-6">
+                  <Link href="/encyclopaedia" className="inline-flex items-center justify-center w-full sm:w-auto gap-4 px-8 py-4 md:px-10 md:py-5 bg-[#0A1628] text-white text-[10px] tracking-[0.25em] uppercase font-bold hover:bg-[#D4A027] hover:text-[#0A1628] transition-all duration-500 shadow-xl">
+                    Explore the Archive
                   </Link>
-                  <span className="text-[#0A1628]/40 text-[10px] md:text-xs tracking-widest uppercase hidden sm:block">Or keep reading ↓</span>
+                  <Link href="/journal" className="text-[#0A1628] text-[10px] tracking-widest uppercase font-bold border-b border-[#0A1628]/20 pb-1 hover:border-[#D4A027] transition-all">
+                    Read the Journal
+                  </Link>
                 </div>
               </div>
             </div>
@@ -94,32 +100,33 @@ export default async function Home({
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-20 md:mb-32">
           <span className="text-[#D4A027] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">Curated Journeys</span>
           <div className="flex flex-col md:flex-row justify-between items-end gap-10">
-            <h2 className="text-[clamp(3rem,6vw,5.5rem)] font-serif leading-[0.95] max-w-3xl">
+            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-serif leading-[0.95] max-w-3xl">
               Don't just visit. <br/><span className="italic text-white/50">Experience.</span>
             </h2>
-            <Link href="#destinations" className="text-xs uppercase tracking-[0.2em] hover:text-[#D4A027] transition-colors border-b border-white/20 pb-1 mb-2">
-              View all 50+ Guides
+            <Link href="/curated-journeys" className="text-xs uppercase tracking-[0.2em] hover:text-[#D4A027] transition-colors border-b border-white/20 pb-1 mb-2">
+              All Journeys
             </Link>
           </div>
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {recentJourneys && recentJourneys.map((itin: any) => (
-              <Link key={itin._id} href={`/curated-journeys/${itin.slug.current}`} className="group relative overflow-hidden h-[500px] bg-[#0A1628] block">
+              <Link key={itin._id} href={`/curated-journeys/${itin.slug.current}`} className="group relative overflow-hidden aspect-[4/5] sm:aspect-[3/4] bg-[#0A1628] block">
                 {itin.hero_image?.asset && (
                   <img 
                     src={urlFor(itin.hero_image).width(800).url()}
                     alt={itin.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/40 to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/20 to-transparent opacity-90" />
                 
-                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <span className="text-[#D4A027] text-[10px] uppercase tracking-widest mb-3 block">{itin.duration_days} Days</span>
-                  <h3 className="text-3xl font-serif text-white mb-3 group-hover:text-[#D4A027] transition-colors">{itin.title}</h3>
-                  <p className="text-white/70 font-light text-sm max-w-[280px]">{itin.summary}</p>
+                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-3 group-hover:text-[#D4A027] transition-colors">{itin.title}</h3>
+                  <p className="text-white/60 font-light text-sm max-w-[280px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">{itin.summary}</p>
+                  <div className="mt-6 w-10 h-px bg-[#D4A027] group-hover:w-16 transition-all duration-500" />
                 </div>
               </Link>
             ))}
@@ -133,39 +140,41 @@ export default async function Home({
           <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-20 md:mb-24">
             <div>
               <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">The Journal</span>
-              <h2 className="text-[clamp(3rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-[0.95]">
+              <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-serif text-[#0A1628] leading-[0.95]">
                 Stories worth<br /><span className="italic">reading slowly.</span>
               </h2>
             </div>
             <Link href="/journal" className="shrink-0 text-xs uppercase tracking-[0.2em] hover:text-[#C1440E] transition-colors border-b border-[#0A1628]/20 pb-1 mb-2 text-[#0A1628]">
-              All Articles →
+              Archive →
             </Link>
           </div>
 
           {featuredArticle && (
-            <Link href={`/journal/${featuredArticle.slug?.current}`} className="group block mb-24">
-              <div className="relative w-full h-[55vh] md:h-[70vh] overflow-hidden bg-[#0A1628]">
+            <Link href={`/journal/${featuredArticle.slug?.current}`} className="group block mb-24 lg:mb-36">
+              <div className="relative w-full aspect-[16/10] md:aspect-video lg:h-[75vh] overflow-hidden bg-[#0A1628] rounded-xl shadow-2xl">
                 {featuredArticle.hero_image?.asset && (
                   <img
                     src={urlFor(featuredArticle.hero_image).width(1800).height(900).auto('format').url()}
                     alt={featuredArticle.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/95 via-[#0A1628]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/95 via-[#0A1628]/20 to-transparent" />
                 <div className="absolute top-6 left-6 md:top-10 md:left-10">
                   <span className="bg-[#C1440E] text-white text-[9px] font-bold uppercase tracking-[0.3em] px-4 py-2">
                     {featuredArticle.category ? featuredArticle.category.charAt(0).toUpperCase() + featuredArticle.category.slice(1) : 'Featured'}
                   </span>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
-                  <h3 className="font-serif text-white text-[clamp(1.8rem,4vw,3.5rem)] leading-[1.1] mb-4 max-w-4xl group-hover:text-[#D4A027] transition-colors duration-500">
-                    {featuredArticle.title}
+                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20">
+                  <h3 className="font-serif text-white text-[clamp(1.5rem,4vw,4rem)] leading-[1.05] mb-6 max-w-4xl group-hover:text-[#D4A027] transition-colors duration-700">
+                    {getLocalizedContent(featuredArticle, locale).title}
                   </h3>
-                  <p className="text-white/60 font-light text-base max-w-2xl mb-6 hidden md:block">{featuredArticle.excerpt}</p>
-                  <span className="inline-flex items-center gap-3 text-[#D4A027] text-xs font-bold uppercase tracking-[0.2em]">
-                    Read Feature
-                    <span className="w-8 h-px bg-[#D4A027] group-hover:w-14 transition-all duration-500" />
+                  <p className="text-white/60 font-serif italic text-lg md:text-xl max-w-2xl mb-8 line-clamp-2 hidden sm:block">
+                    {getLocalizedContent(featuredArticle, locale).excerpt}
+                  </p>
+                  <span className="inline-flex items-center gap-4 text-[#D4A027] text-[10px] font-bold uppercase tracking-[0.4em] group-hover:gap-6 transition-all">
+                    Dive into Feature
+                    <span className="w-12 h-px bg-[#D4A027]" />
                   </span>
                 </div>
               </div>
@@ -183,41 +192,39 @@ export default async function Home({
             };
             const meta = catMeta[cat];
             return (
-              <div key={cat} className="mb-20">
-                <div className="flex items-center gap-5 mb-10">
-                  <span className="font-serif text-2xl" style={{ color: meta.color }}>{meta.icon}</span>
-                  <h3 className="font-serif text-[clamp(1.3rem,2.5vw,2rem)] text-[#0A1628]">{meta.label}</h3>
-                  <div className="flex-1 h-px" style={{ backgroundColor: meta.color, opacity: 0.2 }} />
-                  <Link href={`/journal`} className="text-[10px] uppercase tracking-[0.2em] font-bold hover:text-[#C1440E] transition-colors text-[#0A1628]/40">
-                    More →
+              <div key={cat} className="mb-24">
+                <div className="flex items-center gap-6 mb-12">
+                  <span className="font-serif text-3xl" style={{ color: meta.color }}>{meta.icon}</span>
+                  <h3 className="font-serif text-[clamp(1.5rem,3vw,2.2rem)] text-[#0A1628]">{meta.label}</h3>
+                  <div className="flex-1 h-px bg-[#0A1628]/10" />
+                  <Link href={`/journal`} className="text-[9px] uppercase tracking-[0.3em] font-black hover:text-[#C1440E] transition-colors text-[#0A1628]/30">
+                    Discover More
                   </Link>
                 </div>
-                <div className={`grid gap-6 ${
-                  catArticles.length === 1 ? 'grid-cols-1' :
-                  catArticles.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
-                  'grid-cols-1 md:grid-cols-3'
-                }`}>
-                  {catArticles.map((article: any, idx: number) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                  {catArticles.map((article: any) => (
                     <Link key={article._id} href={`/journal/${article.slug?.current}`} className="group flex flex-col">
-                      <div className={`relative overflow-hidden mb-5 bg-[#e0dad2] ${idx === 0 && catArticles.length === 3 ? 'aspect-[16/9]' : 'aspect-[4/3]'}`}>
+                      <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-[#e0dad2] rounded-lg shadow-lg">
                         {article.hero_image?.asset ? (
                           <img
                             src={urlFor(article.hero_image).width(800).height(600).auto('format').url()}
                             alt={article.title}
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] group-hover:scale-110"
                           />
                         ) : (
-                          <div className="absolute inset-0" style={{ backgroundColor: meta.color, opacity: 0.15 }} />
+                          <div className="absolute inset-0" style={{ backgroundColor: meta.color, opacity: 0.1 }} />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
-                      <h4 className="font-serif text-[#0A1628] text-lg md:text-xl leading-tight mb-3 group-hover:text-[#C1440E] transition-colors duration-300">
-                        {article.title}
+                      <h4 className="font-serif text-[#0A1628] text-xl md:text-2xl leading-snug mb-3 group-hover:text-[#C1440E] transition-colors duration-300">
+                        {getLocalizedContent(article, locale).title}
                       </h4>
-                      <p className="text-[#4a4a4a] font-light text-sm leading-relaxed flex-1 line-clamp-2">{article.excerpt}</p>
-                      <span className="inline-flex items-center gap-2 mt-4 text-[10px] uppercase tracking-[0.2em] font-bold text-[#0A1628]/50 group-hover:text-[#C1440E] transition-colors">
-                        Read <span className="w-5 h-px bg-current group-hover:w-8 transition-all" />
-                      </span>
+                      <p className="text-[#4a4a4a]/80 font-serif italic text-sm leading-relaxed flex-1 line-clamp-3">
+                        {getLocalizedContent(article, locale).excerpt}
+                      </p>
+                      <div className="mt-6 flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-[#0A1628]/40 group-hover:text-[#C1440E] transition-colors">
+                        Read <ArrowRight className="w-4 h-4" />
+                      </div>
                     </Link>
                   ))}
                 </div>
@@ -232,49 +239,50 @@ export default async function Home({
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="text-center mb-32">
             <span className="text-[#C1440E] tracking-[0.4em] uppercase text-[10px] font-bold block mb-6">
-              The Encyclopaedia
+              The Archive
             </span>
-            <h2 className="text-[clamp(3.5rem,8vw,7rem)] font-serif text-[#0A1628] leading-[0.9]">
+            <h2 className="text-[clamp(3rem,8vw,7.5rem)] font-serif text-[#0A1628] leading-[0.9] tracking-tight">
               Every island.<br/>
-              <span className="italic">Every table worth finding.</span>
+              <span className="italic text-[#0A1628]/30 font-light">Every table worth finding.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-24 md:gap-y-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-24 md:gap-y-36">
             {destinations.map((dest: any, i) => {
               const isLarge = i % 3 === 0;
               const colSpan = isLarge ? "lg:col-span-8" : "lg:col-span-4";
-              const colStart = isLarge ? (i % 2 === 0 ? "lg:col-start-1" : "lg:col-start-5") : "lg:col-auto";
               
               return (
-                <article key={dest._id} className={`${colSpan} ${colStart} group flex flex-col`}>
-                  <Link href={`/destination/${dest.slug?.current}`} className="w-full relative overflow-hidden block aspect-[4/3] md:aspect-[3/4] mb-8 bg-[#e0dad2]">
+                <article key={dest._id} className={`${colSpan} group flex flex-col`}>
+                  <Link href={`/destination/${dest.slug?.current}`} className="w-full relative overflow-hidden block aspect-[4/5] md:aspect-[16/10] lg:aspect-[16/10] mb-10 bg-[#e0dad2] rounded-xl shadow-2xl">
                     {dest.hero_image?.asset ? (
                       <img
-                        src={urlFor(dest.hero_image).width(1200).url()}
+                        src={urlFor(dest.hero_image).width(1400).url()}
                         alt={dest.name_en}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-[#0A1628]" />
                     )}
-                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 shadow-lg z-10">
-                      <span className="text-[9px] text-[#0A1628] font-bold tracking-[0.25em] uppercase">{dest.type}</span>
+                    <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-5 py-2 shadow-xl z-10 rounded-sm">
+                      <span className="text-[10px] text-[#0A1628] font-black tracking-[0.3em] uppercase">{dest.type}</span>
                     </div>
                   </Link>
 
-                  <div className="flex-1 flex flex-col">
-                    <div className="flex items-center gap-4 mb-4">
-                      <h3 className="text-4xl md:text-5xl font-serif text-[#0A1628] leading-none">{dest.name_en}</h3>
-                      <span className="text-[#0A1628]/30 font-serif italic text-xl">{dest.name_local}</span>
+                  <div className="flex-1 flex flex-col px-2">
+                    <div className="flex items-baseline gap-6 mb-6">
+                      <h3 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0A1628] leading-none">{dest.name_en}</h3>
+                      <span className="text-[#0A1628]/20 font-serif italic text-2xl">{dest.name_local}</span>
                     </div>
-                    <p className="font-serif italic text-[#C1440E] text-lg md:text-xl mb-6">"{dest.tagline}"</p>
-                    <p className="text-[#4a4a4a] font-light text-base leading-relaxed mb-8 flex-1">
-                      {isLarge ? dest.intro_paragraph : `${dest.intro_paragraph?.slice(0, 150)}...`}
+                    <p className="font-serif italic text-[#C1440E] text-xl md:text-2xl mb-8 leading-tight">
+                      "{getLocalizedContent(dest, locale).tagline}"
                     </p>
-                    <Link href={`/destination/${dest.slug?.current}`} className="inline-flex items-center gap-3 w-fit text-xs uppercase tracking-[0.2em] font-bold text-[#0A1628] hover:text-[#C1440E] transition-colors group/link">
-                      Read Guide
-                      <span className="w-8 h-px bg-[#0A1628] group-hover/link:w-12 group-hover/link:bg-[#C1440E] transition-all" />
+                    <p className="text-[#4a4a4a] font-light text-base md:text-lg leading-[1.8] mb-10 flex-1">
+                      {isLarge ? getLocalizedContent(dest, locale).intro : `${getLocalizedContent(dest, locale).intro?.slice(0, 160)}...`}
+                    </p>
+                    <Link href={`/destination/${dest.slug?.current}`} className="inline-flex items-center gap-4 w-fit text-[11px] uppercase tracking-[0.4em] font-black text-[#0A1628] group-hover:text-[#C1440E] transition-colors group/link">
+                      Open Dossier
+                      <ArrowRight className="w-5 h-5 group-hover/link:translate-x-2 transition-transform" />
                     </Link>
                   </div>
                 </article>

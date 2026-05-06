@@ -128,6 +128,7 @@ export const editorialArticlesQuery = (destinationSlug: string) => `
     title,
     "slug": slug.current,
     excerpt,
+    translations,
     hero_image ${IMAGE_PROJECTION},
     published_at,
     "author": author->name

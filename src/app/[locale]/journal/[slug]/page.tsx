@@ -17,11 +17,11 @@ const IMAGE_PROJECTION = `{
 async function getArticle(slug: string) {
   return sanityClient.fetch(
     `*[_type == "article" && slug.current == $slug][0] {
-      _id, title, slug, excerpt, body, published_at, category,
+      _id, title, slug, excerpt, body, published_at, category, translations,
       hero_image ${IMAGE_PROJECTION},
       "author": author->name,
       related_destinations[]->{
-        _id, name_en, slug, hero_image ${IMAGE_PROJECTION}, tagline, type
+        _id, name_en, slug, hero_image ${IMAGE_PROJECTION}, tagline, type, translations
       }
     }`,
     { slug }
@@ -47,16 +47,21 @@ export async function generateStaticParams() {
   return slugs.map((s: any) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
+  const { slug, locale } = await params;
   const article = await getArticle(slug);
   if (!article) return { title: 'Article Not Found' };
+  
+  const localized = getLocalizedContent(article, locale);
+  const title = localized.title || article.title;
+  const excerpt = localized.excerpt || article.excerpt || '';
+
   return {
-    title: `${article.title} — CYouInGreece Journal`,
-    description: article.excerpt || '',
+    title: `${title} — CYouInGreece Journal`,
+    description: excerpt,
     openGraph: {
-      title: article.title,
-      description: article.excerpt || '',
+      title: title,
+      description: excerpt,
       images: article.hero_image?.asset?._ref ? [urlFor(article.hero_image).width(1200).height(630).url()] : [],
     },
   };
@@ -171,13 +176,17 @@ function NextArticleCard({ article, label }: { article: any; label: string }) {
   );
 }
 
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+import { getLocalizedContent } from '@/lib/i18n-utils';
+
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale } = await params;
   const [article, { next, prev, related }] = await Promise.all([
     getArticle(slug),
     getNextPrevArticles(slug),
   ]);
   if (!article) return notFound();
+
+  const localized = getLocalizedContent(article, locale);
 
   const heroUrl = article.hero_image?.asset?._ref
     ? urlFor(article.hero_image).width(1920).height(1080).auto('format').url()
@@ -191,7 +200,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const catLabel = CAT_LABELS[article.category] || article.category;
 
   // Estimate read time
-  const wordCount = (article.body || [])
+  const bodyContent = localized.body || article.body || [];
+  const wordCount = bodyContent
     .filter((b: any) => b._type === 'block')
     .flatMap((b: any) => b.children || [])
     .map((s: any) => s.text || '')
@@ -246,12 +256,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
           <h1 className="font-serif text-[clamp(2rem,6vw,4.5rem)] text-white leading-[1.05] mb-6"
             style={{ textShadow: '0 4px 40px rgba(0,0,0,0.9)' }}>
-            {article.title}
+            {localized.title}
           </h1>
 
-          {article.excerpt && (
+          {localized.excerpt && (
             <p className="font-serif italic text-white/60 text-xl leading-relaxed max-w-2xl border-l-2 pl-6" style={{ borderColor: catColor }}>
-              {article.excerpt}
+              {localized.excerpt}
             </p>
           )}
 
@@ -276,8 +286,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       {/* ── ARTICLE BODY ──────────────────────────────────────────── */}
       <section className="py-16 md:py-24">
         <div className="max-w-[760px] mx-auto px-6 md:px-12">
-          {article.body && article.body.length > 0 ? (
-            <PortableText value={article.body} components={buildComponents(article.title)} />
+          {bodyContent && bodyContent.length > 0 ? (
+            <PortableText value={bodyContent} components={buildComponents(localized.title)} />
           ) : (
             <p className="font-serif italic text-white/40 text-xl text-center py-20">
               Full article coming soon...
@@ -304,6 +314,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {article.related_destinations.map((dest: any) => {
                 const imgUrl = dest.hero_image?.asset?._ref ? urlFor(dest.hero_image).width(600).height(400).url() : null;
+                const locDest = getLocalizedContent(dest, locale);
                 return (
                   <Link key={dest._id} href={`/destination/${dest.slug?.current}`} className="group block relative overflow-hidden aspect-[4/3] bg-[#030b15]">
                     {imgUrl && (
@@ -312,7 +323,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#030b15]/80 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-6">
                       <h3 className="font-serif text-white text-2xl group-hover:text-[#D4A027] transition-colors">{dest.name_en}</h3>
-                      {dest.tagline && <p className="text-white/50 text-sm italic mt-1 font-serif">"{dest.tagline}"</p>}
+                      {locDest.tagline && <p className="text-white/50 text-sm italic mt-1 font-serif">"{locDest.tagline}"</p>}
                     </div>
                   </Link>
                 );

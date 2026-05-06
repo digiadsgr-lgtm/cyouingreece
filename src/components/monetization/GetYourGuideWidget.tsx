@@ -43,6 +43,7 @@ interface GetYourGuideWidgetProps {
   className?: string;
   /** Show as compact inline widget or full section */
   variant?: 'full' | 'compact';
+  locale?: string;
 }
 
 function buildGYGUrl(locationKey: string): string {
@@ -62,6 +63,7 @@ export default function GetYourGuideWidget({
   numberOfItems = 4,
   className = '',
   variant = 'full',
+  locale = 'en'
 }: GetYourGuideWidgetProps) {
   const loc = GYG_LOCATION_MAP[locationKey];
   const label = loc?.label || locationKey.replace(/-/g, ' ');
@@ -108,7 +110,7 @@ export default function GetYourGuideWidget({
         data-gyg-number-of-items={String(numberOfItems)}
         data-gyg-partner-id={GYG_PARTNER_ID}
         data-gyg-location-id={loc?.locationId || ''}
-        data-gyg-locale-code="en-US"
+        data-gyg-locale-code={locale === 'el' ? 'el-GR' : (locale === 'de' ? 'de-DE' : (locale === 'fr' ? 'fr-FR' : 'en-US'))}
         data-gyg-currency="EUR"
         style={{ minHeight: '200px' }}
       />

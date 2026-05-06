@@ -28,6 +28,7 @@ export const articleSchema = defineType({
       validation: R => R.required()
     }),
     defineField({ name: 'seo', type: 'seoFields' }),
+    defineField({ name: 'translations', type: 'translationSet' }),
   ],
   preview: {
     select: { title: 'title', subtitle: 'category', media: 'hero_image' },

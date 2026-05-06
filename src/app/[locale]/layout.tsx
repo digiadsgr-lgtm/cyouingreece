@@ -72,6 +72,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
+        <meta name="fo-verify" content="398cfa48-ee3f-4e88-af21-ea8479711be2" />
         {/* GetYourGuide Analytics — required for widget rendering and affiliate tracking */}
         <Script
           src="https://widget.getyourguide.com/dist/pa.umd.production.min.js"
@@ -87,6 +88,13 @@ export default async function LocaleLayout({
               document.head.appendChild(script);
           })();`}
         </Script>
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7060949710564119"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body
         suppressHydrationWarning

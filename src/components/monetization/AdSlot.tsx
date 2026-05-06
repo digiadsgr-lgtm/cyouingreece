@@ -36,9 +36,17 @@ export default function AdSlot({
   useEffect(() => {
     if (!publisherId || !slotId) return;
     try {
-      // Push to AdSense queue
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch {}
+      const pushAd = () => {
+        if ((window as any).adsbygoogle) {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        } else {
+          setTimeout(pushAd, 500); // Retry if script not loaded yet
+        }
+      };
+      pushAd();
+    } catch (e) {
+      console.error("AdSense Error:", e);
+    }
   }, [publisherId, slotId]);
 
   // Don't render anything until publisher ID and slot ID are configured

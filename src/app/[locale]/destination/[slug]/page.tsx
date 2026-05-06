@@ -28,26 +28,36 @@ import { destinationJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld'
 export const revalidate = 0; // Disabled for immediate review
 
 // ── Static params ─────────────────────────────────────────────────────────────
+import { routing } from '@/i18n/routing';
+
 export async function generateStaticParams() {
   const slugs = await fetchAllDestinationSlugs();
-  return slugs.map((slug) => ({ slug }));
+  return routing.locales.flatMap((locale) => 
+    slugs.map((slug) => ({ locale, slug }))
+  );
 }
+
+import { getLocalizedContent, getLocalizedField } from '@/lib/i18n-utils';
 
 // ── Metadata ──────────────────────────────────────────────────────────────────
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const dest = await fetchDestination(slug);
   if (!dest) return { title: 'Destination Not Found' };
+  
+  const metaTitle = getLocalizedField(dest, 'meta_title', locale) || dest.seo?.meta_title || `${dest.name_en} — CYouInGreece`;
+  const metaDesc = getLocalizedField(dest, 'meta_description', locale) || dest.seo?.meta_description || dest.tagline;
+
   return {
-    title: dest.seo?.meta_title || `${dest.name_en} — CYouInGreece`,
-    description: dest.seo?.meta_description || dest.tagline,
+    title: metaTitle,
+    description: metaDesc,
     openGraph: {
-      title: dest.seo?.meta_title || dest.name_en,
-      description: dest.seo?.meta_description || dest.tagline,
+      title: metaTitle,
+      description: metaDesc,
       images: dest.hero_image?.asset?._ref
         ? [urlFor(dest.hero_image).width(1200).height(630).url()]
         : [],
@@ -59,15 +69,17 @@ export async function generateMetadata({
 export default async function DestinationPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const [dest, articles] = await Promise.all([
     fetchDestination(slug),
     fetchEditorialArticles(slug),
   ]);
 
   if (!dest) return notFound();
+
+  const localized = getLocalizedContent(dest, locale);
 
   // Build hero image URL
   const heroUrl = dest.hero_image?.asset?._ref
@@ -107,9 +119,9 @@ export default async function DestinationPage({
             )}
           </h1>
 
-          {dest.tagline && (
+          {localized.tagline && (
             <p className="font-serif italic text-[clamp(1.1rem,2.2vw,1.6rem)] text-white/90 max-w-2xl leading-relaxed drop-shadow-lg">
-              "{dest.tagline}"
+              "{localized.tagline}"
             </p>
           )}
         </div>
@@ -124,10 +136,10 @@ export default async function DestinationPage({
       </section>
 
       {/* ── ENCYCLOPEDIA CONTENT (Thematic Sections) ────────────────────── */}
-      {dest.thematic_sections && dest.thematic_sections.length > 0 ? (
+      {(localized.thematic_sections || dest.thematic_sections) && (localized.thematic_sections || dest.thematic_sections).length > 0 ? (
         <FadeInScroll yOffset={50}>
           <EncyclopediaContent 
-            sections={dest.thematic_sections} 
+            sections={localized.thematic_sections || dest.thematic_sections} 
             destinationName={dest.name_en} 
           />
         </FadeInScroll>
@@ -143,7 +155,7 @@ export default async function DestinationPage({
                       Editorial Introduction
                     </span>
                     <p className="text-[clamp(1.15rem,2vw,1.45rem)] font-serif text-[#070A0F] leading-[1.8] italic">
-                      {dest.intro_paragraph}
+                      {localized.intro}
                     </p>
                   </div>
                   <div className="lg:col-span-5">
@@ -154,14 +166,14 @@ export default async function DestinationPage({
             </FadeInScroll>
           </section>
 
-          {dest.body_content && dest.body_content.length > 0 && (
+          {localized.body && localized.body.length > 0 && (
             <section className="bg-[#F4F0EA] py-24 md:py-32">
               <FadeInScroll>
                 <div className="max-w-[800px] mx-auto px-6 md:px-12">
                   <span className="text-[#A43312] tracking-[0.3em] uppercase text-[10px] font-bold block mb-10">
                     Full Editorial
                   </span>
-                  <BodyContent blocks={dest.body_content as any} />
+                  <BodyContent blocks={localized.body as any} />
                 </div>
               </FadeInScroll>
             </section>
@@ -337,7 +349,7 @@ export default async function DestinationPage({
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <BookingWidget destination={`${dest.name_en}, Greece`} />
-              <GetYourGuideWidget locationKey={slug} numberOfItems={4} />
+              <GetYourGuideWidget locationKey={slug} numberOfItems={4} locale={locale} />
             </div>
             {/* Ad slot between booking and nearby */}
             <div className="mt-12">

@@ -165,7 +165,7 @@ export const translationSetSchema = defineType({
   name: 'translationSet',
   type: 'object',
   title: 'Translations',
-  fields: ['de','fr','it','es','ro','pl','ru','el'].map(lang =>
+  fields: ['de','fr','it','es','ro','nl','no','sv','da','fi','el'].map(lang =>
     defineField({
       name: lang, title: lang.toUpperCase(), type: 'object',
       options: { collapsible: true, collapsed: true },
@@ -174,6 +174,17 @@ export const translationSetSchema = defineType({
         defineField({ name: 'intro_paragraph',  type: 'text', rows: 4 }),
         defineField({ name: 'meta_title',       type: 'string' }),
         defineField({ name: 'meta_description', type: 'text', rows: 2 }),
+        defineField({ name: 'body_content',     type: 'array', of: [{ type: 'block' }, { type: 'image' }] }),
+        defineField({ name: 'diary_entries',    type: 'array', of: [{ type: 'nikosDiaryEntry' }] }),
+        defineField({ name: 'thematic_sections', type: 'array', of: [{
+          type: 'object',
+          name: 'translatedSection',
+          fields: [
+            defineField({ name: '_key', type: 'string' }),
+            defineField({ name: 'title', type: 'string' }),
+            defineField({ name: 'content', type: 'array', of: [{ type: 'block' }] })
+          ]
+        }] }),
         defineField({
           name: 'ai_translated', type: 'boolean',
           title: 'AI translated (not human-checked)',

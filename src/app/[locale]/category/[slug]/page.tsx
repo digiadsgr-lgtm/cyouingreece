@@ -2,7 +2,16 @@ import { sanityClient, urlFor } from '@/lib/sanity';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
+import { routing } from '@/i18n/routing';
+
 export const revalidate = 60; // 1 min ISR
+
+export async function generateStaticParams() {
+  const slugs = Object.keys(CATEGORY_MAP);
+  return routing.locales.flatMap((locale) => 
+    slugs.map((slug) => ({ locale, slug }))
+  );
+}
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;

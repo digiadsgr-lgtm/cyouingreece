@@ -1,17 +1,21 @@
 import { sanityClient, urlFor } from '@/lib/sanity';
 import { Link } from '@/i18n/routing';
 import type { Metadata } from 'next';
+import { getLocalizedContent } from '@/lib/i18n-utils';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Journal — CYouInGreece',
-  description: 'Curated stories, travel essays, and insider guides from the people who live and breathe Greece.',
-  openGraph: {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
     title: 'Journal — CYouInGreece',
-    description: 'Curated stories, travel essays, and insider guides.',
-  },
-};
+    description: 'Curated stories, travel essays, and insider guides from the people who live and breathe Greece.',
+    openGraph: {
+      title: 'Journal — CYouInGreece',
+      description: 'Curated stories, travel essays, and insider guides.',
+    },
+  };
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   travel_guide: 'Travel Guide',
@@ -41,12 +45,13 @@ async function getArticles() {
       hero_image { asset->{ _ref, url, metadata { lqip, dimensions } }, hotspot, crop },
       published_at,
       category,
+      translations,
       "author": author->name
     }`
   );
 }
 
-function ArticleCard({ article }: { article: any }) {
+function ArticleCard({ article, locale }: { article: any, locale: string }) {
   const heroUrl = article.hero_image?.asset
     ? urlFor(article.hero_image).width(900).height(600).auto('format').url()
     : null;
@@ -59,6 +64,8 @@ function ArticleCard({ article }: { article: any }) {
         day: 'numeric', month: 'long', year: 'numeric',
       })
     : null;
+
+  const localized = getLocalizedContent(article, locale);
 
   return (
     <article className="group flex flex-col">
@@ -86,12 +93,12 @@ function ArticleCard({ article }: { article: any }) {
         )}
         <Link href={`/journal/${article.slug?.current}`}>
           <h2 className="font-serif text-[clamp(1.3rem,2vw,1.7rem)] text-white leading-[1.2] mb-4 group-hover:text-[#D4A027] transition-colors duration-300">
-            {article.title}
+            {localized.title}
           </h2>
         </Link>
-        {article.excerpt && (
+        {localized.excerpt && (
           <p className="text-white/60 font-light text-sm leading-relaxed mb-6 flex-1">
-            {article.excerpt}
+            {localized.excerpt}
           </p>
         )}
         <Link
@@ -106,7 +113,8 @@ function ArticleCard({ article }: { article: any }) {
   );
 }
 
-export default async function JournalPage() {
+export default async function JournalPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const articles = await getArticles();
 
   return (
@@ -140,7 +148,7 @@ export default async function JournalPage() {
           {articles && articles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
               {articles.map((article: any) => (
-                <ArticleCard key={article._id} article={article} />
+                <ArticleCard key={article._id} article={article} locale={locale} />
               ))}
             </div>
           ) : (

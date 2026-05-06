@@ -1,17 +1,21 @@
 import { sanityClient, urlFor } from '@/lib/sanity';
 import { Link } from '@/i18n/routing';
 import type { Metadata } from 'next';
+import { getLocalizedContent } from '@/lib/i18n-utils';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'The Encyclopaedia — CYouInGreece',
-  description: 'Our exhaustive, constantly updated directory of Greek islands and mainland destinations. No clichés. Only local knowledge.',
-  openGraph: {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
     title: 'The Encyclopaedia — CYouInGreece',
-    description: 'Every island. Every table worth finding.',
-  },
-};
+    description: 'Our exhaustive, constantly updated directory of Greek islands and mainland destinations. No clichés. Only local knowledge.',
+    openGraph: {
+      title: 'The Encyclopaedia — CYouInGreece',
+      description: 'Every island. Every table worth finding.',
+    },
+  };
+}
 
 const TYPE_LABELS: Record<string, string> = {
   island: 'Island',
@@ -38,13 +42,13 @@ async function getAllDestinations() {
   return sanityClient.fetch(`
     *[_type == "destination"] | order(region asc, name_en asc) {
       _id, name_en, name_local, slug, type, region, tagline,
-      intro_paragraph, best_time, highlights, gastronomy, hidden_gem,
+      intro_paragraph, best_time, highlights, gastronomy, hidden_gem, translations,
       hero_image { asset->{ _ref, url, metadata { lqip, dimensions } } }
     }
   `);
 }
 
-function DestinationCard({ dest, size = 'normal' }: { dest: any; size?: 'large' | 'normal' | 'small' }) {
+function DestinationCard({ dest, size = 'normal', locale }: { dest: any; size?: 'large' | 'normal' | 'small', locale: string }) {
   const heroUrl = dest.hero_image?.asset
     ? urlFor(dest.hero_image).width(size === 'large' ? 1400 : 700).height(size === 'large' ? 900 : 600).auto('format').url()
     : null;
@@ -56,6 +60,8 @@ function DestinationCard({ dest, size = 'normal' }: { dest: any; size?: 'large' 
     normal: 'h-[400px]',
     small: 'h-[280px]',
   };
+
+  const localized = getLocalizedContent(dest, locale);
 
   return (
     <Link
@@ -101,14 +107,14 @@ function DestinationCard({ dest, size = 'normal' }: { dest: any; size?: 'large' 
               <span className="font-serif italic text-white/40 text-sm hidden md:block">{dest.name_local}</span>
             )}
           </div>
-          {size !== 'small' && dest.tagline && (
+          {size !== 'small' && localized.tagline && (
             <p className={`text-white/70 font-serif italic leading-snug mt-1 ${size === 'large' ? 'text-base max-w-lg' : 'text-sm max-w-xs'}`}>
-              "{dest.tagline}"
+              "{localized.tagline}"
             </p>
           )}
-          {size === 'large' && dest.intro_paragraph && (
+          {size === 'large' && localized.intro && (
             <p className="text-white/55 text-sm font-light leading-relaxed mt-3 max-w-2xl line-clamp-3">
-              {dest.intro_paragraph}
+              {localized.intro}
             </p>
           )}
           {/* Arrow */}
@@ -122,7 +128,7 @@ function DestinationCard({ dest, size = 'normal' }: { dest: any; size?: 'large' 
   );
 }
 
-function RegionSection({ region, destinations }: { region: string; destinations: any[] }) {
+function RegionSection({ region, destinations, locale }: { region: string; destinations: any[]; locale: string }) {
   if (!destinations.length) return null;
 
   // Layout: first card large, rest normal
@@ -139,29 +145,29 @@ function RegionSection({ region, destinations }: { region: string; destinations:
       </div>
 
       {destinations.length === 1 ? (
-        <DestinationCard dest={first} size="large" />
+        <DestinationCard dest={first} size="large" locale={locale} />
       ) : destinations.length === 2 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <DestinationCard dest={first} size="large" />
-          <DestinationCard dest={rest[0]} size="normal" />
+          <DestinationCard dest={first} size="large" locale={locale} />
+          <DestinationCard dest={rest[0]} size="normal" locale={locale} />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* Hero card — spans 7/12 */}
           <div className="md:col-span-7">
-            <DestinationCard dest={first} size="large" />
+            <DestinationCard dest={first} size="large" locale={locale} />
           </div>
           {/* Side cards — spans 5/12 */}
           <div className="md:col-span-5 flex flex-col gap-4">
             {rest.slice(0, 2).map((d: any) => (
-              <DestinationCard key={d._id} dest={d} size={rest.length === 1 ? 'large' : 'normal'} />
+              <DestinationCard key={d._id} dest={d} size={rest.length === 1 ? 'large' : 'normal'} locale={locale} />
             ))}
           </div>
           {/* Any remaining cards — full width row */}
           {rest.length > 2 && (
             <div className="md:col-span-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {rest.slice(2).map((d: any) => (
-                <DestinationCard key={d._id} dest={d} size="small" />
+                <DestinationCard key={d._id} dest={d} size="small" locale={locale} />
               ))}
             </div>
           )}
@@ -171,7 +177,8 @@ function RegionSection({ region, destinations }: { region: string; destinations:
   );
 }
 
-export default async function EncyclopaediaPage() {
+export default async function EncyclopaediaPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const destinations = await getAllDestinations();
 
   // Group by region
@@ -254,7 +261,7 @@ export default async function EncyclopaediaPage() {
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           {sortedRegions.map(region => (
             <div key={region} id={`region-${region.toLowerCase().replace(/\s+/g, '-')}`}>
-              <RegionSection region={region} destinations={byRegion[region]} />
+              <RegionSection region={region} destinations={byRegion[region]} locale={locale} />
             </div>
           ))}
 
