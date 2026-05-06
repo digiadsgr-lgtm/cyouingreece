@@ -95,6 +95,16 @@ export default async function LocaleLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        {/* Travelpayouts Metasearch Widget */}
+        <Script id="tp-metasearch" strategy="afterInteractive">{`
+          (function () {
+            var script = document.createElement("script");
+            script.async = 1;
+            script.type = "module";
+            script.src = "https://tpemd.com/wl_web/main.js?wl_id=17144";
+            document.head.appendChild(script);
+          })();
+        `}</Script>
       </head>
       <body
         suppressHydrationWarning

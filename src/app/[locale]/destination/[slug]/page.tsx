@@ -23,6 +23,8 @@ import FadeInScroll from '@/components/ui/FadeInScroll';
 import BookingWidget from '@/components/monetization/BookingWidget';
 import GetYourGuideWidget from '@/components/monetization/GetYourGuideWidget';
 import HotelWidget from '@/components/monetization/HotelWidget';
+import RentACarWidget from '@/components/monetization/RentACarWidget';
+import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
 import AdSlot from '@/components/monetization/AdSlot';
 import { destinationJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
@@ -339,24 +341,33 @@ export default async function DestinationPage({
       )}
 
       {/* ── MONETIZATION: BOOKING + GYG ───────────────────────────────────── */}
-      <section className="bg-[#F4F0EA] py-20 md:py-24 border-t border-[#0A1628]/5">
+      <section className="bg-[#0A1628] py-20 md:py-28">
         <FadeInScroll yOffset={40}>
           <div className="max-w-[1320px] mx-auto px-6 md:px-12">
             <div className="mb-10">
-              <span className="text-[#A43312] tracking-[0.3em] uppercase text-[10px] font-bold block mb-3">Plan Your Trip</span>
-              <h2 className="text-[clamp(1.8rem,3vw,3rem)] font-serif text-[#070A0F] font-light">
-                Book your stay in {dest.name_en}.
+              <span className="text-[#D4A027] tracking-[0.3em] uppercase text-[10px] font-bold block mb-3">Plan Your Trip</span>
+              <h2 className="text-[clamp(1.8rem,3vw,3rem)] font-serif text-white font-light">
+                Book your {dest.name_en} experience.
               </h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            {/* Top row: Booking + GYG */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <BookingWidget destination={`${dest.name_en}, Greece`} />
               <GetYourGuideWidget locationKey={slug} numberOfItems={4} locale={locale} />
-              <div className="mt-8">
-                <HotelWidget />
-              </div>
             </div>
-            {/* Ad slot between booking and nearby */}
-            <div className="mt-12">
+
+            {/* Second row: Hotels + Rent A Car */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <HotelWidget />
+              <RentACarWidget />
+            </div>
+
+            {/* Affiliate links: Flights + Experiences */}
+            <AffiliateLinkBar destination={dest.name_en} />
+
+            {/* Ad slot */}
+            <div className="mt-10">
               <AdSlot format="horizontal" className="max-w-3xl mx-auto" />
             </div>
           </div>
