@@ -25,6 +25,7 @@ import GetYourGuideWidget from '@/components/monetization/GetYourGuideWidget';
 import HotelWidget from '@/components/monetization/HotelWidget';
 import RentACarWidget from '@/components/monetization/RentACarWidget';
 import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
+import MetasearchWidget from '@/components/monetization/MetasearchWidget';
 import AdSlot from '@/components/monetization/AdSlot';
 import { destinationJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
@@ -365,6 +366,11 @@ export default async function DestinationPage({
 
             {/* Affiliate links: Flights + Experiences */}
             <AffiliateLinkBar destination={dest.name_en} />
+
+            {/* Athens Exclusive: Metasearch Widget */}
+            {slug === 'athens' && (
+              <MetasearchWidget />
+            )}
 
             {/* Ad slot */}
             <div className="mt-10">
