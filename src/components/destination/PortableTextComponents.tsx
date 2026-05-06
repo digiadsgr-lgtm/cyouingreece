@@ -66,21 +66,6 @@ export const destinationPortableTextComponents: PortableTextComponents = {
     ),
 
     // Injected Smart Widgets
-    widget_affiliate: ({ value }) => (
-      <div className="my-12">
-        <AffiliateLinkBar destination={value.destinationName} />
-      </div>
-    ),
-    widget_hotel: () => (
-      <div className="my-12">
-        <HotelWidget />
-      </div>
-    ),
-    widget_car: () => (
-      <div className="my-12">
-        <RentACarWidget />
-      </div>
-    ),
     widget_ad: () => (
       <div className="my-12">
         <AdSlot format="horizontal" />

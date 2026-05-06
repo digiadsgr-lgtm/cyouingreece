@@ -20,12 +20,10 @@ import HistoryTracker from '@/components/destination/HistoryTracker';
 import EncyclopediaContent from '@/components/destination/EncyclopediaContent';
 import YouTubeEmbed from '@/components/destination/YouTubeEmbed';
 import FadeInScroll from '@/components/ui/FadeInScroll';
+import { getLocalizedContent, getLocalizedField } from '@/lib/i18n-utils';
 import BookingWidget from '@/components/monetization/BookingWidget';
-import GetYourGuideWidget from '@/components/monetization/GetYourGuideWidget';
-import HotelWidget from '@/components/monetization/HotelWidget';
-import RentACarWidget from '@/components/monetization/RentACarWidget';
-import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
-import MetasearchWidget from '@/components/monetization/MetasearchWidget';
+
+
 import AdSlot from '@/components/monetization/AdSlot';
 import { destinationJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
@@ -41,7 +39,6 @@ export async function generateStaticParams() {
   );
 }
 
-import { getLocalizedContent, getLocalizedField } from '@/lib/i18n-utils';
 
 // ── Metadata ──────────────────────────────────────────────────────────────────
 export async function generateMetadata({
@@ -85,10 +82,8 @@ export default async function DestinationPage({
 
   const localized = getLocalizedContent(dest, locale);
 
-  // Build hero image URL
-  const heroUrl = dest.hero_image?.asset?._ref
-    ? urlFor(dest.hero_image).width(1920).height(1080).auto('format').url()
-    : null;
+  // Build hero image URL directly from the dereferenced asset to prevent urlFor builder crashes
+  const heroUrl = dest.hero_image?.asset?.url || null;
 
   return (
     <main className="bg-[#FAF9F6] min-h-screen">
@@ -351,17 +346,10 @@ export default async function DestinationPage({
                 Book your {dest.name_en} experience.
               </h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 mb-6">
               <BookingWidget destination={`${dest.name_en}, Greece`} />
-              <GetYourGuideWidget locationKey={slug} numberOfItems={4} locale={locale} />
             </div>
           </div>
-          {/* Athens Exclusive: Metasearch Widget */}
-          {slug === 'athens' && (
-            <div className="max-w-[1320px] mx-auto px-6 md:px-12 mt-20">
-              <MetasearchWidget />
-            </div>
-          )}
         </FadeInScroll>
       </section>
 

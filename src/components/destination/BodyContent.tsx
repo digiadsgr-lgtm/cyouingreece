@@ -29,20 +29,12 @@ export default function BodyContent({ blocks, destinationName }: Props) {
     if (block._type === 'block' && block.style === 'normal') {
       paragraphCount++;
       
-      // Inject Affiliate Links after 2nd paragraph
-      if (paragraphCount === 2) {
-        processedBlocks.push({ _type: 'widget_affiliate', _key: `injected-aff-${paragraphCount}`, destinationName });
-      }
-      // Inject Hotel Widget after 4th paragraph
+      // Inject AdSense after 4th paragraph
       if (paragraphCount === 4) {
-        processedBlocks.push({ _type: 'widget_hotel', _key: `injected-hot-${paragraphCount}` });
-      }
-      // Inject AdSense after 6th paragraph
-      if (paragraphCount === 6) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
-      // Inject AdSense after 9th paragraph
-      if (paragraphCount === 9) {
+      // Inject AdSense after 8th paragraph
+      if (paragraphCount === 8) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
       // Inject an AdSense slot every 4 paragraphs after the 10th

@@ -100,19 +100,6 @@ function buildComponents(articleTitle: string) {
           </figure>
         );
       },
-      // Injected Custom Blocks
-      widget_affiliate: () => (
-        <div className="my-14 mx-auto max-w-2xl bg-white/5 rounded-xl border border-[#D4A027]/20 p-6">
-          <span className="text-[#D4A027] tracking-[0.2em] uppercase text-[9px] font-bold block mb-4 text-center">Exclusive Offers</span>
-          <AffiliateLinkBar destination={articleTitle} />
-        </div>
-      ),
-      widget_hotel: () => (
-        <div className="my-14 mx-auto max-w-3xl bg-white/5 rounded-xl border border-white/10 p-6">
-          <span className="text-white/40 tracking-[0.2em] uppercase text-[9px] font-bold block mb-4 text-center">Recommended Stays</span>
-          <HotelWidget />
-        </div>
-      ),
       widget_ad: () => (
         <div className="my-14 mx-auto max-w-sm">
           <AdSlot format="rectangle" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} />

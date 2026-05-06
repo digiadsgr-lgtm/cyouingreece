@@ -73,12 +73,7 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <head>
         <meta name="fo-verify" content="398cfa48-ee3f-4e88-af21-ea8479711be2" />
-        {/* GetYourGuide Analytics — required for widget rendering and affiliate tracking */}
-        <Script
-          src="https://widget.getyourguide.com/dist/pa.umd.production.min.js"
-          data-gyg-partner-id={GYG_PARTNER_ID}
-          strategy="afterInteractive"
-        />
+
         {/* Google AdSense */}
         <script
           async
