@@ -56,19 +56,19 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center space-x-12">
+          <nav className="hidden xl:flex items-center gap-10">
             {navLinks.map((item) => (
               <Link
                 key={item.name}
                 href={item.link}
-                className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/70 hover:text-white transition-all relative group"
+                className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/70 hover:text-white transition-all relative group whitespace-nowrap"
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#D4A027] transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
             
-            <div className="h-4 w-px bg-white/10 mx-2" />
+            <div className="h-4 w-px bg-white/10 mx-1 shrink-0" />
             
             <LocaleSwitcher />
           </nav>

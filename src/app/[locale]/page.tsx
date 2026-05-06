@@ -9,6 +9,13 @@ import { ArrowRight } from 'lucide-react';
 
 export const revalidate = 0; // Fresh content for testing
 
+// Helper: resolve slug from either string or {current: string} Sanity format
+const resolveSlug = (slug: any): string => {
+  if (!slug) return '';
+  if (typeof slug === 'string') return slug;
+  return slug.current || '';
+};
+
 export default async function Home({
   params
 }: {
@@ -38,6 +45,13 @@ export default async function Home({
     articlesByCategory[cat] = (allArticles ?? []).filter((a: any) => a.category === cat).slice(0, 3);
   }
   
+// Helper: resolve slug from either string or {current: string} Sanity format
+const resolveSlug = (slug: any): string => {
+  if (!slug) return '';
+  if (typeof slug === 'string') return slug;
+  return slug.current || '';
+};
+
   const destinations = featuredSlugs.map(slug => dbDestinations.find((d: any) => d.slug.current === slug)).filter(Boolean);
 
   return (
@@ -112,7 +126,7 @@ export default async function Home({
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {recentJourneys && recentJourneys.map((itin: any) => (
-              <Link key={itin._id} href={`/curated-journeys/${itin.slug.current}`} className="group relative overflow-hidden aspect-[4/5] sm:aspect-[3/4] bg-[#0A1628] block">
+              <Link key={itin._id} href={`/curated-journeys/${resolveSlug(itin.slug)}`} className="group relative overflow-hidden aspect-[4/5] sm:aspect-[3/4] bg-[#0A1628] block">
                 {itin.hero_image?.asset && (
                   <img 
                     src={urlFor(itin.hero_image).width(800).url()}
@@ -150,7 +164,7 @@ export default async function Home({
           </div>
 
           {featuredArticle && (
-            <Link href={`/journal/${featuredArticle.slug?.current}`} className="group block mb-24 lg:mb-36">
+            <Link href={`/journal/${resolveSlug(featuredArticle.slug)}`} className="group block mb-24 lg:mb-36">
               <div className="relative w-full aspect-[16/10] md:aspect-video lg:h-[75vh] overflow-hidden bg-[#0A1628] rounded-xl shadow-2xl">
                 {featuredArticle.hero_image?.asset && (
                   <img
@@ -203,7 +217,7 @@ export default async function Home({
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                   {catArticles.map((article: any) => (
-                    <Link key={article._id} href={`/journal/${article.slug?.current}`} className="group flex flex-col">
+                    <Link key={article._id} href={`/journal/${resolveSlug(article.slug)}`} className="group flex flex-col">
                       <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-[#e0dad2] rounded-lg shadow-lg">
                         {article.hero_image?.asset ? (
                           <img
