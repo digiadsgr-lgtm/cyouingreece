@@ -79,32 +79,12 @@ export default async function LocaleLayout({
           data-gyg-partner-id={GYG_PARTNER_ID}
           strategy="afterInteractive"
         />
-        {/* Travelpayouts Script */}
-        <Script id="tp-script" strategy="afterInteractive">
-          {`(function () {
-              var script = document.createElement("script");
-              script.async = 1;
-              script.src = 'https://tpembars.com/NTI1NzA4.js?t=525708';
-              document.head.appendChild(script);
-          })();`}
-        </Script>
         {/* Google AdSense */}
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7060949710564119"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-        {/* Travelpayouts Metasearch Widget */}
-        <Script id="tp-metasearch" strategy="afterInteractive">{`
-          (function () {
-            var script = document.createElement("script");
-            script.async = 1;
-            script.type = "module";
-            script.src = "https://tpemd.com/wl_web/main.js?wl_id=17144";
-            document.head.appendChild(script);
-          })();
-        `}</Script>
+        ></script>
       </head>
       <body
         suppressHydrationWarning
