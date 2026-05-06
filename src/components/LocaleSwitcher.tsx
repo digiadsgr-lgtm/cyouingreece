@@ -5,19 +5,19 @@ import { routing, usePathname, useRouter } from '@/i18n/routing';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const LANGUAGES: Record<string, { name: string; nativeName: string; flag: string }> = {
-  en: { name: 'English',    nativeName: 'English',    flag: '🇬🇧' },
-  el: { name: 'Greek',      nativeName: 'Ελληνικά',   flag: '🇬🇷' },
-  de: { name: 'German',     nativeName: 'Deutsch',    flag: '🇩🇪' },
-  fr: { name: 'French',     nativeName: 'Français',   flag: '🇫🇷' },
-  it: { name: 'Italian',    nativeName: 'Italiano',   flag: '🇮🇹' },
-  es: { name: 'Spanish',    nativeName: 'Español',    flag: '🇪🇸' },
-  ro: { name: 'Romanian',   nativeName: 'Română',     flag: '🇷🇴' },
-  nl: { name: 'Dutch',      nativeName: 'Nederlands', flag: '🇳🇱' },
-  no: { name: 'Norwegian',  nativeName: 'Norsk',      flag: '🇳🇴' },
-  sv: { name: 'Swedish',    nativeName: 'Svenska',    flag: '🇸🇪' },
-  da: { name: 'Danish',     nativeName: 'Dansk',      flag: '🇩🇰' },
-  fi: { name: 'Finnish',    nativeName: 'Suomi',      flag: '🇫🇮' },
+const LANGUAGES: Record<string, { name: string; nativeName: string }> = {
+  en: { name: 'English',    nativeName: 'English' },
+  el: { name: 'Greek',      nativeName: 'Ελληνικά' },
+  de: { name: 'German',     nativeName: 'Deutsch' },
+  fr: { name: 'French',     nativeName: 'Français' },
+  it: { name: 'Italian',    nativeName: 'Italiano' },
+  es: { name: 'Spanish',    nativeName: 'Español' },
+  ro: { name: 'Romanian',   nativeName: 'Română' },
+  nl: { name: 'Dutch',      nativeName: 'Nederlands' },
+  no: { name: 'Norwegian',  nativeName: 'Norsk' },
+  sv: { name: 'Swedish',    nativeName: 'Svenska' },
+  da: { name: 'Danish',     nativeName: 'Dansk' },
+  fi: { name: 'Finnish',    nativeName: 'Suomi' },
 };
 
 export default function LocaleSwitcher() {
@@ -27,7 +27,7 @@ export default function LocaleSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const current = LANGUAGES[locale] || { name: locale.toUpperCase(), nativeName: '', flag: '🌐' };
+  const current = LANGUAGES[locale] || { name: locale.toUpperCase(), nativeName: '' };
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -60,13 +60,8 @@ export default function LocaleSwitcher() {
           }
         `}
       >
-        {/* Flag badge */}
-        <span className="text-base leading-none select-none" role="img" aria-label={current.name}>
-          {current.flag}
-        </span>
-
         {/* Label */}
-        <span className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-colors duration-300 ${isOpen ? 'text-[#D4A027]' : 'text-white/70 group-hover:text-white'}`}>
+        <span className={`text-[11px] uppercase tracking-[0.2em] font-medium transition-colors duration-300 ${isOpen ? 'text-[#D4A027]' : 'text-white/80 group-hover:text-white'}`}>
           {locale.toUpperCase()}
         </span>
 
@@ -108,27 +103,25 @@ export default function LocaleSwitcher() {
                       }
                     `}
                   >
-                    {/* Flag */}
-                    <span className="text-xl leading-none select-none shrink-0">
-                      {lang?.flag || '🌐'}
-                    </span>
-
                     {/* Names */}
                     <div className="flex-1 min-w-0">
-                      <span className={`block text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive ? 'text-[#D4A027]' : 'text-white/70 group-hover:text-white'}`}>
+                      <span className={`block text-[12px] font-medium tracking-wide transition-colors ${isActive ? 'text-[#D4A027]' : 'text-white/80 group-hover:text-white'}`}>
                         {lang?.nativeName || cur.toUpperCase()}
                       </span>
-                      <span className="block text-[9px] text-white/25 uppercase tracking-[0.15em] mt-0.5">
+                      <span className="block text-[9px] text-white/30 uppercase tracking-[0.1em] mt-0.5">
                         {lang?.name || ''}
                       </span>
                     </div>
 
-                    {/* Active dot */}
+                    {/* Active Checkmark */}
                     {isActive && (
-                      <motion.div
-                        layoutId="locale-active-dot"
-                        className="w-1.5 h-1.5 rounded-full bg-[#D4A027] shadow-[0_0_8px_#D4A027] shrink-0"
-                      />
+                      <motion.svg
+                        layoutId="locale-active-check"
+                        className="w-4 h-4 text-[#D4A027] shrink-0"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12" />
+                      </motion.svg>
                     )}
                   </button>
                 );

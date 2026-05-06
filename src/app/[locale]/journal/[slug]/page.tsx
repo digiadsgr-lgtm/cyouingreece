@@ -84,35 +84,21 @@ const CAT_COLORS: Record<string, string> = {
 
 // Portable text renderer — injects ad slots between paragraphs
 function buildComponents(articleTitle: string) {
-  let paragraphCount = 0;
   return {
     types: {
       image: ({ value }: any) => {
-        const imgUrl = value?.asset?._ref ? urlFor(value).width(1200).auto('format').url() : null;
+        const imgUrl = value?.asset?._ref ? urlFor(value).auto('format').url() : null;
         if (!imgUrl) return null;
         return (
-          <figure className="my-14 -mx-4 md:-mx-16">
-            <img src={imgUrl} alt={value.caption || ''} className="w-full" />
-            {value.caption && (
-              <figcaption className="text-center text-sm text-white/30 italic mt-3 font-serif">
-                {value.caption}
+          <figure className="my-14 mx-auto">
+            <img src={imgUrl} alt={value.caption || 'Article photo'} className="w-full h-auto rounded-xl object-cover shadow-2xl" />
+            {(value.caption || value.credit) && (
+              <figcaption className="text-center text-white/40 text-sm mt-4 font-serif italic">
+                {value.caption} {value.credit && <span>— Photo: {value.credit}</span>}
               </figcaption>
             )}
           </figure>
         );
-      },
-    },
-    block: {
-      h2: ({ children }: any) => (
-        <h2 className="text-[clamp(1.5rem,3vw,2.2rem)] font-serif text-white mt-16 mb-6 leading-tight border-l-4 border-[#D4A027] pl-6">
-          {children}
-        </h2>
-      ),
-      h3: ({ children }: any) => (
-        <h3 className="text-xl font-serif text-[#D4A027] mt-10 mb-4">{children}</h3>
-      ),
-      normal: ({ children }: any) => {
-        return <p className="text-white/80 font-light text-lg leading-[1.9] mb-7 font-serif">{children}</p>;
       },
       // Injected Custom Blocks
       widget_affiliate: () => (
@@ -132,7 +118,19 @@ function buildComponents(articleTitle: string) {
           <AdSlot format="rectangle" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} />
         </div>
       ),
-
+    },
+    block: {
+      h2: ({ children }: any) => (
+        <h2 className="text-[clamp(1.5rem,3vw,2.2rem)] font-serif text-white mt-16 mb-6 leading-tight border-l-4 border-[#D4A027] pl-6">
+          {children}
+        </h2>
+      ),
+      h3: ({ children }: any) => (
+        <h3 className="text-xl font-serif text-[#D4A027] mt-10 mb-4">{children}</h3>
+      ),
+      normal: ({ children }: any) => {
+        return <p className="text-white/80 font-light text-lg leading-[1.9] mb-7 font-serif">{children}</p>;
+      },
       blockquote: ({ children }: any) => (
         <blockquote className="border-l-[3px] border-[#D4A027] pl-8 my-12 font-serif italic text-2xl text-white/70 leading-relaxed">
           {children}
