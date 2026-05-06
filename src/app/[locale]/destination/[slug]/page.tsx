@@ -22,6 +22,7 @@ import YouTubeEmbed from '@/components/destination/YouTubeEmbed';
 import FadeInScroll from '@/components/ui/FadeInScroll';
 import BookingWidget from '@/components/monetization/BookingWidget';
 import GetYourGuideWidget from '@/components/monetization/GetYourGuideWidget';
+import HotelWidget from '@/components/monetization/HotelWidget';
 import AdSlot from '@/components/monetization/AdSlot';
 import { destinationJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
 
@@ -350,6 +351,9 @@ export default async function DestinationPage({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <BookingWidget destination={`${dest.name_en}, Greece`} />
               <GetYourGuideWidget locationKey={slug} numberOfItems={4} locale={locale} />
+              <div className="mt-8">
+                <HotelWidget />
+              </div>
             </div>
             {/* Ad slot between booking and nearby */}
             <div className="mt-12">
