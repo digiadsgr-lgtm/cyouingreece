@@ -110,14 +110,25 @@ export default function Header() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + idx * 0.05 }}
                     >
-                      <Link
-                        href={item.link}
-                        onClick={() => setMobileOpen(false)}
-                        className="text-4xl md:text-5xl font-serif text-white hover:text-[#D4A027] transition-colors flex items-center group"
-                      >
-                        {item.name}
-                        <ArrowRight className="w-6 h-6 ml-4 opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-[#D4A027]" />
-                      </Link>
+                      {item.link.startsWith('/#') ? (
+                        <a
+                          href={item.link}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-4xl md:text-5xl font-serif text-white hover:text-[#D4A027] transition-colors flex items-center group"
+                        >
+                          {item.name}
+                          <ArrowRight className="w-6 h-6 ml-4 opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-[#D4A027]" />
+                        </a>
+                      ) : (
+                        <Link
+                          href={item.link as any}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-4xl md:text-5xl font-serif text-white hover:text-[#D4A027] transition-colors flex items-center group"
+                        >
+                          {item.name}
+                          <ArrowRight className="w-6 h-6 ml-4 opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-[#D4A027]" />
+                        </Link>
+                      )}
                     </motion.div>
                   ))}
                 </div>

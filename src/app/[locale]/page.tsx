@@ -6,8 +6,9 @@ import { websiteJsonLd, JsonLdScript } from '@/lib/jsonld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getLocalizedContent } from '@/lib/i18n-utils';
 import { ArrowRight } from 'lucide-react';
-
-export const revalidate = 0; // Fresh content for testing
+import BookingWidget from '@/components/monetization/BookingWidget';
+import AdSlot from '@/components/monetization/AdSlot';
+import SEOLinkMatrix from '@/components/ui/SEOLinkMatrix';
 
 // Helper: resolve slug from either string or {current: string} Sanity format
 const resolveSlug = (slug: any): string => {
@@ -242,6 +243,30 @@ const resolveSlug = (slug: any): string => {
         </div>
       </section>
 
+      {/* BOOKING WIDGET */}
+      <section className="w-full bg-[#0A1628] py-24 md:py-32">
+        <div className="max-w-[1320px] mx-auto px-6 md:px-12">
+          <div className="mb-12 text-center">
+            <span className="text-[#D4A027] tracking-[0.4em] uppercase text-[10px] font-bold block mb-4">
+              Plan Your Journey
+            </span>
+            <h2 className="text-[clamp(2rem,5vw,4rem)] font-serif text-white font-light">
+              Secure your stay in Greece.
+            </h2>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <BookingWidget destination="Greece" />
+          </div>
+        </div>
+      </section>
+
+      {/* AD SLOT AFTER BOOKING */}
+      <section className="w-full bg-[#FAF9F6] py-12 border-b border-[#0A1628]/10">
+        <div className="max-w-3xl mx-auto px-6">
+          <AdSlot format="horizontal" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_HOME_TOP} />
+        </div>
+      </section>
+
       {/* THE ENCYCLOPAEDIA - ASYMMETRICAL GRID */}
       <section id="destinations" className="w-full bg-[#FAF9F6] py-32 md:py-48">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -296,6 +321,16 @@ const resolveSlug = (slug: any): string => {
           </div>
         </div>
       </section>
+
+      {/* AD SLOT AFTER ENCYCLOPAEDIA */}
+      <section className="w-full bg-[#FAF9F6] py-12 border-t border-[#0A1628]/10">
+        <div className="max-w-4xl mx-auto px-6">
+          <AdSlot format="horizontal" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} />
+        </div>
+      </section>
+
+      {/* SEO INTERNAL LINK MATRIX */}
+      <SEOLinkMatrix currentLocale={locale} />
 
       {/* FOOTER & NEWSLETTER BLOCK */}
       <footer className="w-full bg-[#030b15] pt-32">
