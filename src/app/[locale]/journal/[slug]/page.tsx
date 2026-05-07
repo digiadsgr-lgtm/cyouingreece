@@ -8,6 +8,7 @@ import BookingWidget from '@/components/monetization/BookingWidget';
 import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
 import HotelWidget from '@/components/monetization/HotelWidget';
 import { articleJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
+import { getLocalizedContent } from '@/lib/i18n-utils';
 
 import { routing } from '@/i18n/routing';
 
@@ -105,6 +106,11 @@ function buildComponents(articleTitle: string) {
           <AdSlot format="rectangle" slotId={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MID} />
         </div>
       ),
+      widget_booking: () => (
+        <div className="my-14 w-full">
+          <BookingWidget destination="Greece" />
+        </div>
+      ),
     },
     block: {
       h2: ({ children }: any) => (
@@ -174,8 +180,6 @@ function NextArticleCard({ article, label }: { article: any; label: string }) {
   );
 }
 
-import { getLocalizedContent } from '@/lib/i18n-utils';
-
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
   const [article, { next, prev, related }] = await Promise.all([
@@ -185,6 +189,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   if (!article) return notFound();
 
   const localized = getLocalizedContent(article, locale);
+  const articleComponents = buildComponents(localized.title);
 
   const heroUrl = article.hero_image?.asset?._ref
     ? urlFor(article.hero_image).width(1920).height(1080).auto('format').url()
@@ -198,9 +203,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const catLabel = CAT_LABELS[article.category] || article.category;
 
   const bodyContent = localized.body || article.body || [];
-  
+
   // --- SMART CONTENT INJECTOR ---
-  const processedBlocks: unknown[] = [];
+  const processedBlocks: any[] = [];
   let paragraphCount = 0;
 
   if (Array.isArray(bodyContent)) {
@@ -210,22 +215,29 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       if (block._type === 'block' && block.style === 'normal') {
         paragraphCount++;
         
-        // AdSense after paragraph 3
+        // Inject AdSense after 3rd paragraph
         if (paragraphCount === 3) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
-        // AdSense after paragraph 6
-        if (paragraphCount === 6) {
+        // Inject Booking Widget after 5th paragraph
+        if (paragraphCount === 5) {
+          processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
+        }
+        // Inject AdSense after 7th paragraph
+        if (paragraphCount === 7) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
-        // AdSense after paragraph 9
-        if (paragraphCount === 9) {
+        // Inject Booking Widget after 10th paragraph
+        if (paragraphCount === 10) {
+          processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
+        }
+        // Inject an AdSense slot every 5 paragraphs after the 10th
+        if (paragraphCount > 10 && (paragraphCount - 10) % 5 === 0) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
       }
     });
   }
-
   const wordCount = bodyContent
     .filter((b: any) => b._type === 'block')
     .flatMap((b: any) => b.children || [])

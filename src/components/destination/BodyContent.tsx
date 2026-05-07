@@ -33,12 +33,20 @@ export default function BodyContent({ blocks, destinationName }: Props) {
       if (paragraphCount === 4) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
+      // Inject Booking Widget after 6th paragraph
+      if (paragraphCount === 6) {
+        processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
+      }
       // Inject AdSense after 8th paragraph
       if (paragraphCount === 8) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
-      // Inject an AdSense slot every 4 paragraphs after the 10th
-      if (paragraphCount > 10 && (paragraphCount - 10) % 4 === 0) {
+      // Inject Booking Widget after 12th paragraph
+      if (paragraphCount === 12) {
+        processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
+      }
+      // Inject an AdSense slot every 6 paragraphs after the 12th
+      if (paragraphCount > 12 && (paragraphCount - 12) % 6 === 0) {
         processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
       }
     }

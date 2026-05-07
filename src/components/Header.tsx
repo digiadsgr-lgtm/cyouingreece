@@ -21,8 +21,10 @@ export default function Header() {
   const navLinks = [
     { name: t('encyclopaedia'), link: '/encyclopaedia' },
     { name: 'Journal', link: '/journal' },
-    { name: 'Philosophy', link: '/#philosophy' },
-    { name: 'Curated Journeys', link: '/curated-journeys' },
+    { name: 'Sea & Islands', link: '/category/sea' },
+    { name: 'Mountain', link: '/category/mountain' },
+    { name: 'Culture', link: '/category/culture' },
+    { name: 'Gastronomy', link: '/category/gastronomy' },
   ];
 
   const categories = [

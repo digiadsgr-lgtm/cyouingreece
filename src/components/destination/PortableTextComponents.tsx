@@ -5,6 +5,7 @@ import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
 import HotelWidget from '@/components/monetization/HotelWidget';
 import RentACarWidget from '@/components/monetization/RentACarWidget';
 import AdSlot from '@/components/monetization/AdSlot';
+import BookingWidget from '@/components/monetization/BookingWidget';
 
 import { urlFor } from '@/lib/sanity';
 
@@ -67,8 +68,13 @@ export const destinationPortableTextComponents: PortableTextComponents = {
 
     // Injected Smart Widgets
     widget_ad: () => (
-      <div className="my-12">
+      <div className="my-12 w-full flex justify-center">
         <AdSlot format="horizontal" />
+      </div>
+    ),
+    widget_booking: () => (
+      <div className="my-14 w-full">
+        <BookingWidget destination="Greece" />
       </div>
     ),
   },

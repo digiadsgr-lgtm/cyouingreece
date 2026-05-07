@@ -31,10 +31,10 @@ const slideImages: Record<string, string> = {
   'Santorini': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1920&auto=format&fit=crop',
   'Mykonos': 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=80&w=1920&auto=format&fit=crop',
   'Rhodes': 'https://images.unsplash.com/photo-1560961803-1c390508cb58?q=80&w=1920&auto=format&fit=crop',
-  'Crete': 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=1920&auto=format&fit=crop', // Beautiful beach
-  'Corfu': 'https://images.unsplash.com/photo-1620311210874-ce4eb878f895?q=80&w=1920&auto=format&fit=crop',
-  'Milos': 'https://images.unsplash.com/photo-1621251390453-61bba10eb0b3?q=80&w=1920&auto=format&fit=crop',
-  'Ithaca': 'https://images.unsplash.com/photo-1614713568393-4a3dce7a8f15?q=80&w=1920&auto=format&fit=crop'
+  'Crete': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1920&auto=format&fit=crop', // Beautiful beach
+  'Corfu': 'https://images.unsplash.com/photo-1522513476839-4d693f1fa68c?q=80&w=1920&auto=format&fit=crop',
+  'Milos': 'https://images.unsplash.com/photo-1606915159051-2fd5e35bd7f0?q=80&w=1920&auto=format&fit=crop',
+  'Ithaca': 'https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?q=80&w=1920&auto=format&fit=crop'
 };
 
 const slideHeadlines: Record<string, string> = {
