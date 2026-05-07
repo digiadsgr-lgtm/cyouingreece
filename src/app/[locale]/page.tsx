@@ -9,6 +9,7 @@ import { ArrowRight } from 'lucide-react';
 import BookingWidget from '@/components/monetization/BookingWidget';
 import AdSlot from '@/components/monetization/AdSlot';
 import SEOLinkMatrix from '@/components/ui/SEOLinkMatrix';
+import { fetchOpenMeteoWeather } from '@/lib/weather';
 
 // Helper: resolve slug from either string or {current: string} Sanity format
 const resolveSlug = (slug: any): string => {
@@ -57,10 +58,29 @@ const resolveSlug = (slug: any): string => {
 
   const destinations = featuredSlugs.map(slug => dbDestinations.find((d: any) => d.slug.current === slug)).filter(Boolean);
 
+  // Fetch weather data for the new hero slideshow locations
+  const heroLocations = [
+    { name: 'Athens', lat: 37.9838, lng: 23.7275 },
+    { name: 'Santorini', lat: 36.3932, lng: 25.4615 },
+    { name: 'Mykonos', lat: 37.4415, lng: 25.3224 },
+    { name: 'Rhodes', lat: 36.4341, lng: 28.2176 },
+    { name: 'Crete', lat: 35.3387, lng: 25.1442 },
+    { name: 'Corfu', lat: 39.6243, lng: 19.9217 },
+    { name: 'Milos', lat: 36.7266, lng: 24.4274 },
+    { name: 'Ithaca', lat: 38.3619, lng: 20.7137 },
+  ];
+
+  const heroWeatherData = await Promise.all(
+    heroLocations.map(async (loc) => {
+      const weather = await fetchOpenMeteoWeather({ lat: loc.lat, lng: loc.lng });
+      return { ...loc, weather };
+    })
+  );
+
   return (
     <main className="min-h-screen bg-[#030b15] text-[#FAF9F6] selection:bg-[#D4A027] selection:text-[#0A1628]">
       {/* SMART HERO */}
-      <SmartHero destinations={destinations} />
+      <SmartHero locations={heroWeatherData} />
 
       {/* MANIFESTO - MAGAZINE SPREAD */}
       <section className="relative w-full bg-[#FAF9F6] py-24 md:py-48 overflow-hidden">
