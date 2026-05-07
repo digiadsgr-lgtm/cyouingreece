@@ -27,11 +27,11 @@ interface Props {
 }
 
 const slideImages: Record<string, string> = {
-  'Athens': 'https://images.unsplash.com/photo-1513807016779-d51c0c02ba2b?q=80&w=1920&auto=format&fit=crop',
+  'Athens': 'https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1920&auto=format&fit=crop', // Acropolis
   'Santorini': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1920&auto=format&fit=crop',
   'Mykonos': 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?q=80&w=1920&auto=format&fit=crop',
   'Rhodes': 'https://images.unsplash.com/photo-1560961803-1c390508cb58?q=80&w=1920&auto=format&fit=crop',
-  'Crete': 'https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1920&auto=format&fit=crop',
+  'Crete': 'https://images.unsplash.com/photo-1516483638261-f40af5bf2225?q=80&w=1920&auto=format&fit=crop', // Beautiful beach
   'Corfu': 'https://images.unsplash.com/photo-1620311210874-ce4eb878f895?q=80&w=1920&auto=format&fit=crop',
   'Milos': 'https://images.unsplash.com/photo-1621251390453-61bba10eb0b3?q=80&w=1920&auto=format&fit=crop',
   'Ithaca': 'https://images.unsplash.com/photo-1614713568393-4a3dce7a8f15?q=80&w=1920&auto=format&fit=crop'
