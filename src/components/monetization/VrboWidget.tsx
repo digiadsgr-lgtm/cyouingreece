@@ -44,7 +44,7 @@ export default function VrboWidget() {
             <svg className="w-5 h-5 text-white/50 group-hover:text-[#1855a5] transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <img src="https://www.tqlkg.com/image-101742968-13525334" width="1" height="1" border="0" alt="" className="hidden" />
+            <img src="https://www.tqlkg.com/image-101742968-13525334" width="1" height="1" alt="" className="hidden" />
           </a>
 
           <a
@@ -59,7 +59,7 @@ export default function VrboWidget() {
             <svg className="w-5 h-5 text-white/50 group-hover:text-[#1855a5] transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <img src="https://www.tqlkg.com/image-101742968-13505427" width="1" height="1" border="0" alt="" className="hidden" />
+            <img src="https://www.tqlkg.com/image-101742968-13505427" width="1" height="1" alt="" className="hidden" />
           </a>
 
           <a
@@ -74,7 +74,7 @@ export default function VrboWidget() {
             <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-            <img src="https://www.lduhtrp.net/image-101742968-13383553" width="1" height="1" border="0" alt="" className="hidden" />
+            <img src="https://www.lduhtrp.net/image-101742968-13383553" width="1" height="1" alt="" className="hidden" />
           </a>
         </div>
       </div>
