@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PortableText } from '@portabletext/react';
 import AdSlot from '@/components/monetization/AdSlot';
 import BookingWidget from '@/components/monetization/BookingWidget';
+import VrboWidget from '@/components/monetization/VrboWidget';
 import AffiliateLinkBar from '@/components/monetization/AffiliateLinks';
 import HotelWidget from '@/components/monetization/HotelWidget';
 import { articleJsonLd, breadcrumbJsonLd, JsonLdScript } from '@/lib/jsonld';
@@ -109,6 +110,11 @@ function buildComponents(articleTitle: string) {
       widget_booking: () => (
         <div className="my-14 w-full">
           <BookingWidget destination="Greece" />
+        </div>
+      ),
+      widget_vrbo: () => (
+        <div className="my-14 w-full">
+          <VrboWidget />
         </div>
       ),
     },
