@@ -80,9 +80,6 @@ const resolveSlug = (slug: any): string => {
 
   return (
     <main className="min-h-screen bg-[#030b15] text-[#FAF9F6] selection:bg-[#D4A027] selection:text-[#0A1628]">
-      {/* GEAR UP PROMO */}
-      <GearUpBanner />
-
       {/* SMART HERO */}
       <SmartHero locations={heroWeatherData} />
 
@@ -366,6 +363,11 @@ const resolveSlug = (slug: any): string => {
 
       {/* SEO INTERNAL LINK MATRIX */}
       <SEOLinkMatrix currentLocale={locale} />
+
+      {/* GEAR UP PROMO AT BOTTOM */}
+      <section className="w-full bg-[#030b15] py-12 border-t border-[#0A1628]/20">
+        <GearUpBanner />
+      </section>
 
       {/* FOOTER & NEWSLETTER BLOCK */}
       <footer className="w-full bg-[#030b15] pt-32">

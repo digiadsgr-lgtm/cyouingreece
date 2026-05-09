@@ -37,10 +37,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ease-in-out ${
+        className={`sticky top-0 left-0 w-full z-[100] transition-all duration-700 ease-in-out ${
           scrolled
             ? 'bg-[#030b15]/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl'
-            : 'bg-transparent py-8'
+            : 'bg-[#030b15] py-8'
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex justify-between items-center">

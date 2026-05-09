@@ -41,6 +41,7 @@ export const metadata: Metadata = {
 };
 
 import Header from '@/components/Header';
+import TopBanner from '@/components/monetization/TopBanner';
 import SmoothScroller from '@/components/SmoothScroller';
 
 // GetYourGuide Partner ID
@@ -108,6 +109,7 @@ export default async function LocaleLayout({
         {/* End Google Tag Manager (noscript) */}
 
         <NextIntlClientProvider messages={messages}>
+          <TopBanner />
           <Header />
           <SmoothScroller>
             {children}
