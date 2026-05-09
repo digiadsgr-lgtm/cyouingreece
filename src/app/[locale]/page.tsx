@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import SmartHero from "@/components/home/SmartHero";
 import { Link } from '@/i18n/routing';
 import { sanityClient, urlFor } from '@/lib/sanity';
@@ -316,9 +316,9 @@ const resolveSlug = (slug: any): string => {
             {destinations.map((dest: any, i) => {
               const isLarge = i % 3 === 0;
               const colSpan = isLarge ? "lg:col-span-8" : "lg:col-span-4";
-              
               return (
-                <article key={dest._id} className={`${colSpan} group flex flex-col`}>
+                <React.Fragment key={dest._id}>
+                <article className={`${colSpan} group flex flex-col`}>
                   <Link href={`/destination/${dest.slug?.current}`} className="group block relative overflow-hidden aspect-square md:aspect-[16/10] bg-[#0A1628] mb-10 rounded-xl shadow-2xl">
                     <img
                       src={dest.hero_image?.asset ? urlFor(dest.hero_image).width(1400).url() : FALLBACK_IMAGE}
@@ -348,6 +348,12 @@ const resolveSlug = (slug: any): string => {
                     </Link>
                   </div>
                 </article>
+                {i === 1 && (
+                  <div className="lg:col-span-12 my-12 md:my-24 w-full">
+                    <GearUpBanner />
+                  </div>
+                )}
+                </React.Fragment>
               );
             })}
           </div>
@@ -363,11 +369,6 @@ const resolveSlug = (slug: any): string => {
 
       {/* SEO INTERNAL LINK MATRIX */}
       <SEOLinkMatrix currentLocale={locale} />
-
-      {/* GEAR UP PROMO AT BOTTOM */}
-      <section className="w-full bg-[#030b15] py-12 border-t border-[#0A1628]/20">
-        <GearUpBanner />
-      </section>
 
       {/* FOOTER & NEWSLETTER BLOCK */}
       <footer className="w-full bg-[#030b15] pt-32">
