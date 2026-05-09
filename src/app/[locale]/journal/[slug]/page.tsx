@@ -215,24 +215,33 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       if (block._type === 'block' && block.style === 'normal') {
         paragraphCount++;
         
-        // Inject AdSense after 3rd paragraph
-        if (paragraphCount === 3) {
-          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
-        }
-        // Inject Booking Widget after 5th paragraph
-        if (paragraphCount === 5) {
+        // Inject Booking Widget after 2nd paragraph (Top)
+        if (paragraphCount === 2) {
           processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
         }
-        // Inject AdSense after 7th paragraph
-        if (paragraphCount === 7) {
+        // Inject AdSense after 4th paragraph
+        if (paragraphCount === 4) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
-        // Inject Booking Widget after 10th paragraph
-        if (paragraphCount === 10) {
+        // Inject VRBO Widget after 6th paragraph (Middle)
+        if (paragraphCount === 6) {
+          processedBlocks.push({ _type: 'widget_vrbo', _key: `injected-vrbo-${paragraphCount}` });
+        }
+        // Inject AdSense after 8th paragraph
+        if (paragraphCount === 8) {
+          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+        }
+        // Inject Booking Widget after 11th paragraph (Middle-Bottom)
+        if (paragraphCount === 11) {
           processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
         }
-        // Inject an AdSense slot every 5 paragraphs after the 10th
-        if (paragraphCount > 10 && (paragraphCount - 10) % 5 === 0) {
+        // Inject VRBO or Booking alternating every 4 paragraphs after 11th
+        if (paragraphCount > 11 && (paragraphCount - 11) % 4 === 0) {
+          const isBooking = ((paragraphCount - 11) / 4) % 2 === 1;
+          processedBlocks.push({ _type: isBooking ? 'widget_booking' : 'widget_vrbo', _key: `injected-dynamic-${paragraphCount}` });
+        }
+        // Inject an AdSense slot every 3 paragraphs after 8th
+        if (paragraphCount > 8 && (paragraphCount - 8) % 3 === 0) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
         }
       }

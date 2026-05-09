@@ -8,6 +8,7 @@ import { getLocalizedContent } from '@/lib/i18n-utils';
 import { ArrowRight } from 'lucide-react';
 import BookingWidget from '@/components/monetization/BookingWidget';
 import AdSlot from '@/components/monetization/AdSlot';
+import GearUpBanner from '@/components/monetization/GearUpBanner';
 import SEOLinkMatrix from '@/components/ui/SEOLinkMatrix';
 import { fetchOpenMeteoWeather } from '@/lib/weather';
 
@@ -79,6 +80,9 @@ const resolveSlug = (slug: any): string => {
 
   return (
     <main className="min-h-screen bg-[#030b15] text-[#FAF9F6] selection:bg-[#D4A027] selection:text-[#0A1628]">
+      {/* GEAR UP PROMO */}
+      <GearUpBanner />
+
       {/* SMART HERO */}
       <SmartHero locations={heroWeatherData} />
 
