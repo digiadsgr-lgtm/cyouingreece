@@ -2,6 +2,7 @@
 import { PortableText } from '@portabletext/react';
 import { Clock } from 'lucide-react';
 import { destinationPortableTextComponents } from './PortableTextComponents';
+import { AdInArticle } from '@/components/monetization/AdSlot';
 
 interface Props {
   blocks: unknown[];
@@ -73,6 +74,11 @@ export default function BodyContent({ blocks, destinationName }: Props) {
           value={processedBlocks as any}
           components={destinationPortableTextComponents}
         />
+        
+        {/* IN-ARTICLE AD AT THE END OF THE ARTICLE */}
+        <div className="mt-16">
+          <AdInArticle />
+        </div>
       </div>
 
       <style>{`

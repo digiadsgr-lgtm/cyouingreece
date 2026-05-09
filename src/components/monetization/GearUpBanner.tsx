@@ -17,7 +17,6 @@ export default function GearUpBanner() {
             width={1001} 
             height={691} 
             className="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-500" 
-            border={0}
           />
         </a>
       </div>

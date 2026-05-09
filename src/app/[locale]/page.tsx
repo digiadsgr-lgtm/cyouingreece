@@ -7,7 +7,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getLocalizedContent } from '@/lib/i18n-utils';
 import { ArrowRight } from 'lucide-react';
 import BookingWidget from '@/components/monetization/BookingWidget';
-import AdSlot from '@/components/monetization/AdSlot';
+import AdSlot, { AdMultiplex, AdInArticle } from '@/components/monetization/AdSlot';
 import GearUpBanner from '@/components/monetization/GearUpBanner';
 import SEOLinkMatrix from '@/components/ui/SEOLinkMatrix';
 import { fetchOpenMeteoWeather } from '@/lib/weather';
@@ -136,6 +136,13 @@ const resolveSlug = (slug: any): string => {
         </div>
       </section>
 
+      {/* IN-ARTICLE AD AFTER MANIFESTO */}
+      <section className="w-full bg-[#FAF9F6] border-t border-[#0A1628]/10 py-12">
+        <div className="max-w-[1000px] mx-auto px-6">
+          <AdInArticle />
+        </div>
+      </section>
+
       {/* CURATED ITINERARIES - HORIZONTAL SCROLL CONCEPT */}
       <section className="w-full bg-[#0A1628] py-32 md:py-48 text-white overflow-hidden relative">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-20 md:mb-32">
@@ -260,6 +267,10 @@ const resolveSlug = (slug: any): string => {
                       </div>
                     </Link>
                   ))}
+                </div>
+                {/* MULTIPLEX AD AFTER CATEGORY ARTICLES */}
+                <div className="mt-16 border-t border-[#0A1628]/10 pt-10">
+                  <AdMultiplex />
                 </div>
               </div>
             );
