@@ -233,22 +233,26 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         if (paragraphCount === 6) {
           processedBlocks.push({ _type: 'widget_vrbo', _key: `injected-vrbo-${paragraphCount}` });
         }
-        // Inject AdSense after 8th paragraph
-        if (paragraphCount === 8) {
-          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
-        }
-        // Inject Booking Widget after 11th paragraph (Middle-Bottom)
-        if (paragraphCount === 11) {
+        // Inject Booking Widget after 9th paragraph (Middle-Bottom)
+        if (paragraphCount === 9) {
           processedBlocks.push({ _type: 'widget_booking', _key: `injected-booking-${paragraphCount}` });
         }
-        // Inject VRBO or Booking alternating every 4 paragraphs after 11th
-        if (paragraphCount > 11 && (paragraphCount - 11) % 4 === 0) {
-          const isBooking = ((paragraphCount - 11) / 4) % 2 === 1;
-          processedBlocks.push({ _type: isBooking ? 'widget_booking' : 'widget_vrbo', _key: `injected-dynamic-${paragraphCount}` });
-        }
-        // Inject an AdSense slot every 3 paragraphs after 8th
-        if (paragraphCount > 8 && (paragraphCount - 8) % 3 === 0) {
+        // Inject AdSense after 11th paragraph
+        if (paragraphCount === 11) {
           processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+        }
+        // Inject VRBO Widget after 14th paragraph
+        if (paragraphCount === 14) {
+          processedBlocks.push({ _type: 'widget_vrbo', _key: `injected-vrbo-${paragraphCount}` });
+        }
+        // Inject an AdSense slot every 3 paragraphs after 14th
+        if (paragraphCount > 14 && (paragraphCount - 14) % 3 === 0) {
+          processedBlocks.push({ _type: 'widget_ad', _key: `injected-ad-${paragraphCount}` });
+        }
+        // Alternating Booking/VRBO every 4 paragraphs after 9th
+        if (paragraphCount > 9 && (paragraphCount - 9) % 4 === 0 && paragraphCount !== 11 && paragraphCount !== 14) {
+          const isBooking = ((paragraphCount - 9) / 4) % 2 === 1;
+          processedBlocks.push({ _type: isBooking ? 'widget_booking' : 'widget_vrbo', _key: `injected-dynamic-${paragraphCount}` });
         }
       }
     });
