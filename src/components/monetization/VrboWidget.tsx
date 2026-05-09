@@ -1,10 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 export default function VrboWidget() {
-  const t = useTranslations('Navigation'); // Or any common translation namespace
-  
   return (
     <div className="w-full bg-gradient-to-br from-[#030b15] to-[#0a192f] border border-white/10 rounded-2xl p-6 md:p-8 my-12 relative overflow-hidden group">
       {/* Background visual flair */}
