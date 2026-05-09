@@ -1,10 +1,17 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { createClient } from '@sanity/client';
-import { exec } from 'child_process';
-import util from 'util';
+import { spawn } from 'child_process';
 
-const execAsync = util.promisify(exec);
+const runCommand = (command: string, args: string[]) => {
+  return new Promise<void>((resolve, reject) => {
+    const proc = spawn(command, args, { stdio: 'inherit', shell: true });
+    proc.on('close', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`Process exited with code ${code}`));
+    });
+  });
+};
 
 const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'sntl6fxn',
@@ -53,15 +60,23 @@ async function runOverseer() {
   console.log(`- Documents missing localized content: ${translationsToHeal}\n`);
 
   if (imagesToHeal > 0) {
-    console.log(`⚠️ OVERSEER SIGNAL: Activating Image Agent...`);
-    console.log('Use: npx ts-node scripts/agent_images.ts');
+    console.log(`⚠️ OVERSEER SIGNAL: Activating Pro Image Agent...`);
+    try {
+      await runCommand('npx', ['tsx', 'scripts/agent_images_pro.ts']);
+    } catch (e) {
+      console.error('Image Agent Failed:', e);
+    }
   } else {
     console.log(`✅ Image Matrix: Healthy.`);
   }
 
   if (translationsToHeal > 0) {
     console.log(`⚠️ OVERSEER SIGNAL: Activating Content Agent...`);
-    console.log('Use: npx ts-node scripts/agent_content.ts');
+    try {
+      await runCommand('npx', ['tsx', 'scripts/agent_content.ts']);
+    } catch (e) {
+      console.error('Content Agent Failed:', e);
+    }
   } else {
     console.log(`✅ Content Matrix: Healthy.`);
   }
