@@ -14,8 +14,8 @@ export default function TopBanner() {
             src="https://www.lduhtrp.net/image-101742968-17235978" 
             alt="Partner Logo"
             width={1240} 
-            height={120} 
-            className="w-full h-auto max-h-[120px] object-contain transform group-hover:scale-[1.01] transition-transform duration-300" 
+            height={60} 
+            className="w-full h-auto max-h-[60px] object-contain transform group-hover:scale-[1.01] transition-transform duration-300" 
           />
         </a>
       </div>
